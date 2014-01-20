@@ -20,9 +20,10 @@ class m140120_130154_create_answer_table extends CDbMigration
             'gender' => 'enum("Male", "Female") DEFAULT NULL',
             'year_of_birth' => 'int(4) DEFAULT NULL',
             'PRIMARY KEY (id)',
-            'KEY `category` (`category`)',
-            'KEY `url` (`url`)',
+            'KEY `survey_id` (`survey_id`)',
+            'KEY `motive_id` (`motive_id`)',
         ));
+        $this->addForeignKey('survey', 'answer', 'survey_id', 'survey', 'id', 'restrict', 'restrict');
     }
 
     public function down()
