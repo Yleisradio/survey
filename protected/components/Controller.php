@@ -6,6 +6,7 @@
  */
 class Controller extends CController
 {
+
     /**
      * @var string the default layout for the controller view. Defaults to '//layouts/column1',
      * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
@@ -24,5 +25,14 @@ class Controller extends CController
      */
     public $breadcrumbs = array();
 
+    public function beforeAction($action)
+    {
+        $cs = Yii::app()->clientScript;
+        $cs->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/bootstrap.css'));
+        $cs->registerScriptFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.js') . '/bootstrap.js', CClientScript::POS_END));
+        $cs->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/app.css'));
+        parent::beforeAction($action);
+        return true;
+    }
 
 }

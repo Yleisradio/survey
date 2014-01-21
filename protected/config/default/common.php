@@ -6,6 +6,7 @@ return array(
     'preload' => array(
         'log',
     ),
+    'sourceLanguage' => '00',
     'language' => 'fi',
     // autoloading model and component classes
     'import' => array(
