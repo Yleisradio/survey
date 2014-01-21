@@ -10,6 +10,10 @@
  * @property string $category
  * @property integer $frequency
  * @property string $comscore
+ * @property integer $active
+ *
+ * The followings are the available model relations:
+ * @property Answer[] $answers
  */
 class Survey extends CActiveRecord
 {
@@ -29,13 +33,13 @@ class Survey extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, name, url, category, frequency, comscore', 'required'),
-			array('id, frequency', 'numerical', 'integerOnly'=>true),
+			array('name, url, category, frequency, comscore', 'required'),
+			array('frequency, active', 'numerical', 'integerOnly'=>true),
 			array('name, category, comscore', 'length', 'max'=>32),
 			array('url', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, url, category, frequency, comscore', 'safe', 'on'=>'search'),
+			array('id, name, url, category, frequency, comscore, active', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,6 +51,7 @@ class Survey extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'answers' => array(self::HAS_MANY, 'Answer', 'survey_id'),
 		);
 	}
 
@@ -62,6 +67,7 @@ class Survey extends CActiveRecord
 			'category' => 'Category',
 			'frequency' => 'Frequency',
 			'comscore' => 'Comscore',
+			'active' => 'Active',
 		);
 	}
 
@@ -89,6 +95,7 @@ class Survey extends CActiveRecord
 		$criteria->compare('category',$this->category,true);
 		$criteria->compare('frequency',$this->frequency);
 		$criteria->compare('comscore',$this->comscore,true);
+		$criteria->compare('active',$this->active);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -105,4 +112,19 @@ class Survey extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        /**
+         * Converts Survey to the format required by the YleWebPoll jQuery plugin
+         * {"id":"136074972951621","siteTitle":"Areena","siteURL":"http://localhost/rullaava-kysely-test","freq":50,"category":"areenas","motivesList":"5.7.10.11.12.13.14.19.21.22.23","comScoreAccount":"areenas"}
+         */
+        public function toYleWebPollsConfigFormat() {
+           $yleWebPollConfigFormat = array();
+           $yleWebPollConfigFormat['id'] = $this->id;
+           $yleWebPollConfigFormat['siteTitle'] = $this->name;
+           $yleWebPollConfigFormat['siteURL'] = $this->url;
+           $yleWebPollConfigFormat['category'] = $this->category;
+           $yleWebPollConfigFormat['freq'] = $this->frequency;
+           $yleWebPollConfigFormat['comScoreAccount'] = $this->comscore;
+           $yleWebPollConfigFormat['motivesList'] = "5.7.10.11.12.13.14.19.21.22.23";
+           return $yleWebPollConfigFormat;
+        }
 }

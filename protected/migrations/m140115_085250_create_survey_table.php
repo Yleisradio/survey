@@ -11,9 +11,11 @@ class m140115_085250_create_survey_table extends CDbMigration
             'category' => 'varchar(32) NOT NULL',
             'frequency' => 'int(3) NOT NULL',
             'comscore' => 'varchar(32) NOT NULL',
+            'active' => 'int(1) DEFAULT "0"',
             'PRIMARY KEY (id)',
             'KEY `category` (`category`)',
             'KEY `url` (`url`)',
+            'KEY `active` (`active`)',
         ));
     }
 
