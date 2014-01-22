@@ -17,7 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'survey.notice.user-information' => 'Kerro vielä pari asiaa itsestäsi. Antamasi tiedot ovat anonyymeja eli niitä ei voida yhdistää sinuun, mutta ne auttavat meitä parantamaan palveluamme.',
+  'thanks' => '',
+  'thanks' => 'Kiitos',
   'answer.interest.0' => 'Erittäin kiinnostava',
   'answer.interest.1' => 'Kiinnostava',
   'answer.interest.2' => 'Melko kiinnostava',
@@ -28,6 +29,7 @@ return array (
   'answer.recommend.1' => 'Erittäin epätodennäköisesti',
   'answer.recommend.10' => 'Erittäin todennäköisesti',
   'answer.users.4' => 'tai useampi',
+  'choose' => 'Valitse',
   'no' => 'Ei',
   'survey.failure_text.question' => 'Jos ei, miksi ei?',
   'survey.feedback.question' => 'Onko mielessäsi muuta palautetta liittyen {site} -sivustoon?',
@@ -37,6 +39,7 @@ return array (
   'survey.heading' => 'Millainen oli vierailusi {site} -palvelussamme?',
   'survey.interest.question' => 'Mitä mieltä olet {site} -palvelustamme yleensä?',
   'survey.motive.question' => 'Mikä seuraavista vaihtoehdoista kuvaa parhaiten käyntisi tarkoitusta tänään?',
+  'survey.notice.user-information' => 'Kerro vielä pari asiaa itsestäsi. Antamasi tiedot ovat anonyymeja eli niitä ei voida yhdistää sinuun, mutta ne auttavat meitä parantamaan palveluamme.',
   'survey.recommend.question' => 'Suosittelisitko {site} -sivustoamme ystävällesi tai kollegallesi?',
   'survey.submit' => 'Lähetä vastaus',
   'survey.success.question' => 'Oliko käyntisi {site} -sivulla onnistunut?',

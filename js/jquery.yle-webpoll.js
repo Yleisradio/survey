@@ -239,7 +239,7 @@ function loadYleWebPollResources() {
                     siteURL: currentSiteConf.siteURL,
                     debug: true,
                     urlParams: {
-                        pollID: currentSiteConf.id
+                        surveyId: currentSiteConf.id
                     },
                     displayFrequency: currentSiteConf.freq
                 };

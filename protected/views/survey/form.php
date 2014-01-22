@@ -33,7 +33,7 @@ $form = $this->beginWidget('CActiveForm', array(
         <div class="col-md-12 question-box">
             <h2><?php echo Yii::t('form', 'survey.recommend.question', array('{site}' => $survey->name)); ?></h2>
             <?php
-            echo $form->radioButtonList($answer, 'interest', array(
+            echo $form->radioButtonList($answer, 'recommend', array(
                 1 . ' - ' . Yii::t('form', 'answer.recommend.1'),
                 2,
                 3,
@@ -93,6 +93,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <h2><?php echo Yii::t('form', 'survey.gender.question', array('{site}' => $survey->name)); ?></h2>
                     <?php
                     echo $form->dropDownList($answer, 'gender', array(
+                        '' => Yii::t('form', 'choose'),
                         'female' => Yii::t('form', 'survey.gender.female'),
                         'male' => Yii::t('form', 'survey.gender.male'),
                     ));
@@ -101,7 +102,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="col-md-6">
                     <h2><?php echo Yii::t('form', 'survey.year_of_birth.question', array('{site}' => $survey->name)); ?></h2>
                     <?php
-                    echo $form->dropDownList($answer, 'gender', $dateOfBirthYears);
+                    echo $form->dropDownList($answer, 'year_of_birth', $yearsOfBirth);
                     ?>
                 </div>
             </div>

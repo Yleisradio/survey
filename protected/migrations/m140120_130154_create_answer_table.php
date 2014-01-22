@@ -17,7 +17,7 @@ class m140120_130154_create_answer_table extends CDbMigration
             'interest' => 'int(1) DEFAULT NULL',
             'feedback' => 'text DEFAULT NULL',
             'users' => 'int(1) DEFAULT NULL',
-            'gender' => 'enum("Male", "Female") DEFAULT NULL',
+            'gender' => 'enum("male", "female") DEFAULT NULL',
             'year_of_birth' => 'int(4) DEFAULT NULL',
             'PRIMARY KEY (id)',
             'KEY `survey_id` (`survey_id`)',

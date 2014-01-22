@@ -3,24 +3,6 @@
 class SurveyController extends Controller
 {
 
-    public function actionForm($surveyId)
-    {
-        Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/form.css'));
-        
-        $dateOfBirthYears = array();
-        for($dateOfBirthYear = (date('Y') - 5); $dateOfBirthYear >= 1900; $dateOfBirthYear--) {
-            $dateOfBirthYears[] = $dateOfBirthYear;
-        }
-        
-        $survey = Survey::model()->findByPk($surveyId);
-        $answer = new Answer();
-        $this->render('form', array(
-            'survey' => $survey,
-            'answer' => $answer,
-            'dateOfBirthYears' => $dateOfBirthYears,
-        ));
-    }
-    
     /**
      * Returns YleWebPoll jQuery plugin and the survey configs for the plugin
      */
@@ -40,6 +22,46 @@ class SurveyController extends Controller
         include('js/jquery.yle-webpoll.js');
         ?>var YLEWebPollsConfig=<?php
         echo json_encode($yleWebPollsConfig, JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Displays and processes the survey form
+     * @param type $surveyId
+     */
+    public function actionForm($surveyId)
+    {
+        Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/form.css'));
+
+        //Generate possible birth years to the dropdown menu
+        $yearsOfBirth = array(
+            '' => Yii::t('form', 'choose'),
+        );
+        for ($yearOfBirth = (date('Y') - 5); $yearOfBirth >= 1900; $yearOfBirth--) {
+            $yearsOfBirth[$yearOfBirth] = $yearOfBirth;
+        }
+
+        $answer = new Answer();
+        if (Yii::app()->request->isPostRequest) {
+            $answer->attributes = $_POST['Answer'];
+            $answer->timestamp = time();
+            $answer->save();
+            $this->redirect('thanks');
+        } else {
+            
+        }
+        $survey = Survey::model()->findByPk($surveyId);
+
+        $this->render('form', array(
+            'survey' => $survey,
+            'answer' => $answer,
+            'yearsOfBirth' => $yearsOfBirth,
+        ));
+    }
+
+    public function actionThanks()
+    {
+        Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/form.css'));
+        $this->render('thanks');
     }
 
 }
