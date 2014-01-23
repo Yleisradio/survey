@@ -249,6 +249,22 @@ class Answer extends CActiveRecord
     }
 
     /**
+     * Returns the total number of answers in the specified time range and survey
+     * @param type $sites
+     * @param type $from
+     * @param type $to
+     * @param type $db
+     * @return type
+     */
+    public static function getTotalN($surveyId, $from, $to)
+    {
+        $sql = 'SELECT COUNT(id) AS value FROM answer WHERE ' . self::getWhereCondition($surveyId);
+        $command = Yii::app()->db->createCommand($sql);
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        return $metrics;
+    }
+
+    /**
      * Returns the condition used to get the survey result metrics
      * @param type $surveyId
      * @return string

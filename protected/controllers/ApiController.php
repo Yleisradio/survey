@@ -47,7 +47,7 @@ class ApiController extends Controller
             if (in_array('sentiment', $metrics)) {
                 $values['sentiment'] = $this->valuesToSeries(Answer::getSentiment($survey->id, $from, $to, $interval), $from, $to, $interval);
             }
-//            $values['n'] = getTotalN($survey->id, $from, $to);
+            $values['n'] = Answer::getTotalN($survey->id, $from, $to);
             $sitesValues[$site] = $values;
         }
         $this->outputJSON($sitesValues);
