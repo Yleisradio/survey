@@ -19,8 +19,8 @@ $form = $this->beginWidget('CActiveForm', array(
             <h2><?php echo Yii::t('form', 'survey.success.question', array('{site}' => $survey->name)); ?></h2>
             <?php
             echo $form->radioButtonList($answer, 'success', array(
-                Yii::t('form', 'yes'),
-                Yii::t('form', 'no'),
+                1 => Yii::t('form', 'yes'),
+                0 => Yii::t('form', 'no'),
             ));
             ?>
             <h2><?php echo Yii::t('form', 'survey.failure_text.question', array('{site}' => $survey->name)); ?></h2>

@@ -44,6 +44,7 @@ class SurveyController extends Controller
         if (Yii::app()->request->isPostRequest) {
             $answer->attributes = $_POST['Answer'];
             $answer->timestamp = time();
+            $answer->survey_id = $surveyId;
             $answer->save();
             $this->redirect('thanks');
         } else {
