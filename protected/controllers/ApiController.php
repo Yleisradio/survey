@@ -78,7 +78,7 @@ class ApiController extends Controller
         while ($start <= $to + 24 * 60 * 60) {
             if (isset($values[$i])) {
                 if ($values[$i]['timestamp'] >= $start && $values[$i]['timestamp'] < $start + $tickInterval) {
-                    $valuesCell = array('value' => $values[$i]['value']);
+                    $valuesCell = array('count' => $values[$i]['value']);
 //                    $valuesCell['timestamp'] = $start + (2 * 60 * 60);
                     $valuesCell['time'] = date('c', $start);
 //                    if (date('I', $start)) {

@@ -219,7 +219,7 @@ class Answer extends CActiveRecord
     public static function getTotalNPS($surveyId, $from, $to)
     {
         $sql = '
-        SELECT ROUND(SUM(promoter) / SUM(count) - SUM(detractor) / SUM(count), 2) * 100 AS value FROM (
+        SELECT ROUND(SUM(promoter) / SUM(count) - SUM(detractor) / SUM(count), 2) * 100 AS count FROM (
             SELECT COUNT(id) AS promoter, 0 AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend > 8
             UNION
             SELECT 0 AS promoter, COUNT(id) AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend < 7
@@ -229,7 +229,7 @@ class Answer extends CActiveRecord
         ';
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
-        return $metrics;
+        return $metrics[0]['count'];
     }
 
     /**
@@ -258,7 +258,7 @@ class Answer extends CActiveRecord
      */
     public static function getTotalN($surveyId, $from, $to)
     {
-        $sql = 'SELECT COUNT(id) AS value FROM answer WHERE ' . self::getWhereCondition($surveyId);
+        $sql = 'SELECT COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId);
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
         return $metrics;
