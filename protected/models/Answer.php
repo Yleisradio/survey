@@ -146,7 +146,7 @@ class Answer extends CActiveRecord
     }
 
     /**
-     * Returns the success rate in specified time range grouped by specified interval
+     * Returns the success rate in specified time range and survey grouped by specified interval
      * @param type $surveyId
      * @param type $from
      * @param type $to
@@ -169,7 +169,7 @@ class Answer extends CActiveRecord
     }
 
     /**
-     * Returns the interest in specified time range grouped by specified interval
+     * Returns the interest in specified time range and survey grouped by specified interval
      * @param type $surveyId
      * @param type $from
      * @param type $to
@@ -185,7 +185,7 @@ class Answer extends CActiveRecord
     }
 
     /**
-     * Returns the net promoter score in specified time range grouped by specified interval
+     * Returns the net promoter score in specified time range and survey grouped by specified interval
      * @param type $surveyId
      * @param type $from
      * @param type $to
@@ -233,7 +233,7 @@ class Answer extends CActiveRecord
     }
 
     /**
-     * Returns the sentiment in specified time range grouped by specified interval
+     * Returns the sentiment in specified time range and survey grouped by specified interval
      * @param type $surveyId
      * @param type $from
      * @param type $to
@@ -264,6 +264,15 @@ class Answer extends CActiveRecord
         return $metrics;
     }
 
+    /**
+     * Returns the number of answers in the specified time range, survey and gender
+     * @param type $surveyId
+     * @param type $from
+     * @param type $to
+     * @param type $interval
+     * @param type $gender
+     * @return type
+     */
     public static function getGender($surveyId, $from, $to, $interval, $gender)
     {
         $sql = 'SELECT COUNT(id) AS value, timestamp FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND gender = :gender GROUP BY ' . self::getGroupBy($interval) . ' 
@@ -273,6 +282,16 @@ class Answer extends CActiveRecord
         return $metrics;
     }
 
+    /**
+     * Returns the number of answers in the specified time range, survey and age
+     * @param type $surveyId
+     * @param type $from
+     * @param type $to
+     * @param type $interval
+     * @param type $startAge
+     * @param type $endAge
+     * @return type
+     */
     public static function getAge($surveyId, $from, $to, $interval, $startAge, $endAge)
     {
         $year = date('Y');

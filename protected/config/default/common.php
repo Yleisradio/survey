@@ -67,5 +67,11 @@ return array(
         ),
     ),
     'params' => array(
+        'etuma' => array(
+            'accessKey' => '',
+            'secretKey' => '',
+            'subsignalformid' => '',
+        ),
+        'apiLogLevel' => 'all',
     ),
 );

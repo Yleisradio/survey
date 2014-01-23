@@ -23,6 +23,7 @@ return CMap::mergeArray(
                 ),
             ),
             'params' => array(
+                'apiLogLevel' => 'error',
             ),
                 )
 );

@@ -36,5 +36,7 @@ return CMap::mergeArray(
                     ),
                 ),
             ),
+            'params' => array(
+            ),
                 )
 );
