@@ -264,6 +264,28 @@ class Answer extends CActiveRecord
         return $metrics;
     }
 
+    public static function getGender($surveyId, $from, $to, $interval, $gender)
+    {
+        $sql = 'SELECT COUNT(id) AS value, timestamp FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND gender = :gender GROUP BY ' . self::getGroupBy($interval) . ' 
+        ';
+        $command = Yii::app()->db->createCommand($sql);
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to) + array(':gender' => $gender));
+        return $metrics;
+    }
+
+    public static function getAge($surveyId, $from, $to, $interval, $startAge, $endAge)
+    {
+        $year = date('Y');
+        $sql = 'SELECT COUNT(id) AS value, timestamp FROM answer 
+            WHERE ' . self::getWhereCondition($surveyId) . ' AND year_of_birth <= :startAge AND year_of_birth > :endAge GROUP BY ' . self::getGroupBy($interval);
+        $command = Yii::app()->db->createCommand($sql);
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to) + array(
+            ':startAge' => $year - $startAge,
+            ':endAge' => $year - $endAge,
+        ));
+        return $metrics;
+    }
+
     /**
      * Returns the condition used to get the survey result metrics
      * @param type $surveyId

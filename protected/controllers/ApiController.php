@@ -22,18 +22,18 @@ class ApiController extends Controller
         foreach ($sites as $site) {
             $survey = Survey::model()->findByAttributes(array('category' => $site));
             $values = array();
-//            if (in_array('gender', $metrics)) {
-//                $values['female'] = valuesToSeries(getGender($sitesParameter, $from, $to, 0), $from, $to);
-//                $values['male'] = valuesToSeries(getGender($sitesParameter, $from, $to, 1), $from, $to);
-//            };
-//            if (in_array('age', $metrics)) {
-//                $values['75+'] = valuesToSeries(getAge($sitesParameter, $from, $to, 75, 200), $from, $to);
-//                $values['60-74'] = valuesToSeries(getAge($sitesParameter, $from, $to, 60, 74), $from, $to);
-//                $values['45-59'] = valuesToSeries(getAge($sitesParameter, $from, $to, 45, 59), $from, $to);
-//                $values['30-44'] = valuesToSeries(getAge($sitesParameter, $from, $to, 30, 44), $from, $to);
-//                $values['15-29'] = valuesToSeries(getAge($sitesParameter, $from, $to, 15, 29), $from, $to);
-//                $values['0-14'] = valuesToSeries(getAge($sitesParameter, $from, $to, 0, 14), $from, $to);
-//            };
+            if (in_array('gender', $metrics)) {
+                $values['female'] = $this->valuesToSeries(Answer::getGender($survey->id, $from, $to, $interval, 'female'), $from, $to, $interval, false);
+                $values['male'] = $this->valuesToSeries(Answer::getGender($survey->id, $from, $to, $interval, 'male'), $from, $to, $interval, false);
+            };
+            if (in_array('age', $metrics)) {
+                $values['75+'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 75, 200), $from, $to, $interval, false);
+                $values['60-74'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 60, 74), $from, $to, $interval, false);
+                $values['45-59'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 45, 59), $from, $to, $interval, false);
+                $values['30-44'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 30, 44), $from, $to, $interval, false);
+                $values['15-29'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 15, 29), $from, $to, $interval, false);
+                $values['0-14'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 0, 14), $from, $to, $interval, false);
+            };
             if (in_array('success', $metrics)) {
                 $values['success'] = $this->valuesToSeries(Answer::getSuccess($survey->id, $from, $to, $interval), $from, $to, $interval);
             }
@@ -66,7 +66,7 @@ class ApiController extends Controller
             return 60 * 60 * 24 * 7;
     }
 
-    protected function valuesToSeries($values, $from, $to, $interval)
+    protected function valuesToSeries($values, $from, $to, $interval, $calculateAverage = true)
     {
         $valuesArray = array();
         $valuesTotal = 0;
@@ -86,23 +86,31 @@ class ApiController extends Controller
 //                    }
                     $valuesArray[] = $valuesCell;
 
-                    //Calculate average
-                    $valuesTotal += $values[$i]['value'] * $values[$i]['count'];
-                    $valuesCount += $values[$i]['count'];
+                    //Add data for calculating average
+                    if ($calculateAverage) {
+                        $valuesTotal += $values[$i]['value'] * $values[$i]['count'];
+                        $valuesCount += $values[$i]['count'];
+                    }
                     $i++;
                 }
             }
             $start += $tickInterval;
         }
 
+        $results = array(
+            'history' => $valuesArray
+        );
 
-        if ($valuesCount) {
-            $valuesAverage = round($valuesTotal / $valuesCount, 2);
-        } else {
-            $valuesAverage = '';
+        //Calculate average
+        if ($calculateAverage) {
+            if ($valuesCount) {
+                $valuesAverage = round($valuesTotal / $valuesCount, 2);
+            } else {
+                $valuesAverage = '';
+            }
+            $results['average'] = $valuesAverage;
         }
-
-        return array('average' => $valuesAverage, 'history' => $valuesArray);
+        return $results;
     }
 
     /**
