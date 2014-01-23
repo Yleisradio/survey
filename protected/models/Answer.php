@@ -146,7 +146,7 @@ class Answer extends CActiveRecord
     }
 
     /**
-     * Returns the success rate in specified time range and interval
+     * Returns the success rate in specified time range grouped by specified interval
      * @param type $surveyId
      * @param type $from
      * @param type $to
@@ -169,7 +169,7 @@ class Answer extends CActiveRecord
     }
 
     /**
-     * Returns the interest in specified time range and interval
+     * Returns the interest in specified time range grouped by specified interval
      * @param type $surveyId
      * @param type $from
      * @param type $to
@@ -185,7 +185,7 @@ class Answer extends CActiveRecord
     }
 
     /**
-     * Returns the NPS in specified time range and interval
+     * Returns the net promoter score in specified time range grouped by specified interval
      * @param type $surveyId
      * @param type $from
      * @param type $to
@@ -216,7 +216,7 @@ class Answer extends CActiveRecord
      * @param type $db
      * @return type
      */
-    public static function getTotalNPS($surveyId, $from, $to, $db)
+    public static function getTotalNPS($surveyId, $from, $to)
     {
         $sql = '
         SELECT ROUND(SUM(promoter) / SUM(count) - SUM(detractor) / SUM(count), 2) * 100 AS value FROM (
@@ -227,6 +227,22 @@ class Answer extends CActiveRecord
             SELECT 0 AS promoter, 0 AS detractor, COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend IS NOT null
         ) AS nps
         ';
+        $command = Yii::app()->db->createCommand($sql);
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        return $metrics;
+    }
+
+    /**
+     * Returns the sentiment in specified time range grouped by specified interval
+     * @param type $surveyId
+     * @param type $from
+     * @param type $to
+     * @param type $interval
+     * @return type
+     */
+    public static function getSentiment($surveyId, $from, $to, $interval)
+    {
+        $sql = 'SELECT ROUND(AVG(sentiment), 2) AS value, timestamp, COUNT(id) AS count FROM answer WHERE sentiment IS NOT null AND ' . self::getWhereCondition($surveyId) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC';
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
         return $metrics;

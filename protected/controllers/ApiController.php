@@ -42,12 +42,12 @@ class ApiController extends Controller
             }
             if (in_array('nps', $metrics)) {
                 $values['nps'] = $this->valuesToSeries(Answer::getNPS($survey->id, $from, $to, $interval), $from, $to, $interval);
-                $values['nps']['average'] = Answer::getTotalNPS($survey->id, $from, $to, $interval);
+                $values['nps']['average'] = Answer::getTotalNPS($survey->id, $from, $to);
             }
-//            if (in_array('sentiment', $metrics)) {
-//                $values['sentiment'] = valuesToSeries(getSentiment($sitesParameter, $from, $to), $from, $to);
-//            }
-//            $values['n'] = getTotalN($sitesParameter, $from, $to);
+            if (in_array('sentiment', $metrics)) {
+                $values['sentiment'] = $this->valuesToSeries(Answer::getSentiment($survey->id, $from, $to, $interval), $from, $to, $interval);
+            }
+//            $values['n'] = getTotalN($survey->id, $from, $to);
             $sitesValues[$site] = $values;
         }
         $this->outputJSON($sitesValues);
@@ -99,7 +99,7 @@ class ApiController extends Controller
         if ($valuesCount) {
             $valuesAverage = round($valuesTotal / $valuesCount, 2);
         } else {
-            $valuesAverage = 0;
+            $valuesAverage = '';
         }
 
         return array('average' => $valuesAverage, 'history' => $valuesArray);
