@@ -145,6 +145,14 @@ class Answer extends CActiveRecord
         return parent::model($className);
     }
 
+    /**
+     * Returns the success rate in specified time range and interval
+     * @param type $surveyId
+     * @param type $from
+     * @param type $to
+     * @param type $interval
+     * @return type
+     */
     public static function getSuccess($surveyId, $from, $to, $interval)
     {
         $sql = '
@@ -160,6 +168,14 @@ class Answer extends CActiveRecord
         return $metrics;
     }
 
+    /**
+     * Returns the interest in specified time range and interval
+     * @param type $surveyId
+     * @param type $from
+     * @param type $to
+     * @param type $interval
+     * @return type
+     */
     public static function getInterest($surveyId, $from, $to, $interval)
     {
         $sql = 'SELECT ROUND(AVG(interest), 2) AS value, COUNT(id) AS count, timestamp FROM answer WHERE interest IS NOT null AND ' . self::getWhereCondition($surveyId) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC';
@@ -168,6 +184,59 @@ class Answer extends CActiveRecord
         return $metrics;
     }
 
+    /**
+     * Returns the NPS in specified time range and interval
+     * @param type $surveyId
+     * @param type $from
+     * @param type $to
+     * @param type $interval
+     * @return type
+     */
+    public static function getNPS($surveyId, $from, $to, $interval)
+    {
+        $sql = '
+        SELECT ROUND(SUM(promoter) / SUM(count) - SUM(detractor) / SUM(count), 2) * 100 AS value, count, timestamp FROM (
+            SELECT COUNT(id) AS promoter, 0 AS detractor, timestamp, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend > 8 GROUP BY ' . self::getGroupBy($interval) . ' 
+            UNION
+            SELECT 0 AS promoter, COUNT(id) AS detractor, timestamp, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend < 7 GROUP BY ' . self::getGroupBy($interval) . ' 
+            UNION
+            SELECT 0 AS promoter, 0 AS detractor, timestamp, COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend IS NOT null GROUP BY ' . self::getGroupBy($interval) . ' 
+        ) AS nps GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC
+        ';
+        $command = Yii::app()->db->createCommand($sql);
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        return $metrics;
+    }
+
+    /**
+     * Returns the NPS in specified time range
+     * @param type $surveyId
+     * @param type $from
+     * @param type $to
+     * @param type $db
+     * @return type
+     */
+    public static function getTotalNPS($surveyId, $from, $to, $db)
+    {
+        $sql = '
+        SELECT ROUND(SUM(promoter) / SUM(count) - SUM(detractor) / SUM(count), 2) * 100 AS value FROM (
+            SELECT COUNT(id) AS promoter, 0 AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend > 8
+            UNION
+            SELECT 0 AS promoter, COUNT(id) AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend < 7
+            UNION
+            SELECT 0 AS promoter, 0 AS detractor, COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend IS NOT null
+        ) AS nps
+        ';
+        $command = Yii::app()->db->createCommand($sql);
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        return $metrics;
+    }
+
+    /**
+     * Returns the condition used to get the survey result metrics
+     * @param type $surveyId
+     * @return string
+     */
     protected static function getWhereCondition($surveyId)
     {
         $whereCondition = ' `timestamp` >= :from AND `timestamp` <= :to';
@@ -177,6 +246,13 @@ class Answer extends CActiveRecord
         return $whereCondition;
     }
 
+    /**
+     * Returns the where params used to get the survey result metrics
+     * @param type $surveyId
+     * @param type $from
+     * @param type $to
+     * @return type
+     */
     protected static function getWhereParams($surveyId, $from, $to)
     {
         $params = array();
@@ -190,6 +266,11 @@ class Answer extends CActiveRecord
         return $params;
     }
 
+    /**
+     * Returns the group by statement used to get the survey result metrics
+     * @param type $interval
+     * @return string
+     */
     protected static function getGroupBy($interval)
     {
         if ($interval == 'hour')

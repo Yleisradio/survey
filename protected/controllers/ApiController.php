@@ -40,11 +40,10 @@ class ApiController extends Controller
             if (in_array('interest', $metrics)) {
                 $values['interest'] = $this->valuesToSeries(Answer::getInterest($survey->id, $from, $to, $interval), $from, $to, $interval);
             }
-//            if (in_array('nps', $metrics)) {
-//                $nps = valuesToSeries(getNPS($sitesParameter, $from, $to), $from, $to);
-//                $values['nps']['history'] = $nps['history'];
-//                $values['nps']['average'] = getTotalNPS($sitesParameter, $from, $to);
-//            }
+            if (in_array('nps', $metrics)) {
+                $values['nps'] = $this->valuesToSeries(Answer::getNPS($survey->id, $from, $to, $interval), $from, $to, $interval);
+                $values['nps']['average'] = Answer::getTotalNPS($survey->id, $from, $to, $interval);
+            }
 //            if (in_array('sentiment', $metrics)) {
 //                $values['sentiment'] = valuesToSeries(getSentiment($sitesParameter, $from, $to), $from, $to);
 //            }
