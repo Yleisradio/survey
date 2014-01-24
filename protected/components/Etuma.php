@@ -11,12 +11,12 @@ class Etuma
      * @param type $data
      * @return type
      */
-    public static function get($method, $data = null)
+    public static function get($method, $data = null, $options = array())
     {
         $data = self::getData($method, $data);
-        $url = $this->endpoint . $method;
+        $url = self::$endpoint . $method;
 
-        $response = Curl::get($url, $data);
+        $response = Curl::get($url, $data, $options);
         $response = json_decode($response, true);
         return $response;
     }
@@ -27,12 +27,12 @@ class Etuma
      * @param type $data
      * @return type
      */
-    public static function post($method, $data)
+    public static function post($method, $data, $options = array())
     {
         $data = self::getData($method, $data);
         $url =  self::$endpoint . $method;
         $data = json_encode($data);
-        $response = Curl::post($url, $data);
+        $response = Curl::post($url, $data, $options);
         $response = json_decode($response, true);
         return $response;
     }
