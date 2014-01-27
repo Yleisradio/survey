@@ -36,13 +36,7 @@ class getFromEtumaCommand extends CConsoleCommand
                         $topicArray = $topicArray[0];
 
                         //Find topic ID
-                        $sql = 'SELECT * FROM topic WHERE topic = :topic';
-                        $command = Yii::app()->db->createCommand($sql);
-                        $answers = $command->execute(array(
-                            ':topic' => $topicArray,
-                        ));
-
-                        $topic = $statement->fetch();
+                        $topic = Topic::model()->findByAttributes(array('topic' => $topicArray));
                         $topicId = $topic['id'];
 
                         //Create topic if not found
@@ -57,10 +51,10 @@ class getFromEtumaCommand extends CConsoleCommand
                         }
 
                         //Create relation to topic
-                        $sql = 'INSERT INTO answer_topic (vastaus_id, topic_id, timestamp) VALUES (:vastaus_id, :topic_id, :timestamp)';
+                        $sql = 'INSERT INTO answer_topic (answer_id, topic_id, timestamp) VALUES (:answer_id, :topic_id, :timestamp)';
                         $command = Yii::app()->db->createCommand($sql);
                         $answers = $command->execute(array(
-                            ':vastaus_id' => $answer['id'],
+                            ':answer_id' => $answer['id'],
                             ':topic_id' => $topicId,
                             ':timestamp' => time(),
                         ));
