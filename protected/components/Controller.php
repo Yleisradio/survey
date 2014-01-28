@@ -19,11 +19,10 @@ class Controller extends CController
     public $menu = array();
 
     /**
-     * @var array the breadcrumbs of the current page. The value of this property will
-     * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
-     * for more details on how to specify this property.
+     * HTML title of the page
+     * @var string 
      */
-    public $breadcrumbs = array();
+    public $title;
 
     public function beforeAction($action)
     {

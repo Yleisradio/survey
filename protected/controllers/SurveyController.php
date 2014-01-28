@@ -4,65 +4,162 @@ class SurveyController extends Controller
 {
 
     /**
-     * Returns YleWebPoll jQuery plugin and the survey configs for the plugin
+     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+     * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
-    public function actionSurveys()
+    public $layout = 'admin';
+
+    /**
+     * @return array action filters
+     */
+    public function filters()
     {
-        $surveys = Survey::model()->findAllByAttributes(array('active' => 1));
-        $yleWebPollsConfig = array(
-            'continousPollList' => array(),
-            'continousPollConf' => array(
-                'formURL' => 'http://localhost/survey/survey/form',
-            ),
+        return array(
+//			'accessControl', // perform access control for CRUD operations
+            'postOnly + delete', // we only allow deletion via POST request
+            'postOnly + activate', 
+            'postOnly + inactivate', 
         );
-        foreach ($surveys as $survey) {
-            $yleWebPollsConfig['continousPollList'][] = $survey->toYleWebPollsConfigFormat();
-        }
-        header('content-type: application/javascript');
-        include('js/jquery.yle-webpoll.js');
-        ?>var YLEWebPollsConfig=<?php
-        echo json_encode($yleWebPollsConfig, JSON_UNESCAPED_SLASHES);
     }
 
     /**
-     * Displays and processes the survey form
-     * @param type $surveyId
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
      */
-    public function actionForm($surveyId)
+    public function accessRules()
     {
-        Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/form.css'));
-
-        //Generate possible birth years to the dropdown menu
-        $yearsOfBirth = array(
-            '' => Yii::t('form', 'choose'),
+        return array(
+            array('allow', // allow all users to perform 'index' and 'view' actions
+                'actions' => array('index', 'view'),
+                'users' => array('*'),
+            ),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('create', 'update'),
+                'users' => array('@'),
+            ),
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                'actions' => array('admin', 'delete'),
+                'users' => array('admin'),
+            ),
+            array('deny', // deny all users
+                'users' => array('*'),
+            ),
         );
-        for ($yearOfBirth = (date('Y') - 5); $yearOfBirth >= 1900; $yearOfBirth--) {
-            $yearsOfBirth[$yearOfBirth] = $yearOfBirth;
+    }
+
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionCreate()
+    {
+        $model = new Survey;
+
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+
+        if (isset($_POST['Survey'])) {
+            $model->attributes = $_POST['Survey'];
+            if ($model->save())
+                $this->redirect(array('view', 'id' => $model->id));
         }
 
-        $answer = new Answer();
-        if (Yii::app()->request->isPostRequest) {
-            $answer->attributes = $_POST['Answer'];
-            $answer->timestamp = time();
-            $answer->survey_id = $surveyId;
-            $answer->save();
-            $this->redirect('thanks');
-        } else {
-            
-        }
-        $survey = Survey::model()->findByPk($surveyId);
-
-        $this->render('form', array(
-            'survey' => $survey,
-            'answer' => $answer,
-            'yearsOfBirth' => $yearsOfBirth,
+        $this->render('create', array(
+            'model' => $model,
         ));
     }
 
-    public function actionThanks()
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate($id)
     {
-        Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/form.css'));
-        $this->render('thanks');
+        $model = $this->loadModel($id);
+
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+
+        if (isset($_POST['Survey'])) {
+            $model->attributes = $_POST['Survey'];
+            if ($model->save())
+                $this->redirect(array('index'));
+        }
+
+        $this->render('update', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionDelete($id)
+    {
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    }
+
+    /**
+     * Manages all models.
+     */
+    public function actionIndex()
+    {
+        $model = new Survey('search');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['Survey']))
+            $model->attributes = $_GET['Survey'];
+
+        $this->render('index', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param integer $id the ID of the model to be loaded
+     * @return Survey the loaded model
+     * @throws CHttpException
+     */
+    public function loadModel($id)
+    {
+        $model = Survey::model()->findByPk($id);
+        if ($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
+        return $model;
+    }
+
+    /**
+     * Performs the AJAX validation.
+     * @param Survey $model the model to be validated
+     */
+    protected function performAjaxValidation($model)
+    {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'survey-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
+
+    public function actionActivate()
+    {
+        if(isset($_POST['id']) && isset($_POST['active'])) {
+        $survey = Survey::model()->findByPk(Yii::app()->request->getPost('id'));
+        $survey->active = Yii::app()->request->getPost('active');
+        $survey->save();
+        $this->redirect($_SERVER['HTTP_REFERER']);
+        }
+        else {
+            throw new CHttpException(400, 'Invalid request');
+        }
     }
 
 }
