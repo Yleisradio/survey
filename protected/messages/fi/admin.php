@@ -17,12 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'save' => 'Tallenna',
+  'motives' => 'Motiivikysymykset',
   'survey.category' => '',
   'survey.comscore' => '',
   'survey.frequency' => '',
   'survey.url' => '',
+  'surveys' => 'Kyselyt',
   'delete' => 'Poista',
+  'save' => 'Tallenna',
   'survey.active' => 'Aktivoitu',
   'survey.active.off' => 'Pois päältä',
   'survey.active.on' => 'Päällä',

@@ -1,6 +1,6 @@
 <?php
 
-class SurveyController extends Controller
+class MotiveController extends Controller
 {
 
     /**
@@ -16,8 +16,6 @@ class SurveyController extends Controller
         return array(
 //			'accessControl', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
-            'postOnly + activate', 
-            'postOnly + inactivate', 
         );
     }
 
@@ -45,10 +43,10 @@ class SurveyController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Survey;
+        $model = new Motive;
 
-        if (isset($_POST['Survey'])) {
-            $model->attributes = $_POST['Survey'];
+        if (isset($_POST['Motive'])) {
+            $model->attributes = $_POST['Motive'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -70,8 +68,8 @@ class SurveyController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Survey'])) {
-            $model->attributes = $_POST['Survey'];
+        if (isset($_POST['Motive'])) {
+            $model->attributes = $_POST['Motive'];
             if ($model->save())
                 $this->redirect(array('index'));
         }
@@ -100,10 +98,10 @@ class SurveyController extends Controller
      */
     public function actionIndex()
     {
-        $model = new Survey('search');
+        $model = new Motive('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Survey']))
-            $model->attributes = $_GET['Survey'];
+        if (isset($_GET['Motive']))
+            $model->attributes = $_GET['Motive'];
 
         $this->render('index', array(
             'model' => $model,
@@ -114,12 +112,12 @@ class SurveyController extends Controller
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Survey the loaded model
+     * @return Motive the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-        $model = Survey::model()->findByPk($id);
+        $model = Motive::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -127,7 +125,7 @@ class SurveyController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param Survey $model the model to be validated
+     * @param Motive $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
@@ -136,18 +134,4 @@ class SurveyController extends Controller
             Yii::app()->end();
         }
     }
-
-    public function actionActivate()
-    {
-        if(isset($_POST['id']) && isset($_POST['active'])) {
-        $survey = Survey::model()->findByPk(Yii::app()->request->getPost('id'));
-        $survey->active = Yii::app()->request->getPost('active');
-        $survey->save();
-        $this->redirect($_SERVER['HTTP_REFERER']);
-        }
-        else {
-            throw new CHttpException(400, 'Invalid request');
-        }
-    }
-
 }
