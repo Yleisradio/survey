@@ -3,7 +3,7 @@
 /* @var $model Survey */
 ?>
 
-<h1>Update Survey <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('admin', 'survey.update.heading'); ?></h1>
 
 <div class="form-horizontal">
     <div class="form-group">

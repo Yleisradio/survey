@@ -8,10 +8,6 @@
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'survey-form',
-        // Please note: When you enable ajax validation, make sure the corresponding
-        // controller action is handling ajax validation correctly.
-        // There is a call to performAjaxValidation() commented in generated controller code.
-        // See class documentation of CActiveForm for details on this.
         'enableAjaxValidation' => false,
     ));
     ?>
@@ -59,6 +55,14 @@
         <div class="col-sm-10">
             <?php echo $form->textField($model, 'comscore', array('maxlength' => 32, 'class' => 'form-control')); ?>
             <?php echo $form->error($model, 'comscore'); ?>
+        </div>
+    </div>
+
+   <div class="form-group"> 
+       <?php echo $form->labelEx($model, 'motives', array('class' => 'col-sm-2 control-label')); ?>
+        <div class="col-sm-10">
+            <?php echo $form->checkBoxList($model, 'motiveIds', CHtml::listData(Motive::model()->findAll(), 'id', 'motive'), array()); ?>
+            <?php echo $form->error($model, 'motives'); ?>
         </div>
     </div>
 

@@ -16,8 +16,8 @@ class SurveyController extends Controller
         return array(
 //			'accessControl', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
-            'postOnly + activate', 
-            'postOnly + inactivate', 
+            'postOnly + activate',
+            'postOnly + inactivate',
         );
     }
 
@@ -49,8 +49,10 @@ class SurveyController extends Controller
 
         if (isset($_POST['Survey'])) {
             $model->attributes = $_POST['Survey'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+            if ($model->save()) {
+                $model->saveMotives($_POST['Survey']['motiveIds']);
+                $this->redirect(array('index'));
+            }
         }
 
         $this->render('create', array(
@@ -72,8 +74,10 @@ class SurveyController extends Controller
 
         if (isset($_POST['Survey'])) {
             $model->attributes = $_POST['Survey'];
-            if ($model->save())
+            if ($model->save()) {
+                $model->saveMotives($_POST['Survey']['motiveIds']);
                 $this->redirect(array('index'));
+            }
         }
 
         $this->render('update', array(
@@ -139,13 +143,12 @@ class SurveyController extends Controller
 
     public function actionActivate()
     {
-        if(isset($_POST['id']) && isset($_POST['active'])) {
-        $survey = Survey::model()->findByPk(Yii::app()->request->getPost('id'));
-        $survey->active = Yii::app()->request->getPost('active');
-        $survey->save();
-        $this->redirect($_SERVER['HTTP_REFERER']);
-        }
-        else {
+        if (isset($_POST['id']) && isset($_POST['active'])) {
+            $survey = Survey::model()->findByPk(Yii::app()->request->getPost('id'));
+            $survey->active = Yii::app()->request->getPost('active');
+            $survey->save();
+            $this->redirect($_SERVER['HTTP_REFERER']);
+        } else {
             throw new CHttpException(400, 'Invalid request');
         }
     }

@@ -17,13 +17,19 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'motives' => 'Motiivikysymykset',
+  'motive.create' => 'Luo uusi käyntimotiivi',
+  'motive.create.heading' => 'Uusi käyntimotiivi',
+  'motive.index.heading' => 'Käyntimotiivit',
+  'motive.motive' => 'Käyntimotiivi',
+  'motive.update.heading' => 'Muokkaa käyntimotiivia',
   'survey.category' => '',
   'survey.comscore' => '',
+  'survey.create.heading' => 'Uusi kysely',
   'survey.frequency' => '',
+  'survey.update.heading' => 'Muokkaa kyselyä',
   'survey.url' => '',
-  'surveys' => 'Kyselyt',
   'delete' => 'Poista',
+  'motives' => 'Motiivikysymykset',
   'save' => 'Tallenna',
   'survey.active' => 'Aktivoitu',
   'survey.active.off' => 'Pois päältä',
@@ -31,5 +37,6 @@ return array (
   'survey.create' => 'Luo uusi kysely',
   'survey.index.heading' => 'Kyselyt',
   'survey.name' => 'Nimi',
-  'update' => 'Päivitä',
+  'surveys' => 'Kyselyt',
+  'update' => 'Muokkaa',
 );

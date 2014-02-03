@@ -4,9 +4,9 @@
 ?>
 <div class="row">
     <div class="col-sm-12">
-        <h1><?php echo Yii::t('admin', 'survey.index.heading') ?></h1>
+        <h1><?php echo Yii::t('admin', 'motive.index.heading') ?></h1>
 
-        <a href="<?php echo $this->createUrl('create') ?>" class="btn btn-primary"><?php echo Yii::t('admin', 'survey.create') ?></a>
+        <a href="<?php echo $this->createUrl('create') ?>" class="btn btn-primary"><?php echo Yii::t('admin', 'motive.create') ?></a>
         <?php
         $this->widget('zii.widgets.grid.CGridView', array(
             'htmlOptions' => array(
@@ -32,20 +32,10 @@
                     ),
                 ),
                 array(
+                    'name' => 'motive',
                     'type' => 'raw',
-                    'value' => function($data) {
-                        return $this->widget('ActivateButton', array('survey' => $data))->content;
-                    },
+                    'value' => 'CHtml::link($data["motive"], array("update", "id" => $data["id"]))',
                 ),
-                array(
-                    'name' => 'name',
-                    'type' => 'raw',
-                    'value' => 'CHtml::link($data["name"], array("update", "id" => $data["id"]))',
-                ),
-                'url',
-                'category',
-                'frequency',
-                'comscore',
                 array(
                     'class' => 'CButtonColumn',
                     'template' => '{delete}',

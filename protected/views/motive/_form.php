@@ -8,57 +8,18 @@
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'survey-form',
-        // Please note: When you enable ajax validation, make sure the corresponding
-        // controller action is handling ajax validation correctly.
-        // There is a call to performAjaxValidation() commented in generated controller code.
-        // See class documentation of CActiveForm for details on this.
         'enableAjaxValidation' => false,
     ));
     ?>
 
 
-
     <?php echo $form->errorSummary($model); ?>
 
     <div class="form-group">
-        <?php echo $form->labelEx($model, 'name', array('class' => 'col-sm-2 control-label')); ?>
+        <?php echo $form->labelEx($model, 'motive', array('class' => 'col-sm-2 control-label')); ?>
         <div class="col-sm-10">
-            <?php echo $form->textField($model, 'name', array('maxlength' => 32, 'class' => 'form-control')); ?>
-            <?php echo $form->error($model, 'name'); ?>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <?php echo $form->labelEx($model, 'url', array('class' => 'col-sm-2 control-label')); ?>
-        <div class="col-sm-10">
-            <?php echo $form->textField($model, 'url', array('maxlength' => 32, 'class' => 'form-control')); ?>
-            <?php echo $form->error($model, 'url'); ?>
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        <?php echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
-        <div class="col-sm-10">
-            <?php echo $form->textField($model, 'category', array('maxlength' => 32, 'class' => 'form-control')); ?>
-            <?php echo $form->error($model, 'category'); ?>
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        <?php echo $form->labelEx($model, 'frequency', array('class' => 'col-sm-2 control-label')); ?>
-        <div class="col-sm-10">
-            <?php echo $form->textField($model, 'frequency', array('maxlength' => 3, 'class' => 'form-control')); ?>
-            <?php echo $form->error($model, 'frequency'); ?>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <?php echo $form->labelEx($model, 'comscore', array('class' => 'col-sm-2 control-label')); ?>
-        <div class="col-sm-10">
-            <?php echo $form->textField($model, 'comscore', array('maxlength' => 32, 'class' => 'form-control')); ?>
-            <?php echo $form->error($model, 'comscore'); ?>
+            <?php echo $form->textField($model, 'motive', array('maxlength' => 32, 'class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'motive'); ?>
         </div>
     </div>
 

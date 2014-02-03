@@ -18,6 +18,8 @@
 class Survey extends CActiveRecord
 {
 
+    public $motiveIds;
+
     /**
      * @return string the associated database table name
      */
@@ -53,6 +55,7 @@ class Survey extends CActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'answers' => array(self::HAS_MANY, 'Answer', 'survey_id'),
+            'motives' => array(self::MANY_MANY, 'Motive', 'motive_survey(motive_id, survey_id)'),
         );
     }
 
@@ -143,6 +146,34 @@ class Survey extends CActiveRecord
         $this->deleted = 1;
         $this->save();
         return false;
+    }
+
+    /**
+     * Deletes all surveyMotives related to this survey and then creates new ones.
+     * @param type $motives
+     */
+    public function saveMotives($motives)
+    {
+        MotiveSurvey::model()->deleteAllByAttributes(array(
+            'survey_id' => $this->id,
+        ));
+        if (is_array($motives)) {
+            foreach ($motives as $motive) {
+                $motiveSurvey = new MotiveSurvey();
+                $motiveSurvey->survey_id = $this->id;
+                $motiveSurvey->motive_id = $motive;
+                $motiveSurvey->save();
+            }
+        }
+    }
+
+    public function afterFind()
+    {
+        if (!empty($this->motives)) {
+            foreach ($this->motives as $motive)
+                $this->motiveIds[] = $motive->id;
+        }
+        parent::afterFind();
     }
 
 }
