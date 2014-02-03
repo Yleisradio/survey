@@ -58,7 +58,7 @@ function loadYleWebPollResources() {
                 base.sessionCookie = "sessionCookie";
                 base.userIdCookie = "webropoll_id";
                 base.init = function() {
-                    base.options = $.extend({}, $.yleWebPoll.defaultOptions, options);
+                    base.options = options;
                     base.webropollSurveyIdCookie = base.options.siteURL;
                     base.launchSurveyByFreq(function() {
                         base.setUserIdCookie(base.userIdCookie);
@@ -149,9 +149,7 @@ function loadYleWebPollResources() {
                             .click(function(e) {
                         e.preventDefault();
                         base.$el.fadeOut();
-                        var popunder = window.open(url, 'YLE', 'toolbar=0,location=1,directories=1,status=1,menubar=0,scrollbars=1,resizable=1');
-                        popunder.blur();
-                        window.focus();
+                        var popunder = window.open(url, '_blank');
                     });
                     base.$el.find('#yleWebPoll-no')
                             .click(function(e) {
@@ -189,17 +187,6 @@ function loadYleWebPollResources() {
                 base.init();
             };
 
-            $.yleWebPoll.defaultOptions = {
-                title: "Tervetuloa!",
-                text: "Mielipiteesi on meille tärkeä: ottaisitko osaa lyhyeen kävijäkyselyyn käyntisi jälkeen?<br/><br/>Osallistuminen on helppoa, ja kysymme vain muutaman nopean kysymyksen. Paina \"Kyllä!\" -nappia, ja jatka käyntiäsi normaalisti. Avaamme kyselyn toiseen ikkunaan, jonka löydät työpöydältäsi tämän ikkunan alta käynnin jälkeen.<br/><br/>Kiitos osallistumisestasi!",
-                linkNo: "Ei kiitos",
-                linkYes: "Kyllä!",
-                path: "/",
-                formURL: null,
-                debug: false,
-                displayFrequency: 10
-            };
-
             $.fn.yleWebPoll = function(options) {
                 var el = this.data("yleWebPoll");
                 if (el) {
@@ -233,16 +220,15 @@ function loadYleWebPollResources() {
                         .yleWebPoll(pluginOptions);
             }
             function mapOptions(currentSiteConf, formSettings) {
-                return {
-                    path: currentSiteConf.currentPath,
-                    formURL: formSettings.formURL,
-                    siteURL: currentSiteConf.siteURL,
-                    debug: true,
-                    urlParams: {
+                var options = formSettings;
+                    options.path = currentSiteConf.currentPath;
+                    options.siteURL = currentSiteConf.siteURL;
+                    options.debug = true,
+                    options.urlParams = {
                         surveyId: currentSiteConf.id
-                    },
-                    displayFrequency: currentSiteConf.freq
-                };
+                    };
+                    options.displayFrequency = currentSiteConf.freq;
+                return options;
             }
             function getCurrentSiteConf(siteConf, currentUrl, currentCategory) {
                 var currentSiteConf
@@ -289,9 +275,10 @@ function loadYleWebPollResources() {
             function getSiteConfUrlLocation(siteConfUrl) {
                 var url = siteConfUrl.replace(/http:\/\/|https:\/\//, ""),
                         urlSplit = url.split('/'),
-                        siteConfLocation = {};
-                siteConfLocation.domain = urlSplit[0];
-                siteConfLocation.path = '/' + (urlSplit[1] || '');
+                        siteConfLocation = {
+                    'domain': urlSplit.shift(),
+                    'path': '/' + urlSplit.join('/'),
+                };
                 return siteConfLocation;
             }
             var conf = window.YLEWebPollsConfig || {};

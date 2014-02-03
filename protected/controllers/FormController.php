@@ -12,7 +12,11 @@ class FormController extends Controller
         $yleWebPollsConfig = array(
             'continousPollList' => array(),
             'continousPollConf' => array(
-                'formURL' => 'http://localhost/survey/form/form',
+                'title' => Yii::t('popup', 'title'),
+                'text' => Yii::t('popup', 'text'), 
+                'linkYes' => Yii::t('popup', 'yes'),
+                'linkNo' => Yii::t('popup', 'no'),
+                'formURL' => Yii::app()->createAbsoluteUrl('/form/form'),
             ),
         );
         foreach ($surveys as $survey) {
@@ -21,7 +25,7 @@ class FormController extends Controller
         header('content-type: application/javascript');
         include('js/jquery.yle-webpoll.js');
         ?>var YLEWebPollsConfig=<?php
-        echo json_encode($yleWebPollsConfig, JSON_UNESCAPED_SLASHES);
+        echo json_encode($yleWebPollsConfig);
     }
 
     /**
