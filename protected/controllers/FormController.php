@@ -12,7 +12,7 @@ class FormController extends Controller
         $yleWebPollsConfig = array(
             'continousPollList' => array(),
             'continousPollConf' => array(
-                'formURL' => 'http://localhost/survey/survey/form',
+                'formURL' => 'http://localhost/survey/form/form',
             ),
         );
         foreach ($surveys as $survey) {
@@ -43,6 +43,14 @@ class FormController extends Controller
         $answer = new Answer();
         if (Yii::app()->request->isPostRequest) {
             $answer->attributes = $_POST['Answer'];
+            //Clear motive text if a motive was chosen
+            if ($answer->motive_id) {
+                $answer->motive_text = null;
+            }
+            //Clear failure text if success
+            if ($answer->success) {
+                $answer->failure_text = null;
+            }
             $answer->timestamp = time();
             $answer->survey_id = $surveyId;
             $answer->save();

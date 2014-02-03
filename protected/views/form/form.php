@@ -1,9 +1,9 @@
-<?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'survey-form',
-        ));
-?>
 <div class="container">
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'id' => 'survey-form',
+    ));
+    ?>
     <div class="row">
         <div class="col-md-12">
             <h1><?php echo Yii::t('form', 'survey.heading', array('{site}' => $survey->name)); ?></h1>
@@ -12,6 +12,18 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="row">
         <div class="col-md-12 question-box">
             <h2><?php echo Yii::t('form', 'survey.motive.question', array('{site}' => $survey->name)); ?></h2>
+            <?php
+            echo $form->radioButtonList($answer, 'motive_id', CHtml::listData($survey->motives, 'id', 'motive'));
+            ?>
+            <div class="row form-horizontal form-group">
+                <div class="col-md-4">
+                    <input id="Answer_success_other" value="" type="radio" name="Answer[success]"> 
+                    <label for="Answer_success_other">Jokin muu, mikä?</label>
+                </div>
+                <div class="col-md-8">
+                    <?php echo $form->textField($answer, 'motive_text', array('class' => 'form-control')); ?>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -25,7 +37,7 @@ $form = $this->beginWidget('CActiveForm', array(
             ?>
             <h2><?php echo Yii::t('form', 'survey.failure_text.question', array('{site}' => $survey->name)); ?></h2>
             <?php
-            echo $form->textArea($answer, 'failure_text');
+            echo $form->textArea($answer, 'failure_text', array('class' => 'form-control'));
             ?>
         </div>
     </div>
@@ -67,7 +79,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="row">
         <div class="col-md-12 question-box">
             <h2><?php echo Yii::t('form', 'survey.feedback.question', array('{site}' => $survey->name)); ?></h2>
-            <?php echo $form->textArea($answer, 'feedback'); ?>
+            <?php echo $form->textArea($answer, 'feedback', array('class' => 'form-control')); ?>
         </div>
     </div>
     <div class="row">
@@ -96,13 +108,13 @@ $form = $this->beginWidget('CActiveForm', array(
                         '' => Yii::t('form', 'choose'),
                         'female' => Yii::t('form', 'survey.gender.female'),
                         'male' => Yii::t('form', 'survey.gender.male'),
-                    ));
+                    ), array('class' => 'form-control'));
                     ?>
                 </div>
                 <div class="col-md-6">
                     <h2><?php echo Yii::t('form', 'survey.year_of_birth.question', array('{site}' => $survey->name)); ?></h2>
                     <?php
-                    echo $form->dropDownList($answer, 'year_of_birth', $yearsOfBirth);
+                    echo $form->dropDownList($answer, 'year_of_birth', $yearsOfBirth, array('class' => 'form-control'));
                     ?>
                 </div>
             </div>
@@ -113,5 +125,5 @@ $form = $this->beginWidget('CActiveForm', array(
             <?php echo CHtml::submitButton(Yii::t('form', 'survey.submit'), array('class' => 'btn btn-primary')); ?>
         </div>
     </div>
+    <?php $this->endWidget(); ?>
 </div>
-<?php $this->endWidget(); ?>

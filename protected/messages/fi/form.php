@@ -17,7 +17,6 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'thanks' => '',
   'thanks' => 'Kiitos',
   'answer.interest.0' => 'Erittäin kiinnostava',
   'answer.interest.1' => 'Kiinnostava',

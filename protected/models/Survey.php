@@ -120,7 +120,6 @@ class Survey extends CActiveRecord
 
     /**
      * Converts Survey to the format required by the YleWebPoll jQuery plugin
-     * {"id":"136074972951621","siteTitle":"Areena","siteURL":"http://localhost/rullaava-kysely-test","freq":50,"category":"areenas","motivesList":"5.7.10.11.12.13.14.19.21.22.23","comScoreAccount":"areenas"}
      */
     public function toYleWebPollsConfigFormat()
     {
@@ -131,8 +130,6 @@ class Survey extends CActiveRecord
         $yleWebPollConfigFormat['category'] = $this->category;
         $yleWebPollConfigFormat['freq'] = $this->frequency;
         $yleWebPollConfigFormat['comScoreAccount'] = $this->comscore;
-        //@TODO Fix motives list. Or remove it?
-        $yleWebPollConfigFormat['motivesList'] = "5.7.10.11.12.13.14.19.21.22.23";
         return $yleWebPollConfigFormat;
     }
 
@@ -175,5 +172,5 @@ class Survey extends CActiveRecord
         }
         parent::afterFind();
     }
-
+    
 }
