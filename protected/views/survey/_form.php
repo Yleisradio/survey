@@ -27,7 +27,7 @@
     <div class="form-group">
         <?php echo $form->labelEx($model, 'url', array('class' => 'col-sm-2 control-label')); ?>
         <div class="col-sm-10">
-            <?php echo $form->textField($model, 'url', array('maxlength' => 32, 'class' => 'form-control')); ?>
+            <?php echo $form->textField($model, 'url', array('maxlength' => 128, 'class' => 'form-control')); ?>
             <?php echo $form->error($model, 'url'); ?>
         </div>
     </div>

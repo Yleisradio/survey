@@ -73,5 +73,6 @@ return array(
             'subsignalformid' => '',
         ),
         'apiLogLevel' => 'all',
+        'categoryAttribute' => '',
     ),
 );

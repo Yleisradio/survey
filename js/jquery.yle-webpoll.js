@@ -201,16 +201,16 @@ function loadYleWebPollResources() {
         (function($) {
 
             function init(siteConfs) {
-                    var currentPath = getSiteRoot()
-                            , currentHostname = window.location.hostname
-                            , currentUrl = currentHostname + currentPath
-                            , currentCategory = $('body').attr('data-yleWebpollCategory')
-                            , currentSiteConf = getCurrentSiteConf(siteConfs.continousPollList, currentUrl, currentCategory);
-                    if (currentSiteConf) {
-                        launchPlugin(currentSiteConf, siteConfs.continousPollConf);
-                    } else {
-                        return false;
-                    }
+                var currentPath = getSiteRoot()
+                        , currentHostname = window.location.hostname
+                        , currentUrl = currentHostname + currentPath
+                        , currentCategory = $('body').attr(siteConfs.continousPollConf.categoryAttribute)
+                        , currentSiteConf = getCurrentSiteConf(siteConfs.continousPollList, currentUrl, currentCategory);
+                if (currentSiteConf) {
+                    launchPlugin(currentSiteConf, siteConfs.continousPollConf);
+                } else {
+                    return false;
+                }
             }
 
             function launchPlugin(currentSiteConf, formSettings) {
@@ -221,13 +221,13 @@ function loadYleWebPollResources() {
             }
             function mapOptions(currentSiteConf, formSettings) {
                 var options = formSettings;
-                    options.path = currentSiteConf.currentPath;
-                    options.siteURL = currentSiteConf.siteURL;
-                    options.debug = true,
-                    options.urlParams = {
-                        surveyId: currentSiteConf.id
-                    };
-                    options.displayFrequency = currentSiteConf.freq;
+                options.path = currentSiteConf.currentPath;
+                options.siteURL = currentSiteConf.siteURL;
+                options.debug = true,
+                        options.urlParams = {
+                    surveyId: currentSiteConf.id
+                };
+                options.displayFrequency = currentSiteConf.freq;
                 return options;
             }
             function getCurrentSiteConf(siteConf, currentUrl, currentCategory) {
@@ -239,6 +239,7 @@ function loadYleWebPollResources() {
                     siteUrl = siteUrlObj.domain + siteUrlObj.path;
                     siteUrl = siteUrl.replace(lastSlashRegx, '');
                     currentUrl = currentUrl.replace(lastSlashRegx, '');
+                    //Match by category
                     if (typeof(currentCategory) != 'undefined') {
                         if (currentCategory == siteConf[i].category) {
                             currentSiteConf = siteConf[i];
@@ -246,17 +247,12 @@ function loadYleWebPollResources() {
                             break;
                         }
                     }
+                    //Match by URL
                     else {
-                        if ((siteUrl == 'www.yle.fi' && currentUrl == 'www.yle.fi') || (siteUrl == 'yle.fi' && currentUrl == 'yle.fi')) {
+                        if (currentUrl.match(siteUrl)) {
                             currentSiteConf = siteConf[i];
-                            currentSiteConf.currentPath = '/';
+                            currentSiteConf.currentPath = siteUrlObj.path;
                             break;
-                        } else {
-                            if (currentUrl.match(siteUrl) && siteUrl != 'yle.fi' && siteUrl != 'www.yle.fi' && siteUrl != "") {
-                                currentSiteConf = siteConf[i];
-                                currentSiteConf.currentPath = siteUrlObj.path;
-                                break;
-                            }
                         }
                     }
                 }

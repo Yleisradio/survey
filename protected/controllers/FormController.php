@@ -17,6 +17,7 @@ class FormController extends Controller
                 'linkYes' => Yii::t('popup', 'yes'),
                 'linkNo' => Yii::t('popup', 'no'),
                 'formURL' => Yii::app()->createAbsoluteUrl('/form/form'),
+                'categoryAttribute' => Yii::app()->params['categoryAttribute'],
             ),
         );
         foreach ($surveys as $survey) {
