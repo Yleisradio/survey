@@ -127,3 +127,8 @@
     </div>
     <?php $this->endWidget(); ?>
 </div>
+
+<?php
+$this->widget('ComScoreTracking', array(
+    'path' => $answer->survey->comscore . "/s?srv",
+));

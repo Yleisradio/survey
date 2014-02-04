@@ -5,3 +5,8 @@
         </div>
     </div>
 </div>
+
+<?php
+$this->widget('ComScoreTracking', array(
+    'path' => $answer->survey->comscore . "/s?srv." . strtolower($answer->survey->name) . ".a&yle_t=" . $answer->success . "&yle_n=" . $answer->recommend . "&yle_i=" . $answer->interest . "&yle_b=" . $answer->year_of_birth . "&yle_m=" . $answer->motive_id . "&yle_u=" . $answer->users . "&yle_s=" . $answer->gender,
+));

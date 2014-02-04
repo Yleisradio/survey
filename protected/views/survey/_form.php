@@ -12,8 +12,6 @@
     ));
     ?>
 
-
-
     <?php echo $form->errorSummary($model); ?>
 
     <div class="form-group">
@@ -32,7 +30,6 @@
         </div>
     </div>
 
-
     <div class="form-group">
         <?php echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
         <div class="col-sm-10">
@@ -40,7 +37,6 @@
             <?php echo $form->error($model, 'category'); ?>
         </div>
     </div>
-
 
     <div class="form-group">
         <?php echo $form->labelEx($model, 'frequency', array('class' => 'col-sm-2 control-label')); ?>

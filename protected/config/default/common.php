@@ -74,5 +74,8 @@ return array(
         ),
         'apiLogLevel' => 'all',
         'categoryAttribute' => '',
+        'comScore' => array(
+            'baseUrl' => '',
+        )
     ),
 );

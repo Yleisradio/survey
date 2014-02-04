@@ -59,7 +59,7 @@ class FormController extends Controller
             $answer->timestamp = time();
             $answer->survey_id = $surveyId;
             $answer->save();
-            $this->redirect('thanks');
+            $this->redirect('thanks?id=' . Yii::app()->db->lastInsertId);
         } else {
             
         }
@@ -72,10 +72,13 @@ class FormController extends Controller
         ));
     }
 
-    public function actionThanks()
+    public function actionThanks($id)
     {
+        $answer = Answer::model()->findByPk($id);
         Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/form.css'));
-        $this->render('thanks');
+        $this->render('thanks', array(
+            'answer' => $answer,
+        ));
     }
 
 }
