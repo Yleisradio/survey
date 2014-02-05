@@ -3,7 +3,7 @@
 class ApiController extends Controller
 {
 
-    public function actionMetrics($sites, $from, $to, $interval = 'hour')
+    public function actionMetricsBySites($sites, $from, $to, $interval = 'hour')
     {
         $metrics = array(
             'gender',
@@ -51,6 +51,36 @@ class ApiController extends Controller
             $sitesValues[$site] = $values;
         }
         $this->outputJSON($sitesValues);
+    }
+
+    public function actionMetrics($sites, $from, $to, $interval = 'hour')
+    {
+        $from = strtotime($from);
+        $to = strtotime($to);
+        $surveyIds = $this->getSurveyIds($sites);
+    }
+
+    public function actionAnswers($sites, $from, $to, $limit = 10)
+    {
+        $from = strtotime($from);
+        $to = strtotime($to);
+        $surveyIds = $this->getSurveyIds($sites);
+
+        $answers = Answer::getAnswers($surveyIds, $from, $to, $limit);
+        $this->outputJSON($answers);
+    }
+
+    protected function getSurveyIds($sites)
+    {
+        $sites = explode(',', $sites);
+        $surveys = Survey::model()->findAllByAttributes(array(
+            'category' => $sites,
+        ));
+        $surveyIds = array();
+        foreach ($surveys as $survey) {
+            $surveyIds[] = $survey->id;
+        }
+        return $surveyIds;
     }
 
     protected function getTickInterval($interval)

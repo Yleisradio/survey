@@ -1,7 +1,11 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
+class ReportController extends Controller
+{
+    public function actionIndex() {
+
+        $this->render('index', array(
+
+        ));
+    }
+}

@@ -354,4 +354,29 @@ class Answer extends CActiveRecord
             return 'YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp), 1) ';
     }
 
+    public static function getAnswers($surveyIds, $from, $to, $limit)
+    {
+        if (intval($limit)) {
+            $limit = intval($limit);
+            $sql = 'SELECT * FROM answer WHERE `timestamp` >= :from AND `timestamp` <= :to';
+            if ($surveyIds) {
+                $sql .= ' AND survey_id IN (:survey_id)';
+            }
+            $sql .= ' ORDER BY timestamp DESC LIMIT ' . $limit;
+            $command = Yii::app()->db->createCommand($sql);
+            $params = self::getWhereParams(null, $from, $to);
+            $params[':survey_id'] = implode(', ', $surveyIds);
+
+            $answers = $command->queryAll(true, $params);
+
+            foreach ($answers as &$answer) {
+                $answer['timestamp'] = date('c', $answer['timestamp']);
+            }
+            return $answers;
+        }
+        else {
+            throw new CHttpException(400, 'Limit is not a number');
+        }
+    }
+
 }
