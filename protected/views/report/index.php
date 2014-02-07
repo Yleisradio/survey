@@ -4,7 +4,6 @@
             <div class="form-horizontal">
                 <?php
                 $this->widget('FilterForm', array(
-                    'filter' => new Filter(),
                 ));
                 ?> 
             </div>
@@ -48,7 +47,32 @@
     </div>
     <script type="text/javascript">
         moment.lang('<?php echo Yii::app()->language; ?>');
-        
+
+        var loadData = function loadData() {
+            dataLoader.loadData(
+                    {
+                        url: '<?php echo $this->createUrl('api/metrics') ?>',
+                        compareMode: $('#compare').val(),
+                        serieOptions: {},
+                        requestParameters: {
+                        },
+                        currentComplete: function(data, options) {
+
+                        },
+                        previousComplete: function(data, options) {
+
+                        },
+                        compare: function(data, options) {
+
+                        },
+                        complete: function(data, options) {
+
+                        }
+
+                    });
+        }
+        filter.setFilterChanged(loadData);
+
         var from = '2014-01-01T00:00:00.000Z';
         var to = '2014-02-07T23:59:59.000Z';
 
@@ -72,14 +96,16 @@
                             mode: "time",
                             min: moment(from).valueOf(),
                             max: moment(to).valueOf(),
-                            tickFormatter: function(value) { return moment(value).format("D.M") },
+                            tickFormatter: function(value) {
+                                return moment(value).format("D.M")
+                            },
                             monthNames: ['<?php echo Yii::t('calendar', 'Jan'); ?>', '<?php echo Yii::t('calendar', 'Feb'); ?>', '<?php echo Yii::t('calendar', 'Mar'); ?>', '<?php echo Yii::t('calendar', 'Apr'); ?>', '<?php echo Yii::t('calendar', 'May'); ?>', '<?php echo Yii::t('calendar', 'Jun'); ?>', '<?php echo Yii::t('calendar', 'Jul'); ?>', '<?php echo Yii::t('calendar', 'Aug'); ?>', '<?php echo Yii::t('calendar', 'Sep'); ?>', '<?php echo Yii::t('calendar', 'Oct'); ?>', '<?php echo Yii::t('calendar', 'Nov'); ?>', '<?php echo Yii::t('calendar', 'Dec'); ?>'],
                         },
                         grid: {
                             hoverable: true,
                             borderWidth: 0,
                         },
-                        }, settings);
+                    }, settings);
                 }
 
                 var nps = [];
@@ -100,7 +126,7 @@
                 $.plot('#interest .metric-chart', [interest], getPlotSettings({
                     yaxis: {
                         min: 0,
-                        max: 10,
+                        max: 6,
                     }
                 }));
 
