@@ -153,18 +153,18 @@ class Answer extends CActiveRecord
      * @param type $interval
      * @return type
      */
-    public static function getSuccess($surveyId, $from, $to, $interval)
+    public static function getSuccess($surveyId, $from, $to, $interval, $sitesTogether)
     {
         $sql = '
         SELECT ROUND(SUM(success) / SUM(total), 2) * 100 AS value, SUM(total) AS count, timestamp FROM (
-            SELECT COUNT(id) AS success, COUNT(id) AS total, timestamp FROM answer WHERE success = 1 AND ' . self::getWhereCondition($surveyId) . ' GROUP BY ' . self::getGroupBy($interval) . '
+            SELECT COUNT(id) AS success, COUNT(id) AS total, timestamp FROM answer WHERE success = 1 AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . '
             UNION
-            SELECT 0 AS success, COUNT(id) AS total, timestamp FROM answer WHERE success = 0 AND ' . self::getWhereCondition($surveyId) . ' GROUP BY ' . self::getGroupBy($interval) . '
+            SELECT 0 AS success, COUNT(id) AS total, timestamp FROM answer WHERE success = 0 AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . '
         ) AS success 
         GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC
         ';
         $command = Yii::app()->db->createCommand($sql);
-        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
     }
 
@@ -176,11 +176,11 @@ class Answer extends CActiveRecord
      * @param type $interval
      * @return type
      */
-    public static function getInterest($surveyId, $from, $to, $interval)
+    public static function getInterest($surveyId, $from, $to, $interval, $sitesTogether)
     {
-        $sql = 'SELECT ROUND(AVG(interest), 2) AS value, COUNT(id) AS count, timestamp FROM answer WHERE interest IS NOT null AND ' . self::getWhereCondition($surveyId) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC';
+        $sql = 'SELECT ROUND(AVG(interest), 2) AS value, COUNT(id) AS count, timestamp FROM answer WHERE interest IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC';
         $command = Yii::app()->db->createCommand($sql);
-        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
     }
 
@@ -192,19 +192,19 @@ class Answer extends CActiveRecord
      * @param type $interval
      * @return type
      */
-    public static function getNPS($surveyId, $from, $to, $interval)
+    public static function getNPS($surveyId, $from, $to, $interval, $sitesTogether)
     {
         $sql = '
         SELECT ROUND(SUM(promoter) / SUM(count) - SUM(detractor) / SUM(count), 2) * 100 AS value, count, timestamp FROM (
-            SELECT COUNT(id) AS promoter, 0 AS detractor, timestamp, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend > 8 GROUP BY ' . self::getGroupBy($interval) . ' 
+            SELECT COUNT(id) AS promoter, 0 AS detractor, timestamp, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend > 8 GROUP BY ' . self::getGroupBy($interval) . ' 
             UNION
-            SELECT 0 AS promoter, COUNT(id) AS detractor, timestamp, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend < 7 GROUP BY ' . self::getGroupBy($interval) . ' 
+            SELECT 0 AS promoter, COUNT(id) AS detractor, timestamp, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend < 7 GROUP BY ' . self::getGroupBy($interval) . ' 
             UNION
-            SELECT 0 AS promoter, 0 AS detractor, timestamp, COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend IS NOT null GROUP BY ' . self::getGroupBy($interval) . ' 
+            SELECT 0 AS promoter, 0 AS detractor, timestamp, COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend IS NOT null GROUP BY ' . self::getGroupBy($interval) . ' 
         ) AS nps GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC
         ';
         $command = Yii::app()->db->createCommand($sql);
-        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
     }
 
@@ -216,19 +216,19 @@ class Answer extends CActiveRecord
      * @param type $db
      * @return type
      */
-    public static function getTotalNPS($surveyId, $from, $to)
+    public static function getTotalNPS($surveyId, $from, $to, $sitesTogether)
     {
         $sql = '
         SELECT ROUND(SUM(promoter) / SUM(count) - SUM(detractor) / SUM(count), 2) * 100 AS count FROM (
-            SELECT COUNT(id) AS promoter, 0 AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend > 8
+            SELECT COUNT(id) AS promoter, 0 AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend > 8
             UNION
-            SELECT 0 AS promoter, COUNT(id) AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend < 7
+            SELECT 0 AS promoter, COUNT(id) AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend < 7
             UNION
-            SELECT 0 AS promoter, 0 AS detractor, COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND recommend IS NOT null
+            SELECT 0 AS promoter, 0 AS detractor, COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend IS NOT null
         ) AS nps
         ';
         $command = Yii::app()->db->createCommand($sql);
-        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics[0]['count'];
     }
 
@@ -240,11 +240,11 @@ class Answer extends CActiveRecord
      * @param type $interval
      * @return type
      */
-    public static function getSentiment($surveyId, $from, $to, $interval)
+    public static function getSentiment($surveyId, $from, $to, $interval, $sitesTogether)
     {
-        $sql = 'SELECT ROUND(AVG(sentiment), 2) AS value, timestamp, COUNT(id) AS count FROM answer WHERE sentiment IS NOT null AND ' . self::getWhereCondition($surveyId) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC';
+        $sql = 'SELECT ROUND(AVG(sentiment), 2) AS value, timestamp, COUNT(id) AS count FROM answer WHERE sentiment IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC';
         $command = Yii::app()->db->createCommand($sql);
-        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
     }
 
@@ -256,11 +256,11 @@ class Answer extends CActiveRecord
      * @param type $db
      * @return type
      */
-    public static function getTotalN($surveyId, $from, $to)
+    public static function getTotalN($surveyId, $from, $to, $sitesTogether)
     {
-        $sql = 'SELECT COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId);
+        $sql = 'SELECT COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether);
         $command = Yii::app()->db->createCommand($sql);
-        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to));
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
     }
 
@@ -273,12 +273,12 @@ class Answer extends CActiveRecord
      * @param type $gender
      * @return type
      */
-    public static function getGender($surveyId, $from, $to, $interval, $gender)
+    public static function getGender($surveyId, $from, $to, $interval, $gender, $sitesTogether)
     {
-        $sql = 'SELECT COUNT(id) AS value, timestamp FROM answer WHERE ' . self::getWhereCondition($surveyId) . ' AND gender = :gender GROUP BY ' . self::getGroupBy($interval) . ' 
+        $sql = 'SELECT COUNT(id) AS value, timestamp FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND gender = :gender GROUP BY ' . self::getGroupBy($interval) . ' 
         ';
         $command = Yii::app()->db->createCommand($sql);
-        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to) + array(':gender' => $gender));
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether) + array(':gender' => $gender));
         return $metrics;
     }
 
@@ -292,13 +292,13 @@ class Answer extends CActiveRecord
      * @param type $endAge
      * @return type
      */
-    public static function getAge($surveyId, $from, $to, $interval, $startAge, $endAge)
+    public static function getAge($surveyId, $from, $to, $interval, $startAge, $endAge, $sitesTogether)
     {
         $year = date('Y');
         $sql = 'SELECT COUNT(id) AS value, timestamp FROM answer 
-            WHERE ' . self::getWhereCondition($surveyId) . ' AND year_of_birth <= :startAge AND year_of_birth > :endAge GROUP BY ' . self::getGroupBy($interval);
+            WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND year_of_birth <= :startAge AND year_of_birth > :endAge GROUP BY ' . self::getGroupBy($interval);
         $command = Yii::app()->db->createCommand($sql);
-        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to) + array(
+        $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether) + array(
             ':startAge' => $year - $startAge,
             ':endAge' => $year - $endAge,
         ));
@@ -310,11 +310,17 @@ class Answer extends CActiveRecord
      * @param type $surveyId
      * @return string
      */
-    protected static function getWhereCondition($surveyId)
+    protected static function getWhereCondition($surveyIds, $sitesTogether)
     {
-        $whereCondition = ' `timestamp` >= :from AND `timestamp` <= :to';
-        if ($surveyId) {
-            $whereCondition .= ' AND survey_id = :survey_id';
+        $whereCondition = '`timestamp` >= :from AND `timestamp` <= :to';
+        if ($sitesTogether) {
+            if ($surveyIds) {
+                $whereCondition .= ' AND survey_id IN (' . implode(', ', $surveyIds) . ')';
+            }
+        } else {
+            if ($surveyIds) {
+                $whereCondition .= ' AND survey_id = ' . $surveyIds;
+            }
         }
         return $whereCondition;
     }
@@ -326,16 +332,11 @@ class Answer extends CActiveRecord
      * @param type $to
      * @return type
      */
-    protected static function getWhereParams($surveyId, $from, $to)
+    protected static function getWhereParams($surveyIds, $from, $to, $sitesTogether)
     {
         $params = array();
-
         $params[':from'] = $from;
         $params[':to'] = $to + 60 * 60;
-
-        if ($surveyId) {
-            $params[':survey_id'] = $surveyId;
-        }
         return $params;
     }
 
@@ -350,7 +351,7 @@ class Answer extends CActiveRecord
             return 'YEAR(FROM_UNIXTIME(timestamp)), DAYOFYEAR(FROM_UNIXTIME(timestamp)), HOUR(FROM_UNIXTIME(timestamp)) ';
         if ($interval == 'day')
             return 'YEAR(FROM_UNIXTIME(timestamp)), DAYOFYEAR(FROM_UNIXTIME(timestamp)) ';
-        if ($interval == 'month')
+        if ($interval == 'week')
             return 'YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp), 1) ';
     }
 
@@ -373,8 +374,7 @@ class Answer extends CActiveRecord
                 $answer['timestamp'] = date('c', $answer['timestamp']);
             }
             return $answers;
-        }
-        else {
+        } else {
             throw new CHttpException(400, 'Limit is not a number');
         }
     }

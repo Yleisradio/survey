@@ -130,5 +130,5 @@
 
 <?php
 $this->widget('ComScoreTracking', array(
-    'path' => $answer->survey->comscore . "/s?srv",
+    'path' => $survey->comscore . "/s?srv",
 ));

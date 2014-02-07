@@ -5,6 +5,7 @@ class ApiController extends Controller
 
     public function actionMetricsBySites($sites, $from, $to, $interval = 'hour')
     {
+        //@TODO Specify which metrics are returned
         $metrics = array(
             'gender',
             'age',
@@ -21,33 +22,7 @@ class ApiController extends Controller
         $sitesValues = array();
         foreach ($sites as $site) {
             $survey = Survey::model()->findByAttributes(array('category' => $site));
-            $values = array();
-            if (in_array('gender', $metrics)) {
-                $values['female'] = $this->valuesToSeries(Answer::getGender($survey->id, $from, $to, $interval, 'female'), $from, $to, $interval, false);
-                $values['male'] = $this->valuesToSeries(Answer::getGender($survey->id, $from, $to, $interval, 'male'), $from, $to, $interval, false);
-            };
-            if (in_array('age', $metrics)) {
-                $values['75+'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 75, 200), $from, $to, $interval, false);
-                $values['60-74'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 60, 74), $from, $to, $interval, false);
-                $values['45-59'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 45, 59), $from, $to, $interval, false);
-                $values['30-44'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 30, 44), $from, $to, $interval, false);
-                $values['15-29'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 15, 29), $from, $to, $interval, false);
-                $values['0-14'] = $this->valuesToSeries(Answer::getAge($survey->id, $from, $to, $interval, 0, 14), $from, $to, $interval, false);
-            };
-            if (in_array('success', $metrics)) {
-                $values['success'] = $this->valuesToSeries(Answer::getSuccess($survey->id, $from, $to, $interval), $from, $to, $interval);
-            }
-            if (in_array('interest', $metrics)) {
-                $values['interest'] = $this->valuesToSeries(Answer::getInterest($survey->id, $from, $to, $interval), $from, $to, $interval);
-            }
-            if (in_array('nps', $metrics)) {
-                $values['nps'] = $this->valuesToSeries(Answer::getNPS($survey->id, $from, $to, $interval), $from, $to, $interval);
-                $values['nps']['average'] = Answer::getTotalNPS($survey->id, $from, $to);
-            }
-            if (in_array('sentiment', $metrics)) {
-                $values['sentiment'] = $this->valuesToSeries(Answer::getSentiment($survey->id, $from, $to, $interval), $from, $to, $interval);
-            }
-            $values['n'] = Answer::getTotalN($survey->id, $from, $to);
+            $values = $this->getMetrics($survey->id, $from, $to, $interval, $metrics, false);
             $sitesValues[$site] = $values;
         }
         $this->outputJSON($sitesValues);
@@ -55,9 +30,21 @@ class ApiController extends Controller
 
     public function actionMetrics($sites, $from, $to, $interval = 'hour')
     {
+        //@TODO Specify which metrics are returned
+        $metrics = array(
+            'gender',
+            'age',
+            'success',
+            'interest',
+            'nps',
+            'sentiment',
+        );
+
         $from = strtotime($from);
         $to = strtotime($to);
         $surveyIds = $this->getSurveyIds($sites);
+        $values = $this->getMetrics($surveyIds, $from, $to, $interval, $metrics, true);
+        $this->outputJSON($values);
     }
 
     public function actionAnswers($sites, $from, $to, $limit = 10)
@@ -81,6 +68,38 @@ class ApiController extends Controller
             $surveyIds[] = $survey->id;
         }
         return $surveyIds;
+    }
+
+    protected function getMetrics($surveyIds, $from, $to, $interval, $metrics, $sitesTogether)
+    {
+        $values = array();
+        if (in_array('gender', $metrics)) {
+            $values['female'] = $this->valuesToSeries(Answer::getGender($surveyIds, $from, $to, $interval, 'female', $sitesTogether), $from, $to, $interval, false);
+            $values['male'] = $this->valuesToSeries(Answer::getGender($surveyIds, $from, $to, $interval, 'male', $sitesTogether), $from, $to, $interval, false);
+        };
+        if (in_array('age', $metrics)) {
+            $values['75+'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 75, 200, $sitesTogether), $from, $to, $interval, false);
+            $values['60-74'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 60, 74, $sitesTogether), $from, $to, $interval, false);
+            $values['45-59'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 45, 59, $sitesTogether), $from, $to, $interval, false);
+            $values['30-44'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 30, 44, $sitesTogether), $from, $to, $interval, false);
+            $values['15-29'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 15, 29, $sitesTogether), $from, $to, $interval, false);
+            $values['0-14'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 0, 14, $sitesTogether), $from, $to, $interval, false);
+        };
+        if (in_array('success', $metrics)) {
+            $values['success'] = $this->valuesToSeries(Answer::getSuccess($surveyIds, $from, $to, $interval, $sitesTogether), $from, $to, $interval);
+        }
+        if (in_array('interest', $metrics)) {
+            $values['interest'] = $this->valuesToSeries(Answer::getInterest($surveyIds, $from, $to, $interval, $sitesTogether), $from, $to, $interval);
+        }
+        if (in_array('nps', $metrics)) {
+            $values['nps'] = $this->valuesToSeries(Answer::getNPS($surveyIds, $from, $to, $interval, $sitesTogether), $from, $to, $interval);
+            $values['nps']['average'] = Answer::getTotalNPS($surveyIds, $from, $to, $sitesTogether);
+        }
+        if (in_array('sentiment', $metrics)) {
+            $values['sentiment'] = $this->valuesToSeries(Answer::getSentiment($surveyIds, $from, $to, $interval, $sitesTogether), $from, $to, $interval);
+        }
+        $values['n'] = Answer::getTotalN($surveyIds, $from, $to, $sitesTogether);
+        return $values;
     }
 
     protected function getTickInterval($interval)

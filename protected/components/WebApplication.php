@@ -7,9 +7,6 @@
  */
 class WebApplication extends CWebApplication {
 
-    public static function t() {
-        
-    }
 }
 
 ?>
