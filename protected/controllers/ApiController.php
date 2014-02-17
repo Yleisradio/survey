@@ -47,13 +47,13 @@ class ApiController extends Controller
         $this->outputJSON($values);
     }
 
-    public function actionAnswers($sites, $from, $to, $limit = 10)
+    public function actionAnswers($sites, $from, $to, $limit = 100)
     {
         $from = strtotime($from);
         $to = strtotime($to);
         $surveyIds = $this->getSurveyIds($sites);
 
-        $answers = Answer::getAnswers($surveyIds, $from, $to, $limit);
+        $answers = Answer::getAnswers($surveyIds, $from, $to, $limit, true);
         $this->outputJSON($answers);
     }
 
@@ -103,8 +103,8 @@ class ApiController extends Controller
             $values['sentiment'] = $this->valuesToSeries(Answer::getSentiment($surveyIds, $from, $to, $interval, $sitesTogether), $from, $to, $interval);
         }
         $values['n'] = Answer::getTotalN($surveyIds, $from, $to, $sitesTogether);
-        $values['n'] = $values['n'][0];
-        return $values;
+        $values['n'] = $values['n'][0]; 
+       return $values;
     }
 
     protected function getTickInterval($interval)

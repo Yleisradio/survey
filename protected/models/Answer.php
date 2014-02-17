@@ -354,32 +354,59 @@ class Answer extends CActiveRecord
         } else if ($interval == 'week') {
             return 'YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp), 1) ';
         } else {
-            throw new CHttpException(400, 'Incorret Interval');
+            throw new CHttpException(400, 'Incorrect Interval');
         }
     }
 
-    public static function getAnswers($surveyIds, $from, $to, $limit)
+    public static function getAnswers($surveyIds, $from, $to, $limit, $sitesTogether)
     {
         if (intval($limit)) {
             $limit = intval($limit);
-            $sql = 'SELECT * FROM answer WHERE `timestamp` >= :from AND `timestamp` <= :to';
+            $sql = 'SELECT answer.*, motive.motive, survey.name AS survey FROM answer 
+                LEFT JOIN motive ON motive_id = motive.id 
+                LEFT JOIN survey ON survey_id = survey.id
+                WHERE `timestamp` >= :from AND `timestamp` <= :to';
             if ($surveyIds) {
                 $sql .= ' AND survey_id IN (:survey_id)';
             }
+
             $sql .= ' ORDER BY timestamp DESC LIMIT ' . $limit;
             $command = Yii::app()->db->createCommand($sql);
-            $params = self::getWhereParams(null, $from, $to);
+            $params = self::getWhereParams(null, $from, $to, $sitesTogether);
             $params[':survey_id'] = implode(', ', $surveyIds);
 
             $answers = $command->queryAll(true, $params);
 
             foreach ($answers as &$answer) {
+                $answer['age'] = null;
+                if ($answer['year_of_birth']) {
+                    $answer['age'] = date('Y', $answer['timestamp']) - $answer['year_of_birth'];
+                }
+                unset($answer['year_of_birth']);
                 $answer['timestamp'] = date('c', $answer['timestamp']);
+                unset($answer['receipt']);
+                unset($answer['analyzed']);
+                unset($answer['analyze_started']);
+                unset($answer['motive_id']);
+                if ($answer['motive_text']) {
+                    $answer['motive'] = $answer['motive_text'];
+                }
+                unset($answer['motive_text']);
+                $answer['group'] = self::getNPSGroup($answer['recommend']);
             }
             return $answers;
         } else {
             throw new CHttpException(400, 'Limit is not a number');
         }
     }
-
+    
+    public static function getNPSGroup($recommend) {
+        if($recommend <= 6) {
+            return 'detractor';
+        } else if($recommend >= 9) {
+            return 'promoter';
+        } else {
+            return 'neutral';
+        }
+    }
 }

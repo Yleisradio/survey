@@ -54,6 +54,9 @@
                     <div class="metric-chart"></div>
                 </div>
             </div>
+            <div class="row answers">
+
+            </div>
         </div>
     </div>
     <script type="text/javascript">
@@ -155,6 +158,42 @@
                         }
 
                     });
+
+            var answerTemplate = _.template('<?php $this->renderPartial('_answer'); ?>');
+            $('.answers').html('');
+
+            dataLoader.loadData({
+                url: '<?php echo $this->createUrl('api/answers') ?>',
+                compareMode: $('#compare').val(),
+                serieOptions: {},
+                requestParameters: {
+                },
+                currentComplete: function(data, options) {
+                    var genderStrings = {
+                        male: '<?php echo Yii::t('report', 'male'); ?>',
+                        female: '<?php echo Yii::t('report', 'female'); ?>'
+                    };
+                    var NPSStrings = {
+                        promoter: '<?php echo Yii::t('report', 'promoter'); ?>',
+                        passive: '<?php echo Yii::t('report', 'passive'); ?>',
+                        detractor: '<?php echo Yii::t('report', 'detractor'); ?>'
+                    }
+                    $.each(data, function(index, element) {
+                        element.localizedGender = genderStrings[element.gender];
+                        element.timeago = moment(element.timestamp).fromNow();
+                        element.localizedNPSGroup = NPSStrings[element.group];
+                        $('.answers').append(answerTemplate(element));
+                    });
+                },
+                previousComplete: function(data, options) {
+
+                },
+                compare: function(data, options) {
+
+                },
+                complete: function(data, options) {
+                }
+            });
         }
 
         filter.setFilterChanged(function() {

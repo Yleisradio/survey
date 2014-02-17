@@ -19,3 +19,17 @@
 #filter-form .row div {
     padding: 5px;
 }
+
+.answer .well {
+
+}
+
+.detractor {
+    border-color: red;
+    border-width: 3px;
+}
+
+.promoter {
+    border-color: green;
+    border-width: 3px;
+}
