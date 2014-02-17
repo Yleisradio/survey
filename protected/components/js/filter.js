@@ -233,6 +233,7 @@ var filter = (function() {
             if (mode != 'day') {
                 from = getMonday(from);
             }
+
             setCurrent(from);
         },
         /**

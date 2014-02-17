@@ -2,3 +2,20 @@
     width: 100%;
     height: 100px;
 }
+
+#tooltip {
+    position: absolute;
+    display: none;
+    border: 1px solid #fdd;
+    padding: 2px;
+    background-color: #fee;
+    opacity: 0.80;
+}
+
+#filter-form .btn {
+    width: 100%;
+}
+
+#filter-form .row div {
+    padding: 5px;
+}

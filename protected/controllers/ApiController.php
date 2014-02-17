@@ -74,17 +74,21 @@ class ApiController extends Controller
     {
         $values = array();
         if (in_array('gender', $metrics)) {
-            $values['female'] = $this->valuesToSeries(Answer::getGender($surveyIds, $from, $to, $interval, 'female', $sitesTogether), $from, $to, $interval, false);
-            $values['male'] = $this->valuesToSeries(Answer::getGender($surveyIds, $from, $to, $interval, 'male', $sitesTogether), $from, $to, $interval, false);
-        };
+            $values['gender'] = array(
+                'female' => $this->valuesToSeries(Answer::getGender($surveyIds, $from, $to, $interval, 'female', $sitesTogether), $from, $to, $interval, false),
+                'male' => $this->valuesToSeries(Answer::getGender($surveyIds, $from, $to, $interval, 'male', $sitesTogether), $from, $to, $interval, false),
+            );
+        }
         if (in_array('age', $metrics)) {
-            $values['75+'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 75, 200, $sitesTogether), $from, $to, $interval, false);
-            $values['60-74'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 60, 74, $sitesTogether), $from, $to, $interval, false);
-            $values['45-59'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 45, 59, $sitesTogether), $from, $to, $interval, false);
-            $values['30-44'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 30, 44, $sitesTogether), $from, $to, $interval, false);
-            $values['15-29'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 15, 29, $sitesTogether), $from, $to, $interval, false);
-            $values['0-14'] = $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 0, 14, $sitesTogether), $from, $to, $interval, false);
-        };
+            $values['age'] = array(
+                '75+' => $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 75, 200, $sitesTogether), $from, $to, $interval, false),
+                '60-74' => $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 60, 74, $sitesTogether), $from, $to, $interval, false),
+                '45-59' => $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 45, 59, $sitesTogether), $from, $to, $interval, false),
+                '30-44' => $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 30, 44, $sitesTogether), $from, $to, $interval, false),
+                '15-29' => $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 15, 29, $sitesTogether), $from, $to, $interval, false),
+                '0-14' => $this->valuesToSeries(Answer::getAge($surveyIds, $from, $to, $interval, 0, 14, $sitesTogether), $from, $to, $interval, false),
+            );
+        }
         if (in_array('success', $metrics)) {
             $values['success'] = $this->valuesToSeries(Answer::getSuccess($surveyIds, $from, $to, $interval, $sitesTogether), $from, $to, $interval);
         }
@@ -99,6 +103,7 @@ class ApiController extends Controller
             $values['sentiment'] = $this->valuesToSeries(Answer::getSentiment($surveyIds, $from, $to, $interval, $sitesTogether), $from, $to, $interval);
         }
         $values['n'] = Answer::getTotalN($surveyIds, $from, $to, $sitesTogether);
+        $values['n'] = $values['n'][0];
         return $values;
     }
 
@@ -135,9 +140,9 @@ class ApiController extends Controller
 //                    }
                     $valuesArray[] = $valuesCell;
 
-                    //Add data for calculating average
+                    //Add data for calculating average and total
+                    $valuesTotal += $values[$i]['value'] * $values[$i]['count'];
                     if ($calculateAverage) {
-                        $valuesTotal += $values[$i]['value'] * $values[$i]['count'];
                         $valuesCount += $values[$i]['count'];
                     }
                     $i++;
@@ -158,7 +163,11 @@ class ApiController extends Controller
                 $valuesAverage = '';
             }
             $results['average'] = $valuesAverage;
+        } else {
+            $results['total'] = $valuesTotal;
         }
+
+
         return $results;
     }
 

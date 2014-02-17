@@ -41,7 +41,7 @@ class Filter extends CFormModel
         $this->from = Yii::app()->request->getParam('from');
         $this->to = Yii::app()->request->getParam('to');
         $this->compare = Yii::app()->request->getParam('compare');
-//        $this->mode = Yii::app()->request->getParam('mode');
+        $this->mode = Yii::app()->request->getParam('mode');
         $this->surveys = Yii::app()->request->getParam('surveys');
     }
 

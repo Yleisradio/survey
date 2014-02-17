@@ -275,7 +275,7 @@ class Answer extends CActiveRecord
      */
     public static function getGender($surveyId, $from, $to, $interval, $gender, $sitesTogether)
     {
-        $sql = 'SELECT COUNT(id) AS value, timestamp FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND gender = :gender GROUP BY ' . self::getGroupBy($interval) . ' 
+        $sql = 'SELECT 1 AS count, COUNT(id) AS value, timestamp FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND gender = :gender GROUP BY ' . self::getGroupBy($interval) . ' 
         ';
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether) + array(':gender' => $gender));
@@ -295,7 +295,7 @@ class Answer extends CActiveRecord
     public static function getAge($surveyId, $from, $to, $interval, $startAge, $endAge, $sitesTogether)
     {
         $year = date('Y');
-        $sql = 'SELECT COUNT(id) AS value, timestamp FROM answer 
+        $sql = 'SELECT 1 AS count, COUNT(id) AS value, timestamp FROM answer 
             WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND year_of_birth <= :startAge AND year_of_birth > :endAge GROUP BY ' . self::getGroupBy($interval);
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether) + array(
@@ -347,12 +347,15 @@ class Answer extends CActiveRecord
      */
     protected static function getGroupBy($interval)
     {
-        if ($interval == 'hour')
+        if ($interval == 'hour') {
             return 'YEAR(FROM_UNIXTIME(timestamp)), DAYOFYEAR(FROM_UNIXTIME(timestamp)), HOUR(FROM_UNIXTIME(timestamp)) ';
-        if ($interval == 'day')
+        } else if ($interval == 'day') {
             return 'YEAR(FROM_UNIXTIME(timestamp)), DAYOFYEAR(FROM_UNIXTIME(timestamp)) ';
-        if ($interval == 'week')
+        } else if ($interval == 'week') {
             return 'YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp), 1) ';
+        } else {
+            throw new CHttpException(400, 'Incorret Interval');
+        }
     }
 
     public static function getAnswers($surveyIds, $from, $to, $limit)

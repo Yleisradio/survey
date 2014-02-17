@@ -7,7 +7,7 @@ var dataLoader = (function() {
 
     function getDefaultRequestParameters() {
         var requestParameters = {
-            interval: $('#filter-form #mode').val(),
+            interval: getInterval($('#filter-form #mode').val()),
             sites: getSelected('#filter-form #surveys'),
             from: moment($('#filter-form #from').val()).toISOString(),
             to: moment($('#filter-form #to').val()).toISOString()
@@ -103,10 +103,13 @@ function getSelected(element) {
     var selected = [];
     $(element + ' input').each(function(index, element) {
         if ($(element).is(':checked')) {
-            var id = $(element).attr('id');
-            id = id.split('_');
-            selected.push(id[1]);
+            selected.push((element).value);
         }
     });
+    selected = selected.join(',');
     return selected;
+}
+
+function getInterval(mode) {
+    return 'day';
 }

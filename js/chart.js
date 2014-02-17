@@ -1,62 +1,78 @@
-;
-(function($, window, document, undefined) {
+var chart = (function() {
 
-    // undefined is used here as the undefined global
-    // variable in ECMAScript 3 and is mutable (i.e. it can
-    // be changed by someone else). undefined isn't really
-    // being passed in so we can ensure that its value is
-    // truly undefined. In ES5, undefined can no longer be
-    // modified.
+    var monthNames;
 
-    // window and document are passed through as local
-    // variables rather than as globals, because this (slightly)
-    // quickens the resolution process and can be more
-    // efficiently minified (especially when both are
-    // regularly referenced in our plugin).
-
-    // Create the defaults once
-    var pluginName = "chart",
-            defaults = {
-        propertyName: "value"
-    };
-
-    // The actual plugin constructor
-    function Plugin(element, options) {
-        this.element = element;
-
-        // jQuery has an extend method that merges the
-        // contents of two or more objects, storing the
-        // result in the first object. The first object
-        // is generally empty because we don't want to alter
-        // the default options for future instances of the plugin
-        this.options = $.extend({}, defaults, options);
-
-        this._defaults = defaults;
-        this._name = pluginName;
-
-        this.init();
+    function getTimeseriesChartSettings(settings) {
+        var defaultSettings = {
+            xaxis: {
+                mode: "time",
+                min: moment(filter.current().from).valueOf(),
+                max: moment(filter.current().to).valueOf(),
+                tickFormatter: function(value) {
+                    return moment(value).format("D.M")
+                },
+            },
+            grid: {
+                hoverable: true,
+                borderWidth: 0,
+            },
+        };
+        if (monthNames) {
+            defaultSettings.xaxis.monthNames = monthNames;
+        }
+        return $.extend({}, defaultSettings, settings);
     }
 
-    Plugin.prototype.init = function() {
-        // Place initialization logic here
-        // We already have access to the DOM element and
-        // the options via the instance, e.g. this.element
-        // and this.options
-    };
-
-    Plugin.prototype.render = function() {
-
-    };
-
-    // A really lightweight plugin wrapper around the constructor,
-    // preventing against multiple instantiations
-    $.fn[pluginName] = function(options) {
-        return this.each(function() {
-            if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName,
-                        new Plugin(this, options));
+    function getPieChartSettings(settings) {
+        var defaultSettings = {
+            series: {
+                pie: {
+                    innerRadius: 0.5,
+                    show: true,
+                    label: {
+                        show: true,
+                        radius: 1,
+                        formatter: pieLabelFormatter,
+                        background: {
+                            opacity: 0.8
+                        }
+                    }
+                }
+            },
+            legend: {
+                show: false
             }
-        });
+        }
+        return $.extend({}, defaultSettings, settings);
     }
 
-})(jQuery, window, document);
+    function pieLabelFormatter(label, series) {
+        return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+    }
+
+    function timeSeriesTooltip(event, pos, item) {
+        if (item) {
+            var x = item.datapoint[0],
+                    y = item.datapoint[1].toFixed(2);
+            $("#tooltip").html(moment(x).format("D.M.YYYY") + " : " + y)
+                    .css({top: item.pageY + 5, left: item.pageX + 5})
+                    .fadeIn(200);
+        } else {
+            $("#tooltip").hide();
+        }
+
+    }
+
+    return {
+        timeSeries: function(selector, values, settings) {
+            $.plot(selector, values, getTimeseriesChartSettings(settings));
+            $(selector).bind("plothover", timeSeriesTooltip);
+        },
+        pie: function(selector, values, settings) {
+            $.plot(selector, values, getPieChartSettings(settings));
+        },
+        setMonthNames: function(newMonthNames) {
+            monthNames = newMonthNames;
+        }
+    };
+})();

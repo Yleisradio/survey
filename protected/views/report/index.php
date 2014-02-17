@@ -9,6 +9,12 @@
             </div>
         </div>
         <div class="col-md-9">
+            <div class="date-display">
+                <div id="time-period"></div>
+                <div id="compare-period"></div> 
+                <div>Vastausten lukumäärä: <span id="n-number"></span></div>
+                <div class="clearfix"></div>
+            </div>
             <div class="row">
                 <div class="col-md-3" id="nps">
                     <div class="metric-label"><?php echo Yii::t('report', 'NPS') ?></div>
@@ -22,6 +28,11 @@
                 </div>
                 <div class="col-md-3" id="success">
                     <div class="metric-label"><?php echo Yii::t('report', 'success') ?></div>
+                    <div class="metric-value"></div>
+                    <div class="metric-chart"></div>
+                </div>
+                <div class="col-md-3" id="sentiment">
+                    <div class="metric-label"><?php echo Yii::t('report', 'sentiment') ?></div>
                     <div class="metric-value"></div>
                     <div class="metric-chart"></div>
                 </div>
@@ -47,6 +58,7 @@
     </div>
     <script type="text/javascript">
         moment.lang('<?php echo Yii::app()->language; ?>');
+        chart.setMonthNames(['<?php echo Yii::t('calendar', 'Jan'); ?>', '<?php echo Yii::t('calendar', 'Feb'); ?>', '<?php echo Yii::t('calendar', 'Mar'); ?>', '<?php echo Yii::t('calendar', 'Apr'); ?>', '<?php echo Yii::t('calendar', 'May'); ?>', '<?php echo Yii::t('calendar', 'Jun'); ?>', '<?php echo Yii::t('calendar', 'Jul'); ?>', '<?php echo Yii::t('calendar', 'Aug'); ?>', '<?php echo Yii::t('calendar', 'Sep'); ?>', '<?php echo Yii::t('calendar', 'Oct'); ?>', '<?php echo Yii::t('calendar', 'Nov'); ?>', '<?php echo Yii::t('calendar', 'Dec'); ?>']);
 
         var loadData = function loadData() {
             dataLoader.loadData(
@@ -57,6 +69,63 @@
                         requestParameters: {
                         },
                         currentComplete: function(data, options) {
+                            $('#nps .metric-value').html(data.nps.average);
+                            $('#interest .metric-value').html(data.interest.average);
+                            $('#success .metric-value').html(data.success.average);
+                            $('#n-number').html(data.n.count);
+
+                            var nps = [];
+                            $.each(data.nps.history, function(index, item) {
+                                nps.push([moment(item.time).valueOf(), item.count]);
+                            });
+                            chart.timeSeries('#nps .metric-chart', [nps], {
+                                yaxis: {
+                                    min: -100,
+                                    max: 100,
+                                }
+                            });
+
+                            var interest = [];
+                            $.each(data.interest.history, function(index, item) {
+                                interest.push([moment(item.time).valueOf(), item.count]);
+                            })
+                            chart.timeSeries('#interest .metric-chart', [interest], {
+                                yaxis: {
+                                    min: 0,
+                                    max: 6,
+                                }
+                            });
+
+                            var success = [];
+                            $.each(data.success.history, function(index, item) {
+                                success.push([moment(item.time).valueOf(), item.count]);
+                            })
+                            chart.timeSeries('#success .metric-chart', [success], {
+                                yaxis: {
+                                    min: 0,
+                                    max: 100,
+                                }
+                            });
+
+                            var age = [];
+                            $.each(data.age, function(index, item) {
+                                age.push({
+                                    label: index,
+                                    data: item.total
+                                });
+                            })
+                            chart.pie('#age .metric-chart', age, {
+                            });
+
+                            var gender = [];
+                            $.each(data.gender, function(index, item) {
+                                gender.push({
+                                    label: index,
+                                    data: item.total
+                                });
+                            })
+                            chart.pie('#gender .metric-chart', gender, {
+                            });
 
                         },
                         previousComplete: function(data, options) {
@@ -71,99 +140,48 @@
 
                     });
         }
-        filter.setFilterChanged(loadData);
 
-        var from = '2014-01-01T00:00:00.000Z';
-        var to = '2014-02-07T23:59:59.000Z';
+        filter.setFilterChanged(function() {
+            loadData();
+            renderTimePeriod();
 
-        $.ajax({
-            dataType: "json",
-            url: '<?php echo $this->createUrl('/api/metrics') ?>',
-            data: {
-                sites: 'test,areena',
-                from: from,
-                to: to,
-                interval: 'day',
-            },
-            success: function(result) {
-                $('#nps .metric-value').html(result.nps.average);
-                $('#interest .metric-value').html(result.interest.average);
-                $('#success .metric-value').html(result.success.average);
+            function renderTimePeriod() {
+                var timePeriod = '';
 
-                function getPlotSettings(settings) {
-                    return $.extend({}, {
-                        xaxis: {
-                            mode: "time",
-                            min: moment(from).valueOf(),
-                            max: moment(to).valueOf(),
-                            tickFormatter: function(value) {
-                                return moment(value).format("D.M")
-                            },
-                            monthNames: ['<?php echo Yii::t('calendar', 'Jan'); ?>', '<?php echo Yii::t('calendar', 'Feb'); ?>', '<?php echo Yii::t('calendar', 'Mar'); ?>', '<?php echo Yii::t('calendar', 'Apr'); ?>', '<?php echo Yii::t('calendar', 'May'); ?>', '<?php echo Yii::t('calendar', 'Jun'); ?>', '<?php echo Yii::t('calendar', 'Jul'); ?>', '<?php echo Yii::t('calendar', 'Aug'); ?>', '<?php echo Yii::t('calendar', 'Sep'); ?>', '<?php echo Yii::t('calendar', 'Oct'); ?>', '<?php echo Yii::t('calendar', 'Nov'); ?>', '<?php echo Yii::t('calendar', 'Dec'); ?>'],
-                        },
-                        grid: {
-                            hoverable: true,
-                            borderWidth: 0,
-                        },
-                    }, settings);
+                var mode = $('#mode').val();
+                if (mode == 'week') {
+                    timePeriod += 'Viikko ' + getWeekNumber(filter.current().from) + ' ';
                 }
 
-                var nps = [];
-                $.each(result.nps.history, function(index, item) {
-                    nps.push([moment(item.time).valueOf(), item.count]);
-                })
-                $.plot('#nps .metric-chart', [nps], getPlotSettings({
-                    yaxis: {
-                        min: -100,
-                        max: 100,
-                    }
-                }));
+                timePeriod += moment(filter.current().from).format('DD.MM.YYYY') + ' - ' + moment(filter.current().to).format('DD.MM.YYYY') + ' (' + getPeriodLength(filter.current().from, filter.current().to) + ' päivää)';
 
-                var interest = [];
-                $.each(result.interest.history, function(index, item) {
-                    interest.push([moment(item.time).valueOf(), item.count]);
-                })
-                $.plot('#interest .metric-chart', [interest], getPlotSettings({
-                    yaxis: {
-                        min: 0,
-                        max: 6,
-                    }
-                }));
-
-                var success = [];
-                $.each(result.success.history, function(index, item) {
-                    success.push([moment(item.time).valueOf(), item.count]);
-                })
-                $.plot('#success .metric-chart', [success], getPlotSettings({
-                    yaxis: {
-                        min: 0,
-                        max: 100,
-                    }
-                }));
-
-            }
-        });
-
-        $("<div id='tooltip'></div>").css({
-            position: "absolute",
-            display: "none",
-            border: "1px solid #fdd",
-            padding: "2px",
-            "background-color": "#fee",
-            opacity: 0.80
-        }).appendTo("body");
-
-        $(".metric-chart").bind("plothover", function(event, pos, item) {
-            if (item) {
-                var x = item.datapoint[0],
-                        y = item.datapoint[1].toFixed(2);
-                $("#tooltip").html(moment(x).format("D.M.YYYY") + " : " + y)
-                        .css({top: item.pageY + 5, left: item.pageX + 5})
-                        .fadeIn(200);
-            } else {
-                $("#tooltip").hide();
+                var comparePeriod = '';
+                if (filter.previous().from) {
+                    comparePeriod = ' Vertailujakso ' + moment(filter.current().from).format('DD.MM.YYYY') + ' - ' + moment(filter.current().to).format('DD.MM.YYYY') + ' (' + getPeriodLength(filter.current().from, filter.current().to) + ' päivää)';
+                }
+                $('#time-period').html(timePeriod);
+                $('#compare-period').html(comparePeriod);
             }
 
-        });
+            function getWeekNumber(d) {
+                // Copy date so don't modify original
+                d = new Date(d);
+                d.setHours(0, 0, 0);
+                // Set to nearest Thursday: current date + 4 - current day number
+                // Make Sunday's day number 7
+                d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+                // Get first day of year
+                var yearStart = new Date(d.getFullYear(), 0, 1);
+                // Calculate full weeks to nearest Thursday
+                var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+                // Return array of year and week number
+                return weekNo;
+            }
 
+            function getPeriodLength(from, to) {
+                return Math.round((filter.current().to - filter.current().from) / 1000 / 60 / 60 / 24);
+            }
+        });
     </script>
+
+    <div id="tooltip"></div>
