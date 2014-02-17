@@ -72,6 +72,7 @@
                             $('#nps .metric-value').html(data.nps.average);
                             $('#interest .metric-value').html(data.interest.average);
                             $('#success .metric-value').html(data.success.average);
+                            $('#sentiment .metric-value').html(data.sentiment.average);
                             $('#n-number').html(data.n.count);
 
                             var nps = [];
@@ -107,6 +108,17 @@
                                 }
                             });
 
+                            var sentiment = [];
+                            $.each(data.sentiment.history, function(index, item) {
+                                sentiment.push([moment(item.time).valueOf(), item.count]);
+                            })
+                            chart.timeSeries('#sentiment .metric-chart', [sentiment], {
+                                yaxis: {
+                                    min: -1,
+                                    max: 1,
+                                }
+                            });
+
                             var age = [];
                             $.each(data.age, function(index, item) {
                                 age.push({
@@ -118,9 +130,13 @@
                             });
 
                             var gender = [];
+                            var genderStrings = {
+                                male: '<?php echo Yii::t('report', 'male'); ?>',
+                                female: '<?php echo Yii::t('report', 'female'); ?>'
+                            };
                             $.each(data.gender, function(index, item) {
                                 gender.push({
-                                    label: index,
+                                    label: genderStrings[index],
                                     data: item.total
                                 });
                             })

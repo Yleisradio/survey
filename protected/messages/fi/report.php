@@ -17,6 +17,9 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'female' => 'Nainen',
+  'male' => 'Mies',
+  'sentiment' => 'Sentimentti',
   'NPS' => 'NPS',
   'age' => 'Ikäjakauma',
   'compare.no' => 'Ei vertailujaksoa',
