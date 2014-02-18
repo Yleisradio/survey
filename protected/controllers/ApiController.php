@@ -103,8 +103,8 @@ class ApiController extends Controller
             $values['sentiment'] = $this->valuesToSeries(Answer::getSentiment($surveyIds, $from, $to, $interval, $sitesTogether), $from, $to, $interval);
         }
         $values['n'] = Answer::getTotalN($surveyIds, $from, $to, $sitesTogether);
-        $values['n'] = $values['n'][0]; 
-       return $values;
+        $values['n'] = $values['n'][0];
+        return $values;
     }
 
     protected function getTickInterval($interval)
@@ -125,7 +125,7 @@ class ApiController extends Controller
         $valuesArray = array();
         $valuesTotal = 0;
         $valuesCount = 0;
-        $start = $from;
+        $start = $from - date('Z');
         $i = 0;
         $tickInterval = $this->getTickInterval($interval);
 

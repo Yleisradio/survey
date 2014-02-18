@@ -365,15 +365,11 @@ class Answer extends CActiveRecord
             $sql = 'SELECT answer.*, motive.motive, survey.name AS survey FROM answer 
                 LEFT JOIN motive ON motive_id = motive.id 
                 LEFT JOIN survey ON survey_id = survey.id
-                WHERE `timestamp` >= :from AND `timestamp` <= :to';
-            if ($surveyIds) {
-                $sql .= ' AND survey_id IN (:survey_id)';
-            }
-
+                WHERE' . self::getWhereCondition($surveyIds, $sitesTogether);
+            
             $sql .= ' ORDER BY timestamp DESC LIMIT ' . $limit;
             $command = Yii::app()->db->createCommand($sql);
-            $params = self::getWhereParams(null, $from, $to, $sitesTogether);
-            $params[':survey_id'] = implode(', ', $surveyIds);
+            $params = self::getWhereParams($surveyIds, $from, $to, $sitesTogether);
 
             $answers = $command->queryAll(true, $params);
 

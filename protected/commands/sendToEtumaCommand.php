@@ -9,7 +9,7 @@ class sendToEtumaCommand extends CConsoleCommand
             LEFT JOIN survey ON answer.survey_id = survey.id
             WHERE receipt IS null AND (feedback != "" OR failure_text != "") 
             ORDER BY timestamp DESC 
-            LIMIT 1';
+            LIMIT 10';
         $command = Yii::app()->db->createCommand($sql);
         $answers = $command->queryAll();
 

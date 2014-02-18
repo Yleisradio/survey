@@ -41,12 +41,12 @@
                 <div class="col-md-3" id="age">
                     <div class="metric-label"><?php echo Yii::t('report', 'age') ?></div>
                     <div class="metric-value"></div>
-                    <div class="metric-chart"></div>
+                    <div class="metric-pie-chart"></div>
                 </div>
                 <div class="col-md-3" id="gender">
                     <div class="metric-label"><?php echo Yii::t('report', 'gender') ?></div>
                     <div class="metric-value"></div>
-                    <div class="metric-chart"></div>
+                    <div class="metric-pie-chart"></div>
                 </div>
                 <div class="col-md-3" id="topic">
                     <div class="metric-label"><?php echo Yii::t('report', 'topics') ?></div>
@@ -63,140 +63,149 @@
         moment.lang('<?php echo Yii::app()->language; ?>');
         chart.setMonthNames(['<?php echo Yii::t('calendar', 'Jan'); ?>', '<?php echo Yii::t('calendar', 'Feb'); ?>', '<?php echo Yii::t('calendar', 'Mar'); ?>', '<?php echo Yii::t('calendar', 'Apr'); ?>', '<?php echo Yii::t('calendar', 'May'); ?>', '<?php echo Yii::t('calendar', 'Jun'); ?>', '<?php echo Yii::t('calendar', 'Jul'); ?>', '<?php echo Yii::t('calendar', 'Aug'); ?>', '<?php echo Yii::t('calendar', 'Sep'); ?>', '<?php echo Yii::t('calendar', 'Oct'); ?>', '<?php echo Yii::t('calendar', 'Nov'); ?>', '<?php echo Yii::t('calendar', 'Dec'); ?>']);
 
-        var loadData = function loadData() {
-            dataLoader.loadData(
-                    {
-                        url: '<?php echo $this->createUrl('api/metrics') ?>',
-                        compareMode: $('#compare').val(),
-                        serieOptions: {},
-                        requestParameters: {
-                        },
-                        currentComplete: function(data, options) {
-                            $('#nps .metric-value').html(data.nps.average);
-                            $('#interest .metric-value').html(data.interest.average);
-                            $('#success .metric-value').html(data.success.average);
-                            $('#sentiment .metric-value').html(data.sentiment.average);
-                            $('#n-number').html(data.n.count);
-
-                            var nps = [];
-                            $.each(data.nps.history, function(index, item) {
-                                nps.push([moment(item.time).valueOf(), item.count]);
-                            });
-                            chart.timeSeries('#nps .metric-chart', [nps], {
-                                yaxis: {
-                                    min: -100,
-                                    max: 100,
-                                }
-                            });
-
-                            var interest = [];
-                            $.each(data.interest.history, function(index, item) {
-                                interest.push([moment(item.time).valueOf(), item.count]);
-                            })
-                            chart.timeSeries('#interest .metric-chart', [interest], {
-                                yaxis: {
-                                    min: 0,
-                                    max: 6,
-                                }
-                            });
-
-                            var success = [];
-                            $.each(data.success.history, function(index, item) {
-                                success.push([moment(item.time).valueOf(), item.count]);
-                            })
-                            chart.timeSeries('#success .metric-chart', [success], {
-                                yaxis: {
-                                    min: 0,
-                                    max: 100,
-                                }
-                            });
-
-                            var sentiment = [];
-                            $.each(data.sentiment.history, function(index, item) {
-                                sentiment.push([moment(item.time).valueOf(), item.count]);
-                            })
-                            chart.timeSeries('#sentiment .metric-chart', [sentiment], {
-                                yaxis: {
-                                    min: -1,
-                                    max: 1,
-                                }
-                            });
-
-                            var age = [];
-                            $.each(data.age, function(index, item) {
-                                age.push({
-                                    label: index,
-                                    data: item.total
-                                });
-                            })
-                            chart.pie('#age .metric-chart', age, {
-                            });
-
-                            var gender = [];
-                            var genderStrings = {
-                                male: '<?php echo Yii::t('report', 'male'); ?>',
-                                female: '<?php echo Yii::t('report', 'female'); ?>'
-                            };
-                            $.each(data.gender, function(index, item) {
-                                gender.push({
-                                    label: genderStrings[index],
-                                    data: item.total
-                                });
-                            })
-                            chart.pie('#gender .metric-chart', gender, {
-                            });
-
-                        },
-                        previousComplete: function(data, options) {
-
-                        },
-                        compare: function(data, options) {
-
-                        },
-                        complete: function(data, options) {
-
-                        }
-
-                    });
-
-            var answerTemplate = _.template('<?php $this->renderPartial('_answer'); ?>');
-            $('.answers').html('');
-
-            dataLoader.loadData({
-                url: '<?php echo $this->createUrl('api/answers') ?>',
-                compareMode: $('#compare').val(),
-                serieOptions: {},
-                requestParameters: {
-                },
-                currentComplete: function(data, options) {
-                    var genderStrings = {
-                        male: '<?php echo Yii::t('report', 'male'); ?>',
-                        female: '<?php echo Yii::t('report', 'female'); ?>'
-                    };
-                    var NPSStrings = {
-                        promoter: '<?php echo Yii::t('report', 'promoter'); ?>',
-                        passive: '<?php echo Yii::t('report', 'passive'); ?>',
-                        detractor: '<?php echo Yii::t('report', 'detractor'); ?>'
-                    }
-                    $.each(data, function(index, element) {
-                        element.localizedGender = genderStrings[element.gender];
-                        element.timeago = moment(element.timestamp).fromNow();
-                        element.localizedNPSGroup = NPSStrings[element.group];
-                        $('.answers').append(answerTemplate(element));
-                    });
-                },
-                previousComplete: function(data, options) {
-
-                },
-                compare: function(data, options) {
-
-                },
-                complete: function(data, options) {
-                }
-            });
-        }
 
         filter.setFilterChanged(function() {
+            var loadData = function loadData() {
+                dataLoader.loadData(
+                        {
+                            url: '<?php echo $this->createUrl('api/metrics') ?>',
+                            compareMode: $('#compare').val(),
+                            serieOptions: {},
+                            requestParameters: {
+                            },
+                            currentComplete: function(data, options) {
+                                $('#nps .metric-value').html(data.nps.average);
+                                $('#interest .metric-value').html(data.interest.average);
+                                $('#success .metric-value').html(data.success.average);
+                                $('#sentiment .metric-value').html(data.sentiment.average);
+                                $('#n-number').html(data.n.count);
+
+                                var nps = [];
+                                $.each(data.nps.history, function(index, item) {
+                                    nps.push([moment(item.time).valueOf(), item.count]);
+                                });
+                                chart.timeSeries('#nps .metric-chart', [nps], {
+                                    yaxis: {
+                                        min: -100,
+                                        max: 100,
+                                    }
+                                });
+
+                                var interest = [];
+                                $.each(data.interest.history, function(index, item) {
+                                    interest.push([moment(item.time).valueOf(), item.count]);
+                                })
+                                chart.timeSeries('#interest .metric-chart', [interest], {
+                                    yaxis: {
+                                        min: 0,
+                                        max: 6,
+                                    }
+                                });
+
+                                var success = [];
+                                $.each(data.success.history, function(index, item) {
+                                    success.push([moment(item.time).valueOf(), item.count]);
+                                })
+                                chart.timeSeries('#success .metric-chart', [success], {
+                                    yaxis: {
+                                        min: 0,
+                                        max: 100,
+                                    }
+                                });
+
+                                var sentiment = [];
+                                $.each(data.sentiment.history, function(index, item) {
+                                    sentiment.push([moment(item.time).valueOf(), item.count]);
+                                })
+                                chart.timeSeries('#sentiment .metric-chart', [sentiment], {
+                                    yaxis: {
+                                        min: -1,
+                                        max: 1,
+                                    }
+                                });
+
+                                var age = [];
+                                $.each(data.age, function(index, item) {
+                                    age.push({
+                                        label: index,
+                                        data: item.total
+                                    });
+                                })
+                                age.reverse();
+                                chart.pie('#age .metric-pie-chart', age, {
+                                });
+
+                                var gender = [];
+                                var genderStrings = {
+                                    male: '<?php echo Yii::t('report', 'male'); ?>',
+                                    female: '<?php echo Yii::t('report', 'female'); ?>'
+                                };
+                                $.each(data.gender, function(index, item) {
+                                    gender.push({
+                                        label: genderStrings[index],
+                                        data: item.total
+                                    });
+                                })
+                                chart.pie('#gender .metric-pie-chart', gender, {
+                                });
+
+                            },
+                            previousComplete: function(data, options) {
+
+                            },
+                            compare: function(data, options) {
+
+                            },
+                            complete: function(data, options) {
+
+                            }
+
+                        });
+
+                var answerTemplate = _.template('<?php $this->renderPartial('_answer'); ?>');
+
+                dataLoader.loadData({
+                    url: '<?php echo $this->createUrl('api/answers') ?>',
+                    compareMode: $('#compare').val(),
+                    serieOptions: {},
+                    requestParameters: {
+                    },
+                    currentComplete: function(data, options) {
+                        var answers = $('.answers').data('masonry');
+                        if(answers) {
+                            answers.destroy();
+                        }
+                        $('.answers').html('');
+                        var genderStrings = {
+                            male: '<?php echo Yii::t('report', 'male'); ?>',
+                            female: '<?php echo Yii::t('report', 'female'); ?>'
+                        };
+                        var NPSStrings = {
+                            promoter: '<?php echo Yii::t('report', 'promoter'); ?>',
+                            passive: '<?php echo Yii::t('report', 'passive'); ?>',
+                            detractor: '<?php echo Yii::t('report', 'detractor'); ?>'
+                        }
+                        $.each(data, function(index, element) {
+                            element.localizedGender = genderStrings[element.gender];
+                            element.timeago = moment(element.timestamp).fromNow();
+                            element.localizedNPSGroup = NPSStrings[element.group];
+                            $('.answers').append(answerTemplate(element));
+                        });
+                        $('.answers').masonry({
+                            itemSelector: '.answer'
+                        });
+                    },
+                    previousComplete: function(data, options) {
+
+                    },
+                    compare: function(data, options) {
+
+                    },
+                    complete: function(data, options) {
+                    }
+                });
+            }
+
             loadData();
             renderTimePeriod();
 

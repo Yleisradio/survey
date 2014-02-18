@@ -17,7 +17,7 @@
             ?>
             <div class="row form-horizontal form-group">
                 <div class="col-md-4">
-                    <input id="Answer_success_other" value="" type="radio" name="Answer[success]"> 
+                    <input id="Answer_success_other" value="" type="radio" name="Answer[motive_id]"> 
                     <label for="Answer_success_other">Jokin muu, mikä?</label>
                 </div>
                 <div class="col-md-8">
