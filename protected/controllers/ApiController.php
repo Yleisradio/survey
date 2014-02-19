@@ -57,6 +57,15 @@ class ApiController extends Controller
         $this->outputJSON($answers);
     }
 
+    public function actionTopics($sites, $from, $to, $limit = 10)
+    {
+        $from = strtotime($from);
+        $to = strtotime($to);
+        $surveyIds = $this->getSurveyIds($sites);
+        $topics = Topic::getTopics($surveyIds, $from, $to, $limit, true);
+        $this->outputJSON($topics);
+    }
+
     protected function getSurveyIds($sites)
     {
         $sites = explode(',', $sites);

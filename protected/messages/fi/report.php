@@ -17,9 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'detractor' => 'Arvostelija',
-  'passive' => 'Passiivinen',
-  'promoter' => 'Suosittelija',
+  'number of answers' => 'Vastausten lukumäärä',
   'NPS' => 'NPS',
   'age' => 'Ikäjakauma',
   'answer.age' => 'vuotta',
@@ -28,14 +26,16 @@ return array (
   'compare.no' => 'Ei vertailujaksoa',
   'compare.period' => 'Edellinen jakso',
   'compare.year' => 'Edellinen vuosi',
+  'detractor' => 'Arvostelija',
   'female' => 'Nainen',
   'gender' => 'Sukupuolijakauma',
   'interest' => 'Kiinnostus',
   'male' => 'Mies',
   'month' => 'Kuukausi',
   'next' => 'Seuraava',
+  'passive' => 'Passiivinen',
   'previous' => 'Edellinen',
-  'recommend' => 'Suosittelu',
+  'promoter' => 'Suosittelija',
   'sentiment' => 'Sentimentti',
   'success' => 'Onnistuminen',
   'topics' => 'Aihealueet',

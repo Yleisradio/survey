@@ -25,7 +25,7 @@
  * The followings are the available model relations:
  * @property Survey $survey
  */
-class Answer extends CActiveRecord
+class Answer extends QueryModel
 {
 
     /**
@@ -303,59 +303,6 @@ class Answer extends CActiveRecord
             ':endAge' => $year - $endAge,
         ));
         return $metrics;
-    }
-
-    /**
-     * Returns the condition used to get the survey result metrics
-     * @param type $surveyId
-     * @return string
-     */
-    protected static function getWhereCondition($surveyIds, $sitesTogether)
-    {
-        $whereCondition = '`timestamp` >= :from AND `timestamp` <= :to';
-        if ($sitesTogether) {
-            if ($surveyIds) {
-                $whereCondition .= ' AND survey_id IN (' . implode(', ', $surveyIds) . ')';
-            }
-        } else {
-            if ($surveyIds) {
-                $whereCondition .= ' AND survey_id = ' . $surveyIds;
-            }
-        }
-        return $whereCondition;
-    }
-
-    /**
-     * Returns the where params used to get the survey result metrics
-     * @param type $surveyId
-     * @param type $from
-     * @param type $to
-     * @return type
-     */
-    protected static function getWhereParams($surveyIds, $from, $to, $sitesTogether)
-    {
-        $params = array();
-        $params[':from'] = $from;
-        $params[':to'] = $to + 60 * 60;
-        return $params;
-    }
-
-    /**
-     * Returns the group by statement used to get the survey result metrics
-     * @param type $interval
-     * @return string
-     */
-    protected static function getGroupBy($interval)
-    {
-        if ($interval == 'hour') {
-            return 'YEAR(FROM_UNIXTIME(timestamp)), DAYOFYEAR(FROM_UNIXTIME(timestamp)), HOUR(FROM_UNIXTIME(timestamp)) ';
-        } else if ($interval == 'day') {
-            return 'YEAR(FROM_UNIXTIME(timestamp)), DAYOFYEAR(FROM_UNIXTIME(timestamp)) ';
-        } else if ($interval == 'week') {
-            return 'YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp), 1) ';
-        } else {
-            throw new CHttpException(400, 'Incorrect Interval');
-        }
     }
 
     public static function getAnswers($surveyIds, $from, $to, $limit, $sitesTogether)

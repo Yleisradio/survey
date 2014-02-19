@@ -10,7 +10,7 @@ class m140128_134500_add_deleted_to_survey extends CDbMigration
 
     public function down()
     {
-        $this->addColumn('survey', 'deleted');
+        $this->dropColumn('survey', 'deleted');
     }
 
 }

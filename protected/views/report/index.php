@@ -12,7 +12,7 @@
             <div class="date-display">
                 <div id="time-period"></div>
                 <div id="compare-period"></div> 
-                <div>Vastausten lukumäärä: <span id="n-number"></span></div>
+                <div><?php echo Yii::t('report', 'number of answers'); ?>: <span id="n-number"></span></div>
                 <div class="clearfix"></div>
             </div>
             <div class="row">

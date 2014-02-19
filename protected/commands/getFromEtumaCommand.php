@@ -34,11 +34,12 @@ class getFromEtumaCommand extends CConsoleCommand
 
                         //Topics
                         foreach ($signal['topics'] as $topicArray) {
-                            $topicArray = array_keys($topicArray);
-                            $topicArray = $topicArray[0];
+                            $topicString = array_keys($topicArray);
+                            $topicString = $topicString[0];
+                            $sentiment = array_pop($topicArray);
 
                             //Find topic ID
-                            $topic = Topic::model()->findByAttributes(array('topic' => $topicArray));
+                            $topic = Topic::model()->findByAttributes(array('topic' => $topicString));
                             $topicId = $topic['id'];
 
                             //Create topic if not found
@@ -46,19 +47,20 @@ class getFromEtumaCommand extends CConsoleCommand
                                 $sql = 'INSERT INTO topic (topic) VALUES (:topic)';
                                 $command = Yii::app()->db->createCommand($sql);
                                 $answers = $command->execute(array(
-                                    ':topic' => $topicArray,
+                                    ':topic' => $topicString,
                                 ));
 
                                 $topicId = Yii::app()->db->lastInsertId;
                             }
 
                             //Create relation to topic
-                            $sql = 'INSERT INTO answer_topic (answer_id, topic_id, timestamp) VALUES (:answer_id, :topic_id, :timestamp)';
+                            $sql = 'INSERT INTO answer_topic (answer_id, topic_id, timestamp, sentiment) VALUES (:answer_id, :topic_id, :timestamp, :sentiment)';
                             $command = Yii::app()->db->createCommand($sql);
                             $answers = $command->execute(array(
                                 ':answer_id' => $answer['id'],
                                 ':topic_id' => $topicId,
                                 ':timestamp' => time(),
+                                ':sentiment' => $sentiment,
                             ));
                         }
                         $transaction->commit();

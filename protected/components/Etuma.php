@@ -11,12 +11,14 @@ class Etuma
      * @param type $data
      * @return type
      */
-    public static function get($method, $data = null, $options = array())
+    public static function get($method, $data = null)
     {
         $data = self::getData($method, $data);
         $url = self::$endpoint . $method;
 
-        $response = Curl::get($url, $data, $options);
+        $response = Curl::get($url, $data, array(
+            'timeout' => 30,
+        ));
         $response = json_decode($response, true);
         return $response;
     }
