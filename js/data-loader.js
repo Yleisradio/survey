@@ -15,6 +15,26 @@ var dataLoader = (function() {
         return requestParameters;
     }
 
+    function getSelected(element) {
+        var selected = [];
+        $(element + ' input').each(function(index, element) {
+            if ($(element).is(':checked')) {
+                selected.push((element).value);
+            }
+        });
+        selected = selected.join(',');
+        return selected;
+    }
+
+    function getInterval(mode) {
+        if (mode == 'year') {
+            return 'week';
+        }
+        else {
+            return 'day';
+        }
+    }
+
     return {
         /*
          * Abort all requests
@@ -99,17 +119,3 @@ var dataLoader = (function() {
     }
 })();
 
-function getSelected(element) {
-    var selected = [];
-    $(element + ' input').each(function(index, element) {
-        if ($(element).is(':checked')) {
-            selected.push((element).value);
-        }
-    });
-    selected = selected.join(',');
-    return selected;
-}
-
-function getInterval(mode) {
-    return 'day';
-}

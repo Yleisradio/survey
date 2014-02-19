@@ -14,10 +14,14 @@ class QueryModel extends CActiveRecord
         if ($sitesTogether) {
             if ($surveyIds) {
                 $whereCondition .= ' AND survey_id IN (' . implode(', ', $surveyIds) . ')';
+            } else {
+                $whereCondition .= ' AND 1 = 2';
             }
         } else {
             if ($surveyIds) {
                 $whereCondition .= ' AND survey_id = ' . $surveyIds;
+            } else {
+                $whereCondition .= ' AND 1 = 2';
             }
         }
         return $whereCondition;

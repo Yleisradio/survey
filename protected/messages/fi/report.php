@@ -17,9 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'negative' => 'Negatiivinen',
-  'neutral' => 'Neutraali',
-  'positive' => 'Positiivinen',
+  'filter.select all' => 'Valitse kaikki',
   'NPS' => 'NPS',
   'age' => 'Ikäjakauma',
   'answer.age' => 'vuotta',
@@ -34,9 +32,12 @@ return array (
   'interest' => 'Kiinnostus',
   'male' => 'Mies',
   'month' => 'Kuukausi',
+  'negative' => 'Negatiivinen',
+  'neutral' => 'Neutraali',
   'next' => 'Seuraava',
   'number of answers' => 'Vastausten lukumäärä',
   'passive' => 'Passiivinen',
+  'positive' => 'Positiivinen',
   'previous' => 'Edellinen',
   'promoter' => 'Suosittelija',
   'sentiment' => 'Sentimentti',

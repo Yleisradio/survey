@@ -23,15 +23,12 @@ $form = $this->beginWidget('CActiveForm', array(
         <a id="week-button" class="btn btn-default"><?php echo Yii::t('report', 'week'); ?></a>
     </div>
 </div>
-<div class="row">
-    <div>
-        <?php echo $form->dropDownList($filter, 'compare', Filter::getCompares(), array('name' => 'compare', 'id' => 'compare', 'class' => 'form-control')); ?>
-    </div>
-</div>
-<?php echo $form->checkBoxList($filter, 'surveys', CHtml::listData(Survey::model()->findAllByAttributes(array('active' => 1)), 'category', 'name'), array('name' => 'surveys')); ?>
+<?php echo $form->checkBoxList($filter, 'surveys', CHtml::listData(Survey::model()->findAllByAttributes(array('active' => 1)), 'category', 'name'), array('name' => 'surveys', 'checkAll' => Yii::t('report', 'filter.select all'))); ?>
 <?php
 echo $form->hiddenField($filter, 'from', array('name' => 'from'));
 echo $form->hiddenField($filter, 'to', array('name' => 'to'));
 echo $form->hiddenField($filter, 'mode', array('name' => 'mode'));
 ?>
+<input type="hidden" id="compare" name="compare" value="none" />
+
 <?php $this->endWidget(); ?>
