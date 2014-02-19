@@ -80,21 +80,21 @@ class Topic extends QueryModel
         LEFT JOIN answer_topic ON answer_topic.topic_id = topic.id 
         LEFT JOIN answer ON answer_id = answer.id
         LEFT JOIN survey ON survey_id = answer.survey_id
-        WHERE answer_topic.sentiment <= -0.5 AND ' . self::getWhereCondition($surveyIds, $sitesTogether) . '
+        WHERE answer_topic.sentiment < 0 AND ' . self::getWhereCondition($surveyIds, $sitesTogether) . '
         GROUP BY topic.id, answer.id
         UNION
         SELECT topic.topic, answer.id, 0 AS negative,  1 AS neutral, 0 AS positive FROM topic 
         LEFT JOIN answer_topic ON answer_topic.topic_id = topic.id
         LEFT JOIN answer ON answer_id = answer.id
         LEFT JOIN survey ON survey_id = answer.survey_id
-        WHERE answer_topic.sentiment > -0.5 AND answer_topic.sentiment < 0.5 AND ' . self::getWhereCondition($surveyIds, $sitesTogether) . '
+        WHERE answer_topic.sentiment = 0 AND ' . self::getWhereCondition($surveyIds, $sitesTogether) . '
         GROUP BY topic.id, answer.id
         UNION
         SELECT topic.topic, answer.id,  0 AS negative, 0 AS neutral,  1 AS positive FROM topic 
         LEFT JOIN answer_topic ON answer_topic.topic_id = topic.id
         LEFT JOIN answer ON answer_id = answer.id
         LEFT JOIN survey ON survey_id = answer.survey_id
-        WHERE answer_topic.sentiment >= 0.5 AND ' . self::getWhereCondition($surveyIds, $sitesTogether) . '
+        WHERE answer_topic.sentiment > 0 AND ' . self::getWhereCondition($surveyIds, $sitesTogether) . '
         GROUP BY topic.id, answer.id) AS sentiments
         GROUP BY topic
         ORDER BY total DESC ';

@@ -48,10 +48,10 @@
                     <div class="metric-value"></div>
                     <div class="metric-pie-chart"></div>
                 </div>
-                <div class="col-md-3" id="topic">
+                <div class="col-md-6" id="topic">
                     <div class="metric-label"><?php echo Yii::t('report', 'topics') ?></div>
                     <div class="metric-value"></div>
-                    <div class="metric-chart"></div>
+                    <div class="metric-bar-chart"></div>
                 </div>
             </div>
             <div class="row answers">
@@ -150,16 +150,6 @@
                                 });
 
                             },
-                            previousComplete: function(data, options) {
-
-                            },
-                            compare: function(data, options) {
-
-                            },
-                            complete: function(data, options) {
-
-                            }
-
                         });
 
                 var answerTemplate = _.template('<?php $this->renderPartial('_answer'); ?>');
@@ -172,7 +162,7 @@
                     },
                     currentComplete: function(data, options) {
                         var answers = $('.answers').data('masonry');
-                        if(answers) {
+                        if (answers) {
                             answers.destroy();
                         }
                         $('.answers').html('');
@@ -195,13 +185,48 @@
                             itemSelector: '.answer'
                         });
                     },
-                    previousComplete: function(data, options) {
+                });
 
+                dataLoader.loadData({
+                    url: '<?php echo $this->createUrl('api/topics') ?>',
+                    compareMode: $('#compare').val(),
+                    serieOptions: {},
+                    requestParameters: {
                     },
-                    compare: function(data, options) {
+                    currentComplete: function(data, options) {
+                        data.reverse();
+                        var sentimentStrings = ['positive', 'neutral', 'negative'];
+                        var localizedSentimentStrings = [
+                            '<?php echo Yii::t('report', 'positive'); ?>',
+                            '<?php echo Yii::t('report', 'neutral'); ?>',
+                            '<?php echo Yii::t('report', 'negative'); ?>',
+                        ];
+                        var sentiments = [];
+                        $.each(sentimentStrings, function(index, sentiment) {
+                            var topics = [];
+                            $.each(data, function(index, item) {
+                                topics.push([
+                                    item[sentiment],
+                                    index
+                                ]);
+                            });
+                            sentiments.push(topics);
+                        });
 
-                    },
-                    complete: function(data, options) {
+                        var ticks = [];
+                        $.each(data, function(index, topic) {
+                            ticks.push([
+                                index,
+                                topic.topic
+                            ]);
+                        });
+                        chart.bar('#topic .metric-bar-chart', sentiments, {
+                            yaxis: {
+                                ticks: ticks,
+                            }
+                        }, function(item) {
+                            return localizedSentimentStrings[item.seriesIndex] + " : " + item.datapoint[1];
+                        });
                     }
                 });
             }

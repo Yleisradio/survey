@@ -10,7 +10,7 @@ class QueryModel extends CActiveRecord
      */
     protected static function getWhereCondition($surveyIds, $sitesTogether)
     {
-        $whereCondition = 'answer.timestamp >= :from AND answer.timestamp <= :to';
+        $whereCondition = ' answer.timestamp >= :from AND answer.timestamp <= :to';
         if ($sitesTogether) {
             if ($surveyIds) {
                 $whereCondition .= ' AND survey_id IN (' . implode(', ', $surveyIds) . ')';

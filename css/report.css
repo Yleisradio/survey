@@ -3,7 +3,7 @@
     height: 100px;
 }
 
-.metric-pie-chart {
+.metric-pie-chart, .metric-bar-chart {
     width: 100%;
     height: 200px;
 }
@@ -11,10 +11,14 @@
 #tooltip {
     position: absolute;
     display: none;
-    border: 1px solid #fdd;
-    padding: 2px;
+    padding: 3px;
     background-color: #fee;
-    opacity: 0.80;
+    opacity: 0.9;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #fff;
+    font-family: 'Verdana, Arial, Helvetica, Tahoma, sans-serif';
 }
 
 #filter-form .btn {

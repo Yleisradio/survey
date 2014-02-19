@@ -9,13 +9,13 @@ var chart = (function() {
                 min: moment(filter.current().from).valueOf(),
                 max: moment(filter.current().to).valueOf(),
                 tickFormatter: function(value) {
-                    return moment(value).format("D.M")
-                },
+                    return moment(value).format("D.M");
+                }
             },
             grid: {
                 hoverable: true,
-                borderWidth: 0,
-            },
+                borderWidth: 0
+            }
         };
         if (monthNames) {
             defaultSettings.xaxis.monthNames = monthNames;
@@ -46,30 +46,62 @@ var chart = (function() {
         return $.extend({}, defaultSettings, settings);
     }
 
+    function getBarChartSettings(settings) {
+        var defaultSettings = {
+            series: {
+                bars: {
+                    show: true,
+                    horizontal: true,
+                    barWidth: .8,
+                    align: "center"
+                },
+                stack: true
+            },
+            xaxis: {
+                show: true
+            },
+            grid: {
+                hoverable: true,
+                borderWidth: 0
+            },
+            legend: {
+                show: false
+            }
+        };
+        return $.extend({}, defaultSettings, settings);
+    }
+
     function pieLabelFormatter(label, series) {
         return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
     }
 
-    function timeSeriesTooltip(event, pos, item) {
-        if (item) {
-            var x = item.datapoint[0],
-                    y = item.datapoint[1].toFixed(2);
-            $("#tooltip").html(moment(x).format("D.M.YYYY") + " : " + y)
-                    .css({top: item.pageY + 5, left: item.pageX + 5})
-                    .fadeIn(200);
-        } else {
-            $("#tooltip").hide();
+    function bindTooltip(tooltipFormatter) {
+        return function(event, pos, item) {
+            if (item) {
+                $("#tooltip").html(tooltipFormatter(item)).css({
+                    top: item.pageY + 5,
+                    left: item.pageX + 5,
+                    border: '2px solid ' + item.series.color
+                }).fadeIn(200);
+            } else {
+                $("#tooltip").hide();
+            }
         }
-
     }
 
     return {
         timeSeries: function(selector, values, settings) {
             $.plot(selector, values, getTimeseriesChartSettings(settings));
-            $(selector).bind("plothover", timeSeriesTooltip);
+            $(selector).bind("plothover", bindTooltip(function(item) {
+                return moment(item.datapoint[0]).format("D.M.YYYY") + " : " + item.datapoint[1];
+            }));
         },
         pie: function(selector, values, settings) {
             $.plot(selector, values, getPieChartSettings(settings));
+        },
+        bar: function(selector, values, settings, tooltipFormatter) {
+            $.plot(selector, values, getBarChartSettings(settings));
+            $(selector).bind("plothover", bindTooltip(tooltipFormatter));
         },
         setMonthNames: function(newMonthNames) {
             monthNames = newMonthNames;
