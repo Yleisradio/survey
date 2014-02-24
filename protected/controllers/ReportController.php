@@ -3,6 +3,26 @@
 class ReportController extends Controller
 {
 
+    public function filters()
+    {
+        return array(
+            'accessControl',
+        );
+    }
+
+    public function accessRules()
+    {
+        if (Yii::app()->params['authentication']['required']) {
+            return array(
+                array('deny',
+                    'users' => array('?'),
+                ),
+            );
+        } else {
+            return array();
+        }
+    }
+
     public function actionIndex()
     {
 

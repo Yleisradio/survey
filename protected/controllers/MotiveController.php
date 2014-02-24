@@ -8,34 +8,26 @@ class MotiveController extends Controller
      */
     public $layout = 'admin';
 
-    /**
-     * @return array action filters
-     */
     public function filters()
     {
         return array(
-//			'accessControl', // perform access control for CRUD operations
-            'postOnly + delete', // we only allow deletion via POST request
+            'accessControl',
         );
     }
 
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
     public function accessRules()
     {
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update', 'delete', 'index', 'activate'),
-                'users' => array('@'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
+        if (Yii::app()->params['authentication']['required']) {
+            return array(
+                array('deny',
+                    'users' => array('?'),
+                ),
+            );
+        } else {
+            return array();
+        }
     }
+
 
     /**
      * Creates a new model.

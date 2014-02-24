@@ -67,6 +67,9 @@ return array(
         ),
     ),
     'params' => array(
+        'authentication' => array(
+            'required' => false,
+        ),
         'etuma' => array(
             'accessKey' => '',
             'secretKey' => '',

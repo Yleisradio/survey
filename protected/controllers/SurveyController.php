@@ -3,6 +3,19 @@
 class SurveyController extends Controller
 {
 
+    public function accessRules()
+    {
+        if (Yii::app()->params['authentication']['required']) {
+            return array(
+                array('deny',
+                    'users' => array('?'),
+                ),
+            );
+        } else {
+            return array();
+        }
+    }
+
     /**
      * @var string the default layout for the views. 
      */
@@ -14,7 +27,7 @@ class SurveyController extends Controller
     public function filters()
     {
         return array(
-//			'accessControl', // perform access control for CRUD operations
+            'accessControl', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
             'postOnly + activate',
             'postOnly + inactivate',
