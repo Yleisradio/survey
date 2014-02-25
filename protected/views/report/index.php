@@ -10,13 +10,12 @@
         </div>
         <div class="col-md-9">
             <div class="date-display">
-                <div id="time-period"></div>
-                <div id="compare-period"></div> 
-                <div><?php echo Yii::t('report', 'number of answers'); ?>: <span id="n-number"></span></div>
+                <h1 id="time-period"></h1>
+                <h3 id="n-number-heading"><?php echo Yii::t('report', 'number of answers'); ?>: <span id="n-number"></span></h3>
                 <div class="clearfix"></div>
             </div>
-            <div class="row">
-                <div class="col-md-3" id="nps">
+            <div class="row border-bottom metrics-wrapper">
+                <div class="col-md-3 border-right" id="nps">
                     <div class="metric-label"><?php echo Yii::t('report', 'NPS') ?></div>
                     <div class="metric-value"></div>
                     <div class="metric-chart"></div>
@@ -37,7 +36,7 @@
                     <div class="metric-chart"></div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row border-bottom">
                 <div class="col-md-3" id="age">
                     <div class="metric-label"><?php echo Yii::t('report', 'age') ?></div>
                     <div class="metric-value"></div>
@@ -76,7 +75,7 @@
                             currentComplete: function(data, options) {
                                 $('#nps .metric-value').html(data.nps.average);
                                 $('#interest .metric-value').html(data.interest.average);
-                                $('#success .metric-value').html(data.success.average);
+                                $('#success .metric-value').html(data.success.average + ' %');
                                 $('#sentiment .metric-value').html(data.sentiment.average);
                                 $('#n-number').html(data.n.count);
 

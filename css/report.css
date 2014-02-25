@@ -1,3 +1,32 @@
+.container {
+    margin-top: 20px;
+}
+
+#time-period {
+    font-size: 36px;
+    font-family: 'Yle Regular';
+    color: #333;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+#n-number-heading {
+    font-size: 20px;
+    font-family: 'Yle Regular';
+    color: #333;
+    margin-top: 5px;
+}
+
+.metric-label {
+    font-family: 'Arial';
+    font-size: 16px;
+    color: #5a5a5a;
+}
+
+.metric-value {
+    font-size: 22px;
+}
+
 .metric-chart {
     width: 100%;
     height: 100px;
@@ -6,6 +35,20 @@
 .metric-pie-chart, .metric-bar-chart {
     width: 100%;
     height: 200px;
+}
+
+.border-bottom {
+    border-bottom: 2px #eee solid;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}
+
+.metrics-wrapper > div {
+    border-right: 2px #eee solid;
+}
+
+.metrics-wrapper > div:last-child {
+    border-right: none;
 }
 
 #tooltip {
@@ -43,8 +86,42 @@
     border-width: 3px;
 }
 
+.button {
+    background-color: #ccc;
+    color: white;
+    display: block;
+    text-align: center;
+    padding: 8px 0;
+}
+
+.button:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.button.active {
+    background-color: #b3b3b3;
+}
+
+.button-primary {
+    background-color: #5c9eda;
+}
+
+.button-primary.active {
+    background-color: #397ab4;
+}
+
 @media (max-width: 767px) {
     .answer {
         width: 100%;
     }
+}
+
+@font-face {
+    font-family: 'Yle Regular';
+    src: url('/umk/fonts/yle-regular-fd.eot');
+    src: url('/umk/fonts/yle-regular-fd.eot?#iefix')
+        format('embedded-opentype'),
+        url('/umk/fonts/yle-regular-fd.woff') format('woff'),
+        url('/umk/fonts/yle-regular-fd.ttf') format('truetype');
 }

@@ -15,8 +15,8 @@ var filter = (function() {
             refresh();
         });
 
-        $('#filter-form .btn-primary').removeClass('btn-primary');
-        $('#' + $('#mode').val() + '-button').addClass('btn-primary');
+        $('#filter-form .active').removeClass('active');
+        $('#' + $('#mode').val() + '-button').addClass('active');
 
         $('#year-button').click(function() {
             filter.changeMode(this, 'year');
@@ -266,8 +266,8 @@ var filter = (function() {
          * @returns {undefined}
          */
         changeMode: function(button, mode) {
-            $('#filter-form .btn-primary').removeClass('btn-primary');
-            $(button).addClass('btn-primary');
+            $('#filter-form .active').removeClass('active');
+            $(button).addClass('active');
             $('#mode').val(mode);
 
             //Set start time according to the time period

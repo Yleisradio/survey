@@ -15,6 +15,10 @@ var chart = (function() {
             grid: {
                 hoverable: true,
                 borderWidth: 0
+            },
+            series: {
+                color: '#397ab3',
+                shadowSize: 0,
             }
         };
         if (monthNames) {
