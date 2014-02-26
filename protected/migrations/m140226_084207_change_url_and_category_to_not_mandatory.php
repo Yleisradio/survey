@@ -10,8 +10,8 @@ class m140226_084207_change_url_and_category_to_not_mandatory extends CDbMigrati
 
 	public function down()
 	{
-		echo "m140226_084207_change_url_and_category_to_not_mandatory does not support migration down.\n";
-		return false;
+            $this->alterColumn('survey', 'url', 'varchar(128) NOT NULL');
+            $this->alterColumn('survey', 'url', 'varchar(32) NOT NULL');
 	}
 
 }

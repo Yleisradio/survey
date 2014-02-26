@@ -35,13 +35,17 @@ var chart = (function() {
                     show: true,
                     label: {
                         show: true,
-                        radius: 1,
+                        radius: 0.75,
+                        threshold: 0.1,
                         formatter: pieLabelFormatter,
                         background: {
                             opacity: 0.8
                         }
                     }
                 }
+            },
+            grid: {
+                hoverable: true,
             },
             legend: {
                 show: false
@@ -80,11 +84,11 @@ var chart = (function() {
     }
 
     function bindTooltip(tooltipFormatter) {
-        return function(event, pos, item) {
+        return function(ev, pos, item) {
             if (item) {
                 $("#tooltip").html(tooltipFormatter(item)).css({
-                    top: item.pageY + 5,
-                    left: item.pageX + 5,
+                    top: pos.pageY + 5,
+                    left: pos.pageX + 5,
                     border: '2px solid ' + item.series.color
                 }).fadeIn(200);
             } else {
@@ -102,6 +106,9 @@ var chart = (function() {
         },
         pie: function(selector, values, settings) {
             $.plot(selector, values, getPieChartSettings(settings));
+            $(selector).bind("plothover", bindTooltip(function(item) {
+                return item.series.label + ' : ' + Math.round(item.datapoint[0] * 100) / 100  + " % (" + item.datapoint[1][0][1] + ")";
+            }));
         },
         bar: function(selector, values, settings, tooltipFormatter) {
             $.plot(selector, values, getBarChartSettings(settings));

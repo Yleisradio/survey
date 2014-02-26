@@ -20,21 +20,27 @@ var filter = (function() {
 
         $('#year-button').click(function() {
             filter.changeMode(this, 'year');
+            return false;
         });
         $('#month-button').click(function() {
             filter.changeMode(this, 'month');
+            return false;
         });
         $('#week-button').click(function() {
             filter.changeMode(this, 'week');
+            return false;
         });
         $('#day-button').click(function() {
             filter.changeMode(this, 'day');
+            return false;
         });
         $('#previous-button').click(function() {
             filter.previousRange();
+            return false;
         });
         $('#next-button').click(function() {
             filter.nextRange();
+            return false;
         });
     });
 
