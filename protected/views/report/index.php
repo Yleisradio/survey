@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <div class="form-horizontal">
+            <div class="form-horizontal filter-column">
                 <?php
                 $this->widget('FilterForm', array(
                 ));

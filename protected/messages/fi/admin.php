@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Message translations.
  *
@@ -16,27 +17,28 @@
  *
  * NOTE, this file must be saved in UTF-8 encoding.
  */
-return array (
-  'motive.create' => 'Luo uusi käyntimotiivi',
-  'motive.create.heading' => 'Uusi käyntimotiivi',
-  'motive.index.heading' => 'Käyntimotiivit',
-  'motive.motive' => 'Käyntimotiivi',
-  'motive.update.heading' => 'Muokkaa käyntimotiivia',
-  'survey.category' => '',
-  'survey.comscore' => '',
-  'survey.create.heading' => 'Uusi kysely',
-  'survey.frequency' => '',
-  'survey.update.heading' => 'Muokkaa kyselyä',
-  'survey.url' => '',
-  'delete' => 'Poista',
-  'motives' => 'Motiivikysymykset',
-  'save' => 'Tallenna',
-  'survey.active' => 'Aktivoitu',
-  'survey.active.off' => 'Pois päältä',
-  'survey.active.on' => 'Päällä',
-  'survey.create' => 'Luo uusi kysely',
-  'survey.index.heading' => 'Kyselyt',
-  'survey.name' => 'Nimi',
-  'surveys' => 'Kyselyt',
-  'update' => 'Muokkaa',
+return array(
+    'motive.create' => 'Luo uusi käyntimotiivi',
+    'motive.create.heading' => 'Uusi käyntimotiivi',
+    'motive.index.heading' => 'Käyntimotiivit',
+    'motive.motive' => 'Käyntimotiivi',
+    'motive.update.heading' => 'Muokkaa käyntimotiivia',
+    'survey.category' => 'Kategoria',
+    'survey.comscore' => 'ComScore-tili',
+    'survey.create.heading' => 'Uusi kysely',
+    'survey.frequency' => 'Frekvenssi',
+    'survey.update.heading' => 'Muokkaa kyselyä',
+    'survey.url' => 'URL-osoite',
+    'survey.motives' => 'Motiivikysymykset',
+    'delete' => 'Poista',
+    'motives' => 'Motiivikysymykset',
+    'save' => 'Tallenna',
+    'survey.active' => 'Aktivoitu',
+    'survey.active.off' => 'Pois päältä',
+    'survey.active.on' => 'Päällä',
+    'survey.create' => 'Luo uusi kysely',
+    'survey.index.heading' => 'Kyselyt',
+    'survey.name' => 'Nimi',
+    'surveys' => 'Kyselyt',
+    'update' => 'Muokkaa',
 );

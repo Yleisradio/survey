@@ -36,7 +36,7 @@ class Survey extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, url, category, frequency, comscore', 'required'),
+            array('name, frequency, comscore', 'required'),
             array('frequency, active', 'numerical', 'integerOnly' => true),
             array('name, category, comscore', 'length', 'max' => 32),
             array('url', 'length', 'max' => 128),
@@ -72,6 +72,7 @@ class Survey extends CActiveRecord
             'frequency' => Yii::t('admin', 'survey.frequency'),
             'comscore' => Yii::t('admin', 'survey.comscore'),
             'active' => Yii::t('admin', 'survey.active'),
+            'motives' => Yii::t('admin', 'survey.motives'),
         );
     }
 
@@ -104,6 +105,9 @@ class Survey extends CActiveRecord
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => 50,
+            ),
         ));
     }
 
@@ -172,5 +176,5 @@ class Survey extends CActiveRecord
         }
         parent::afterFind();
     }
-    
+
 }

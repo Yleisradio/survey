@@ -240,15 +240,15 @@ function loadYleWebPollResources() {
                     siteUrl = siteUrl.replace(lastSlashRegx, '');
                     currentUrl = currentUrl.replace(lastSlashRegx, '');
                     //Match by category
-                    if (typeof(currentCategory) != 'undefined') {
-                        if (currentCategory == siteConf[i].category) {
+                    if (typeof(currentCategory) !== 'undefined') {
+                        if (currentCategory === siteConf[i].category && siteConf[i].category) {
                             currentSiteConf = siteConf[i];
                             currentSiteConf.currentPath = '/';
                             break;
                         }
                     }
                     //Match by URL
-                    else {
+                    else if(typeof(currentUrl) !== 'undefined' && siteUrl) {
                         if (currentUrl.match(siteUrl)) {
                             currentSiteConf = siteConf[i];
                             currentSiteConf.currentPath = siteUrlObj.path;

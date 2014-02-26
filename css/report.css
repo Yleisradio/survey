@@ -2,6 +2,10 @@
     margin-top: 20px;
 }
 
+.filter-column {
+    margin-right: 30px;
+}
+
 #time-period {
     font-size: 36px;
     font-family: 'Yle Regular';
@@ -15,6 +19,7 @@
     font-family: 'Yle Regular';
     color: #333;
     margin-top: 5px;
+    margin-bottom: 30px;
 }
 
 .metric-label {
@@ -25,6 +30,8 @@
 
 .metric-value {
     font-size: 22px;
+    line-height: 22px;
+    margin-bottom: 10px;
 }
 
 .metric-chart {
@@ -87,14 +94,14 @@
 }
 
 #filter-form .row div.button {
-    background-color: #ccc;
+    background-color: #bbb;
     color: white;
     display: block;
     text-align: center;
     padding: 0;
 }
 
-.button a:hover {
+.button a:hover, .time-button:hover {
     color: white;
     text-decoration: none;
 }
@@ -121,7 +128,7 @@
     width: 30px;
 }
 
-.button.active {
+#filter-form .row div.button.active, #filter-form .row div.button:hover {
     background-color: #b3b3b3;
 }
 
@@ -134,7 +141,7 @@
     color: white;
 }
 
-.time-button.active {
+.time-button.active{
     background-color: #397ab4;
 }
 

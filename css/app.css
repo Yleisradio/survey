@@ -43,3 +43,7 @@
     height: 42px;
     vertical-align: middle;
 }
+
+.pagination .last, .pagination .first {
+    display: none;
+}

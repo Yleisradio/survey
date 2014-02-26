@@ -19,12 +19,18 @@
             'filter' => $model,
             'columns' => array(
                 array(
+                    'name' => 'name',
+                    'type' => 'raw',
+                    'value' => 'CHtml::link("<i class=\"fa fa-search\"></i>Kokeile", array("form/form", "surveyId" => $data["id"]), array("class" => "btn btn-primary"))',
+                    'filter' => false,
+                ),
+                array(
                     'class' => 'CButtonColumn',
                     'template' => '{update}',
                     'buttons' => array(
                         'update' => array(
                             'imageUrl' => false,
-                            'label' => Yii::t('admin', 'update'),
+                            'label' => '<i class="fa fa-cog"></i>' . Yii::t('admin', 'update'),
                             'options' => array(
                                 'class' => 'btn btn-primary',
                             ),

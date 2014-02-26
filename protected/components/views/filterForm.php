@@ -5,24 +5,24 @@ $form = $this->beginWidget('CActiveForm', array(
         ));
 ?>
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-xs-4">
         <a href="" id="year-button" class="time-button"><?php echo Yii::t('report', 'year'); ?></a>
     </div>
-    <div class="col-sm-4">
+    <div class="col-xs-4">
         <a href="" id="month-button" class="time-button"><?php echo Yii::t('report', 'month'); ?></a>
     </div>
-    <div class="col-sm-4">
+    <div class="col-xs-4">
         <a href="" id="week-button" class="time-button"><?php echo Yii::t('report', 'week'); ?></a>
     </div>
 </div>
 <div class="row border-bottom">
-    <div class="col-sm-6">
+    <div class="col-xs-6">
         <div class="button">
             <i class="fa fa-chevron-left button-chevron-left"></i>
             <a href="" id="previous-button" ><?php echo Yii::t('report', 'previous'); ?></a>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-xs-6">
         <div class="button">
             <a href="" id="next-button" ><?php echo Yii::t('report', 'next'); ?></a>
             <i class="fa fa-chevron-right button-chevron-right"></i>

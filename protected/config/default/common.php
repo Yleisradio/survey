@@ -18,6 +18,30 @@ return array(
     ),
     // application components
     'components' => array(
+        'widgetFactory' => array(
+            'widgets' => array(
+                'CLinkPager' => array(
+                    'header' => false,
+                    'footer' => false,
+                    'nextPageLabel' => '<i class="fa fa-angle-right"></i>',
+                    'prevPageLabel' => '<i class="fa fa-angle-left"></i>',
+                    'selectedPageCssClass' => 'active',
+                    'hiddenPageCssClass' => 'disabled',
+                    'htmlOptions' => array(
+                        'class' => 'pagination',
+                    ),
+                    'cssFile' => false,
+                ),
+                'CGridView' => array(
+                    'htmlOptions' => array(
+                        'class' => 'table-responsive bordered'
+                    ),
+                    'pagerCssClass' => 'yiiPager',
+                    'cssFile' => false,
+                    'itemsCssClass' => 'table table-striped table-condensed',
+                ),
+            )
+        ),
         'mail' => array(
             'class' => 'ext.yii-mail.YiiMail',
             'transportType' => 'php',
