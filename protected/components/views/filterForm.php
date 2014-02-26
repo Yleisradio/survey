@@ -6,21 +6,27 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 <div class="row">
     <div class="col-sm-4">
-        <a id="year-button" class="button button-primary"><?php echo Yii::t('report', 'year'); ?></a>
+        <a href="" id="year-button" class="time-button"><?php echo Yii::t('report', 'year'); ?></a>
     </div>
     <div class="col-sm-4">
-        <a id="month-button" class="button button-primary"><?php echo Yii::t('report', 'month'); ?></a>
+        <a href="" id="month-button" class="time-button"><?php echo Yii::t('report', 'month'); ?></a>
     </div>
     <div class="col-sm-4">
-        <a id="week-button" class="button button-primary"><?php echo Yii::t('report', 'week'); ?></a>
+        <a href="" id="week-button" class="time-button"><?php echo Yii::t('report', 'week'); ?></a>
     </div>
 </div>
 <div class="row border-bottom">
     <div class="col-sm-6">
-        <a id="previous-button" class="button"><?php echo Yii::t('report', 'previous'); ?></a>
+        <div class="button">
+            <i class="fa fa-chevron-left button-chevron-left"></i>
+            <a href="" id="previous-button" ><?php echo Yii::t('report', 'previous'); ?></a>
+        </div>
     </div>
     <div class="col-sm-6">
-        <a id="next-button" class="button"><?php echo Yii::t('report', 'next'); ?></a>
+        <div class="button">
+            <a href="" id="next-button" ><?php echo Yii::t('report', 'next'); ?></a>
+            <i class="fa fa-chevron-right button-chevron-right"></i>
+        </div>
     </div>
 </div>
 <?php echo $form->checkBoxList($filter, 'surveys', CHtml::listData(Survey::model()->findAllByAttributes(array('active' => 1)), 'category', 'name'), array('name' => 'surveys', 'checkAll' => Yii::t('report', 'filter.select all'))); ?>

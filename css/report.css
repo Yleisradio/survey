@@ -86,28 +86,55 @@
     border-width: 3px;
 }
 
-.button {
+#filter-form .row div.button {
     background-color: #ccc;
     color: white;
     display: block;
     text-align: center;
-    padding: 8px 0;
+    padding: 0;
 }
 
-.button:hover {
+.button a:hover {
     color: white;
     text-decoration: none;
+}
+
+.button a {
+    padding: 5px 0;
+    clear: both;
+    height: 30px;
+    display: inline-block;
+    color: white;
+}
+
+.button-chevron-right {
+    float: right;
+    background-color: #999999;
+    padding: 8px 0;
+    width: 30px;
+}
+
+.button-chevron-left {
+    float: left;
+    background-color: #999999;
+    padding: 8px 0;
+    width: 30px;
 }
 
 .button.active {
     background-color: #b3b3b3;
 }
 
-.button-primary {
+.time-button {
     background-color: #5c9eda;
+    padding: 8px 0;
+    display: block;
+    text-align: center;
+    padding: 8px 0;
+    color: white;
 }
 
-.button-primary.active {
+.time-button.active {
     background-color: #397ab4;
 }
 
