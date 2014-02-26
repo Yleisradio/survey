@@ -3,6 +3,13 @@
 class SurveyController extends Controller
 {
 
+    public function beforeAction($action)
+    {
+        $cs = Yii::app()->clientScript;
+        $cs->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/admin.css'));
+        return parent::beforeAction($action);
+    }
+
     public function accessRules()
     {
         if (Yii::app()->params['authentication']['required']) {

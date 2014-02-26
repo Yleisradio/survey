@@ -47,3 +47,7 @@
 .pagination .last, .pagination .first {
     display: none;
 }
+
+.btn .fa {
+    margin-right: 5px;
+}

@@ -3,6 +3,13 @@
 class MotiveController extends Controller
 {
 
+    public function beforeAction($action)
+    {
+        $cs = Yii::app()->clientScript;
+        $cs->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/admin.css'));
+        return parent::beforeAction($action);
+    }
+
     /**
      * @var string the default layout for the views. 
      */
@@ -27,7 +34,6 @@ class MotiveController extends Controller
             return array();
         }
     }
-
 
     /**
      * Creates a new model.
@@ -126,4 +132,5 @@ class MotiveController extends Controller
             Yii::app()->end();
         }
     }
+
 }

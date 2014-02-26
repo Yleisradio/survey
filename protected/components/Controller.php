@@ -30,7 +30,6 @@ class Controller extends CController
         $cs->registerCoreScript('jquery');
         $cs->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/bootstrap.css'));
         $cs->registerScriptFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.js') . '/bootstrap.js'));
-        $cs->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/app.css'));
         parent::beforeAction($action);
         return true;
     }
