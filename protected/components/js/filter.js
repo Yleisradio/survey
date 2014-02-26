@@ -226,9 +226,11 @@ var filter = (function() {
             var from = filters.current.from;
             if (mode == 'year') {
                 from.setUTCFullYear(from.getUTCFullYear() - 1);
+                from.setUTCDate(from.getUTCDate() + 7);
             }
             if (mode == 'month') {
                 from.setUTCMonth(from.getUTCMonth() - 1);
+                from.setUTCDate(from.getUTCDate() + 7);
             }
             if (mode == 'week') {
                 from.setUTCDate(from.getUTCDate() - 7);
