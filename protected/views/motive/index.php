@@ -6,7 +6,7 @@
     <div class="col-sm-12">
         <h1><?php echo Yii::t('admin', 'motive.index.heading') ?></h1>
 
-        <a href="<?php echo $this->createUrl('create') ?>" class="btn btn-primary"><?php echo Yii::t('admin', 'motive.create') ?></a>
+        <a href="<?php echo $this->createUrl('create') ?>" class="new-button btn btn-primary"><?php echo Yii::t('admin', 'motive.create') ?></a>
         <?php
         $this->widget('zii.widgets.grid.CGridView', array(
             'htmlOptions' => array(
