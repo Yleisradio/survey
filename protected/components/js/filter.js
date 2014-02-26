@@ -11,9 +11,21 @@ var filter = (function() {
         $('#compare').change(function() {
             refresh();
         });
-        $('#surveys').change(function() {
+        $('#surveys').change(function(ev) {
+            if ($(ev.target).attr('id') !== 'surveys_0') {
+                refresh();
+            }
+        });
+
+        jQuery('#surveys_0').click(function() {
+            jQuery("input[name='surveys\[\]']").prop('checked', this.checked);
             refresh();
         });
+        jQuery("input[name='surveys\[\]']").click(function() {
+            jQuery('#surveys_0').prop('checked', !jQuery("input[name='surveys\[\]']:not(:checked)").length);
+        });
+        jQuery('#surveys_0').prop('checked', !jQuery("input[name='surveys\[\]']:not(:checked)").length);
+
 
         $('#filter-form .active').removeClass('active');
         $('#' + $('#mode').val() + '-button').addClass('active');
@@ -49,30 +61,30 @@ var filter = (function() {
     var filters = {
         current: {
             from: null,
-            to: null,
+            to: null
         },
         previous: {
             from: null,
             to: null
-        },
+        }
     };
 
     function getTo(from) {
         var to = from;
-        mode = $('#mode').val();
-        if (mode == 'year') {
+        var mode = $('#mode').val();
+        if (mode === 'year') {
             to.setUTCFullYear(to.getUTCFullYear() + 1);
         }
-        if (mode == 'month') {
+        if (mode === 'month') {
             to.setUTCMonth(to.getUTCMonth() + 1);
         }
-        if (mode == 'week') {
+        if (mode === 'week') {
             to.setUTCDate(to.getUTCDate() + 7);
         }
-        if (mode == 'day') {
+        if (mode === 'day') {
             to.setUTCDate(to.getUTCDate() + 1);
         }
-        if (mode != 'day' && mode != 'week') {
+        if (mode !== 'day' && mode !== 'week') {
             to = getSunday(to);
         }
         to.setUTCSeconds((to.getUTCSeconds() - 1));
@@ -109,7 +121,7 @@ var filter = (function() {
     }
 
     function saveFilter() {
-        if (typeof(saveRequest) == 'object') {
+        if (typeof(saveRequest) === 'object') {
             saveRequest.abort();
         }
         saveRequest = $.ajax({
@@ -130,37 +142,37 @@ var filter = (function() {
 
         filters.previous.from = null;
         filters.previous.to = null;
-        if (compare == 'year') {
+        if (compare === 'year') {
             start = sameWeekDayOfPreviousYear(start);
             end = sameWeekDayOfPreviousYear(end);
             if ((end - start) < length) {
                 end.setDate(end.getUTCDate() + 7);
             }
-            if ($('#mode').val() != 'day') {
+            if ($('#mode').val() !== 'day') {
                 start = getMonday(start);
                 end = getSunday(end);
             }
-            if ($('#mode').val() == 'year') {
+            if ($('#mode').val() === 'year') {
                 end.setUTCDate((end.getUTCDate() - 1));
             }
             end.setUTCSeconds((end.getUTCSeconds() - 1));
         }
-        else if (compare == 'period') {
+        else if (compare === 'period') {
             end = new Date(start);
             start = new Date(start - length);
             start.setUTCSeconds(0);
-            if ($('#mode').val() == 'month') {
+            if ($('#mode').val() === 'month') {
                 end.setUTCDate(end.getUTCDate() - 1);
             }
-            if ($('#mode').val() != 'day') {
+            if ($('#mode').val() !== 'day') {
                 start = getMonday(start);
             }
-            if ($('#mode').val() == 'year') {
+            if ($('#mode').val() === 'year') {
                 end.setUTCDate((end.getUTCDate() - 1));
             }
             end.setUTCSeconds((end.getUTCSeconds() - 1));
         }
-        if (compare != 'none') {
+        if (compare !== 'none') {
             filters.previous.from = start;
             filters.previous.to = end;
         }
@@ -190,7 +202,7 @@ var filter = (function() {
     function getMonday(d) {
         d = new Date(d);
         var day = d.getUTCDay();
-        var diff = d.getUTCDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+        var diff = d.getUTCDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
         return new Date(d.setUTCDate(diff));
     }
     /**
@@ -201,7 +213,7 @@ var filter = (function() {
     function getSunday(d) {
         d = new Date(d);
         var day = d.getUTCDay();
-        var diff = d.getUTCDate() + 1 + (day == 0 ? 0 : 7 - day); // adjust when day is sunday
+        var diff = d.getUTCDate() + 1 + (day === 0 ? 0 : 7 - day); // adjust when day is sunday
         return new Date(d.setUTCDate(diff));
     }
 
@@ -224,21 +236,21 @@ var filter = (function() {
         previousRange: function() {
             var mode = $('#mode').val();
             var from = filters.current.from;
-            if (mode == 'year') {
+            if (mode === 'year') {
                 from.setUTCFullYear(from.getUTCFullYear() - 1);
                 from.setUTCDate(from.getUTCDate() + 7);
             }
-            if (mode == 'month') {
+            if (mode === 'month') {
                 from.setUTCMonth(from.getUTCMonth() - 1);
                 from.setUTCDate(from.getUTCDate() + 7);
             }
-            if (mode == 'week') {
+            if (mode === 'week') {
                 from.setUTCDate(from.getUTCDate() - 7);
             }
-            if (mode == 'day') {
+            if (mode === 'day') {
                 from.setUTCDate(from.getUTCDate() - 1);
             }
-            if (mode != 'day') {
+            if (mode !== 'day') {
                 from = getMonday(from);
             }
 
@@ -250,19 +262,19 @@ var filter = (function() {
         nextRange: function() {
             var mode = $('#mode').val();
             var from = filters.current.from;
-            if (mode == 'year') {
+            if (mode === 'year') {
                 from.setUTCFullYear(from.getUTCFullYear() + 1);
             }
-            if (mode == 'month') {
+            if (mode === 'month') {
                 from.setUTCMonth(from.getUTCMonth() + 1);
             }
-            if (mode == 'week') {
+            if (mode === 'week') {
                 from.setUTCDate(from.getUTCDate() + 7);
             }
-            if (mode == 'day') {
+            if (mode === 'day') {
                 from.setUTCDate(from.getUTCDate() + 1);
             }
-            if (mode != 'day') {
+            if (mode !== 'day') {
                 from = getMonday(from);
             }
             setCurrent(from);
@@ -284,19 +296,19 @@ var filter = (function() {
             from.setUTCMinutes(0);
             from.setUTCSeconds(0);
             from.setUTCMilliseconds(0);
-            if (mode == 'year') {
+            if (mode === 'year') {
                 from.setUTCFullYear(from.getUTCFullYear() - 1);
             }
-            if (mode == 'month') {
+            if (mode === 'month') {
                 from.setUTCMonth(from.getUTCMonth() - 1);
             }
-            if (mode == 'week') {
+            if (mode === 'week') {
                 from.setUTCDate(from.getUTCDate() - 7);
             }
-            if (mode == 'day') {
+            if (mode === 'day') {
                 from.setUTCDate(from.getUTCDate() - 1);
             }
-            if (mode != 'day') {
+            if (mode !== 'day') {
                 from = getMonday(from);
             }
             setCurrent(from);
@@ -311,5 +323,5 @@ var filter = (function() {
                 filterChanged = callbackFunction;
             }
         }
-    }
+    };
 })();
