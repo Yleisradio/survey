@@ -217,6 +217,17 @@ var filter = (function() {
         return new Date(d.setUTCDate(diff));
     }
 
+    function getSelected(element) {
+        var selected = [];
+        $(element + ' input').each(function(index, element) {
+            if ($(element).is(':checked')) {
+                selected.push((element).value);
+            }
+        });
+        selected = selected.join(',');
+        return selected;
+    }
+
     return {
         /**
          * Returns current time period
@@ -322,6 +333,9 @@ var filter = (function() {
             if (typeof(callbackFunction) === 'function') {
                 filterChanged = callbackFunction;
             }
+        },
+        surveys: function() {
+            return getSelected('#filter-form #surveys');
         }
     };
 })();

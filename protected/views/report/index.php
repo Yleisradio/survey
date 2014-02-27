@@ -61,6 +61,7 @@
     <script type="text/javascript">
         moment.lang('<?php echo Yii::app()->language; ?>');
         chart.setMonthNames(['<?php echo Yii::t('calendar', 'Jan'); ?>', '<?php echo Yii::t('calendar', 'Feb'); ?>', '<?php echo Yii::t('calendar', 'Mar'); ?>', '<?php echo Yii::t('calendar', 'Apr'); ?>', '<?php echo Yii::t('calendar', 'May'); ?>', '<?php echo Yii::t('calendar', 'Jun'); ?>', '<?php echo Yii::t('calendar', 'Jul'); ?>', '<?php echo Yii::t('calendar', 'Aug'); ?>', '<?php echo Yii::t('calendar', 'Sep'); ?>', '<?php echo Yii::t('calendar', 'Oct'); ?>', '<?php echo Yii::t('calendar', 'Nov'); ?>', '<?php echo Yii::t('calendar', 'Dec'); ?>']);
+        var lastAnswerId = null;
 
 
         filter.setFilterChanged(function() {
@@ -151,8 +152,6 @@
                             },
                         });
 
-                var answerTemplate = _.template('<?php $this->renderPartial('_answer'); ?>');
-
                 dataLoader.loadData({
                     url: '<?php echo $this->createUrl('api/answers') ?>',
                     compareMode: $('#compare').val(),
@@ -160,26 +159,8 @@
                     requestParameters: {
                     },
                     currentComplete: function(data, options) {
-                        var answers = $('.answers').data('masonry');
-                        if (answers) {
-                            answers.destroy();
-                        }
-                        $('.answers').html('');
-                        var genderStrings = {
-                            male: '<?php echo Yii::t('report', 'male'); ?>',
-                            female: '<?php echo Yii::t('report', 'female'); ?>'
-                        };
-                        var NPSStrings = {
-                            promoter: '<?php echo Yii::t('report', 'promoter'); ?>',
-                            passive: '<?php echo Yii::t('report', 'passive'); ?>',
-                            detractor: '<?php echo Yii::t('report', 'detractor'); ?>'
-                        }
-                        $.each(data, function(index, element) {
-                            element.localizedGender = genderStrings[element.gender];
-                            element.timeago = moment(element.timestamp).fromNow();
-                            element.localizedNPSGroup = NPSStrings[element.group];
-                            $('.answers').append(answerTemplate(element));
-                        });
+                        var answers = renderAnswers(data);
+                        $('.answers').append(answers);
                         $('.answers').masonry({
                             itemSelector: '.answer'
                         });
@@ -233,6 +214,48 @@
             loadData();
             renderTimePeriod();
 
+            $(window).scroll(function() {
+                if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
+                    $.ajax({
+                        url: '<?php echo $this->createUrl('api/answers') ?>',
+                        data: {
+                            from: filter.current().from,
+                            to: filter.current().to,
+                            fromId: lastAnswerId,
+                            sites: filter.surveys()
+                        },
+                        success: function(data) {
+                            renderAnswers(data);
+                            var answers = renderAnswers(data);
+                            $('.answers').masonry().append(answers).masonry('reloadItems');
+                            $('.answers').masonry().masonry('reloadItems');
+                        }
+                    });
+                }
+            });
+
+            function renderAnswers(data) {
+                var answerTemplate = _.template('<?php $this->renderPartial('_answer'); ?>');
+                var genderStrings = {
+                    male: '<?php echo Yii::t('report', 'male'); ?>',
+                    female: '<?php echo Yii::t('report', 'female'); ?>'
+                };
+                var NPSStrings = {
+                    promoter: '<?php echo Yii::t('report', 'promoter'); ?>',
+                    passive: '<?php echo Yii::t('report', 'passive'); ?>',
+                    detractor: '<?php echo Yii::t('report', 'detractor'); ?>'
+                }
+                var answers = [];
+                $.each(data, function(index, element) {
+                    element.localizedGender = genderStrings[element.gender];
+                    element.timeago = moment(element.timestamp).fromNow();
+                    element.localizedNPSGroup = NPSStrings[element.group];
+                    answers.push(answerTemplate(element));
+                });
+                lastAnswerId = data.pop().id;
+                return answers;
+            }
+
             function renderTimePeriod() {
                 var timePeriod = '';
 
@@ -261,7 +284,7 @@
                 // Get first day of year
                 var yearStart = new Date(d.getFullYear(), 0, 1);
                 // Calculate full weeks to nearest Thursday
-                var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+                var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
                 // Return array of year and week number
                 return weekNo;
             }

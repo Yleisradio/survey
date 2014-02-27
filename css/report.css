@@ -141,7 +141,7 @@
     color: white;
 }
 
-.time-button.active{
+.time-button.active, .time-button:hover {
     background-color: #397ab4;
 }
 

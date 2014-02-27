@@ -305,7 +305,7 @@ class Answer extends QueryModel
         return $metrics;
     }
 
-    public static function getAnswers($surveyIds, $from, $to, $limit, $sitesTogether)
+    public static function getAnswers($surveyIds, $from, $to, $limit, $sitesTogether, $fromId)
     {
         if (intval($limit)) {
             $limit = intval($limit);
@@ -313,10 +313,13 @@ class Answer extends QueryModel
                 LEFT JOIN motive ON motive_id = motive.id 
                 LEFT JOIN survey ON survey_id = survey.id
                 WHERE' . self::getWhereCondition($surveyIds, $sitesTogether);
-            
+            $params = self::getWhereParams($surveyIds, $from, $to, $sitesTogether);
+            if ($fromId) {
+                $sql .= ' AND answer.id < :fromId';
+                $params[':fromId'] = $fromId;
+            }
             $sql .= ' ORDER BY timestamp DESC LIMIT ' . $limit;
             $command = Yii::app()->db->createCommand($sql);
-            $params = self::getWhereParams($surveyIds, $from, $to, $sitesTogether);
 
             $answers = $command->queryAll(true, $params);
 
@@ -342,14 +345,16 @@ class Answer extends QueryModel
             throw new CHttpException(400, 'Limit is not a number');
         }
     }
-    
-    public static function getNPSGroup($recommend) {
-        if($recommend <= 6) {
+
+    public static function getNPSGroup($recommend)
+    {
+        if ($recommend <= 6) {
             return 'detractor';
-        } else if($recommend >= 9) {
+        } else if ($recommend >= 9) {
             return 'promoter';
         } else {
             return 'neutral';
         }
     }
+
 }

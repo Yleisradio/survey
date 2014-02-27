@@ -8,22 +8,11 @@ var dataLoader = (function() {
     function getDefaultRequestParameters() {
         var requestParameters = {
             interval: getInterval($('#filter-form #mode').val()),
-            sites: getSelected('#filter-form #surveys'),
-            from: moment($('#filter-form #from').val()).toISOString(),
-            to: moment($('#filter-form #to').val()).toISOString()
+            sites: filter.surveys(),
+            from: filter.current().from,
+            to: filter.current().to
         };
         return requestParameters;
-    }
-
-    function getSelected(element) {
-        var selected = [];
-        $(element + ' input').each(function(index, element) {
-            if ($(element).is(':checked')) {
-                selected.push((element).value);
-            }
-        });
-        selected = selected.join(',');
-        return selected;
     }
 
     function getInterval(mode) {

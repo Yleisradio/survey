@@ -47,13 +47,13 @@ class ApiController extends Controller
         $this->outputJSON($values);
     }
 
-    public function actionAnswers($sites, $from, $to, $limit = 100)
+    public function actionAnswers($sites, $from, $to, $limit = 30, $fromId = null)
     {
         $from = strtotime($from);
         $to = strtotime($to);
         $surveyIds = $this->getSurveyIds($sites);
 
-        $answers = Answer::getAnswers($surveyIds, $from, $to, $limit, true);
+        $answers = Answer::getAnswers($surveyIds, $from, $to, $limit, true, $fromId);
         $this->outputJSON($answers);
     }
 
