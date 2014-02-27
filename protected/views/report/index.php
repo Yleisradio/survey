@@ -173,6 +173,11 @@
                     requestParameters: {
                     },
                     currentComplete: function(data, options) {
+                        var answers = $('.answers').data('masonry');
+                        if (answers) {
+                            answers.destroy();
+                        }
+                        $('.answers').html('');
                         var answers = renderAnswers(data);
                         $('.answers').append(answers);
                         $('.answers').masonry({
@@ -222,7 +227,7 @@
                                 topic.topic
                             ]);
                         });
-                        console.log(sentiments);
+
                         chart.bar('#topic .metric-bar-chart', sentiments, {
                             yaxis: {
                                 ticks: ticks
