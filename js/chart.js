@@ -39,7 +39,7 @@ var chart = (function() {
                         threshold: 0.1,
                         formatter: pieLabelFormatter,
                         background: {
-                            opacity: 0.8
+                            opacity: 0.90
                         }
                     }
                 }
@@ -61,7 +61,8 @@ var chart = (function() {
                     show: true,
                     horizontal: true,
                     barWidth: .8,
-                    align: "center"
+                    align: "center",
+                    fill: 1
                 },
                 stack: true
             },
@@ -80,7 +81,7 @@ var chart = (function() {
     }
 
     function pieLabelFormatter(label, series) {
-        return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+        return "<div style='font-size:10pt; text-align:center; padding:2px; color:white;'>" + label + "<br/><b>" + Math.round(series.percent) + "%</b></div>";
     }
 
     function bindTooltip(tooltipFormatter) {

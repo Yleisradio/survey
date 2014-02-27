@@ -87,50 +87,59 @@
                                 chart.timeSeries('#nps .metric-chart', [nps], {
                                     yaxis: {
                                         min: -100,
-                                        max: 100,
+                                        max: 100
                                     }
                                 });
 
                                 var interest = [];
                                 $.each(data.interest.history, function(index, item) {
                                     interest.push([moment(item.time).valueOf(), item.count]);
-                                })
+                                });
                                 chart.timeSeries('#interest .metric-chart', [interest], {
                                     yaxis: {
                                         min: 0,
-                                        max: 6,
+                                        max: 6
                                     }
                                 });
 
                                 var success = [];
                                 $.each(data.success.history, function(index, item) {
                                     success.push([moment(item.time).valueOf(), item.count]);
-                                })
+                                });
                                 chart.timeSeries('#success .metric-chart', [success], {
                                     yaxis: {
                                         min: 0,
-                                        max: 100,
+                                        max: 100
                                     }
                                 });
 
                                 var sentiment = [];
                                 $.each(data.sentiment.history, function(index, item) {
                                     sentiment.push([moment(item.time).valueOf(), item.count]);
-                                })
+                                });
                                 chart.timeSeries('#sentiment .metric-chart', [sentiment], {
                                     yaxis: {
                                         min: -1,
-                                        max: 1,
+                                        max: 1
                                     }
                                 });
 
                                 var age = [];
+                                var ageColors = {
+                                    '0-14': '#43601c',
+                                    '15-29': '#6d8616',
+                                    '30-44': '#92960f',
+                                    '45-59': '#b1a12f',
+                                    '60-74': '#868153',
+                                    '75+': '#717059'
+                                };
                                 $.each(data.age, function(index, item) {
                                     age.push({
                                         label: index,
+                                        color: ageColors[index],
                                         data: item.total
                                     });
-                                })
+                                });
                                 age.reverse();
                                 chart.pie('#age .metric-pie-chart', age, {
                                 });
@@ -140,16 +149,21 @@
                                     male: '<?php echo Yii::t('report', 'male'); ?>',
                                     female: '<?php echo Yii::t('report', 'female'); ?>'
                                 };
+                                var genderColors = {
+                                    male: '#3399cc',
+                                    female: '#ad4bad'
+                                };
                                 $.each(data.gender, function(index, item) {
                                     gender.push({
                                         label: genderStrings[index],
+                                        color: genderColors[index],
                                         data: item.total
                                     });
-                                })
+                                });
                                 chart.pie('#gender .metric-pie-chart', gender, {
                                 });
 
-                            },
+                            }
                         });
 
                 dataLoader.loadData({
@@ -164,7 +178,7 @@
                         $('.answers').masonry({
                             itemSelector: '.answer'
                         });
-                    },
+                    }
                 });
 
                 dataLoader.loadData({
@@ -179,9 +193,14 @@
                         var localizedSentimentStrings = [
                             '<?php echo Yii::t('report', 'positive'); ?>',
                             '<?php echo Yii::t('report', 'neutral'); ?>',
-                            '<?php echo Yii::t('report', 'negative'); ?>',
+                            '<?php echo Yii::t('report', 'negative'); ?>'
                         ];
                         var sentiments = [];
+                        var sentimentColors = {
+                            positive: '#5c9eda',
+                            neutral: '#bfbfbf',
+                            negative: '#be4b50'
+                        };
                         $.each(sentimentStrings, function(index, sentiment) {
                             var topics = [];
                             $.each(data, function(index, item) {
@@ -190,7 +209,10 @@
                                     index
                                 ]);
                             });
-                            sentiments.push(topics);
+                            sentiments.push({
+                                data: topics,
+                                color: sentimentColors[sentiment]
+                            });
                         });
 
                         var ticks = [];
@@ -200,16 +222,17 @@
                                 topic.topic
                             ]);
                         });
+                        console.log(sentiments);
                         chart.bar('#topic .metric-bar-chart', sentiments, {
                             yaxis: {
-                                ticks: ticks,
+                                ticks: ticks
                             }
                         }, function(item) {
                             return localizedSentimentStrings[item.seriesIndex] + " : " + item.datapoint[1];
                         });
                     }
                 });
-            }
+            };
 
             loadData();
             renderTimePeriod();
@@ -244,7 +267,7 @@
                     promoter: '<?php echo Yii::t('report', 'promoter'); ?>',
                     passive: '<?php echo Yii::t('report', 'passive'); ?>',
                     detractor: '<?php echo Yii::t('report', 'detractor'); ?>'
-                }
+                };
                 var answers = [];
                 $.each(data, function(index, element) {
                     element.localizedGender = genderStrings[element.gender];
@@ -260,7 +283,7 @@
                 var timePeriod = '';
 
                 var mode = $('#mode').val();
-                if (mode == 'week') {
+                if (mode === 'week') {
                     timePeriod += 'Viikko ' + getWeekNumber(filter.current().from) + ' ';
                 }
 
