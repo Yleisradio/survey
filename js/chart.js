@@ -35,11 +35,11 @@ var chart = (function() {
                     show: true,
                     label: {
                         show: true,
-                        radius: 0.75,
+                        radius: 1,
                         threshold: 0.1,
                         formatter: pieLabelFormatter,
                         background: {
-                            opacity: 0.90
+                            opacity: 1
                         }
                     }
                 }
@@ -81,16 +81,16 @@ var chart = (function() {
     }
 
     function pieLabelFormatter(label, series) {
-        return "<div style='font-size:10pt; text-align:center; padding:2px; color:white;'>" + label + "<br/><b>" + Math.round(series.percent) + "%</b></div>";
+        return "<div style='font-size:10pt; text-align:center; padding:5px; color:white;'>" + label + "<br/><b>" + Math.round(series.percent) + "%</b></div>";
     }
 
     function bindTooltip(tooltipFormatter) {
         return function(ev, pos, item) {
             if (item) {
                 $("#tooltip").html(tooltipFormatter(item)).css({
-                    top: pos.pageY + 5,
-                    left: pos.pageX + 5,
-                    border: '2px solid ' + item.series.color
+                    top: pos.pageY + 10,
+                    left: pos.pageX + 10,
+                    border: '1px solid ' + item.series.color
                 }).fadeIn(200);
             } else {
                 $("#tooltip").hide();
