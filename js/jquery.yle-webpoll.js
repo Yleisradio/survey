@@ -113,7 +113,9 @@ function loadYleWebPollResources() {
                 base.viewLayer = function(url) {
                     base.$el.append('<div id="yleWebPoll-modal"><h1 style="display: block;font-size: 2em;font-weight: bold; margin: 0.67em 0;border:none;">' + base.options.title + '</h1><p>' + base.options.text + '</p><a href="#" id="yleWebPoll-yes">' + base.options.linkYes + '</a><a href="#" id="yleWebPoll-no">' + base.options.linkNo + '</a><div style="clear: both;"></div></div><div id="yleWebPoll-mask"></div>');
                     var modalWrapperCSS = {
-                        'width': '100%'
+                        'width': '100%',
+                        'position': 'absolute',
+                        'top': '50px'
                     };
                     base.$el.css(modalWrapperCSS);
                     var maskCSS = {
@@ -266,7 +268,7 @@ function loadYleWebPollResources() {
                         }
                     }
                     //Match by URL
-                    else if(typeof(currentUrl) !== 'undefined' && siteUrl) {
+                    else if (typeof(currentUrl) !== 'undefined' && siteUrl) {
                         if (currentUrl.match(siteUrl)) {
                             currentSiteConf = siteConf[i];
                             currentSiteConf.currentPath = siteUrlObj.path;
