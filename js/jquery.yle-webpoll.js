@@ -277,7 +277,7 @@ function loadYleWebPollResources() {
                 };
                 return siteConfLocation;
             }
-            var conf = window.YLEWebPollsConfig || {};
+            var conf = window.YLESurveyConfig || {};
 
             init(conf);
         })(jQuery);

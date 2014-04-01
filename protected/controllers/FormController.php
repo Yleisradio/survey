@@ -25,7 +25,7 @@ class FormController extends Controller
         }
         header('content-type: application/javascript');
         include('js/jquery.yle-webpoll.js');
-        ?>var YLEWebPollsConfig=<?php
+        ?>var YLESurveyConfig=<?php
         echo json_encode($yleWebPollsConfig);
     }
 
