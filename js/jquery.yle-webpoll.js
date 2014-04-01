@@ -243,7 +243,7 @@ function loadYleWebPollResources() {
                 var options = formSettings;
                 options.path = currentSiteConf.currentPath;
                 options.siteURL = currentSiteConf.siteURL;
-                options.debug = true,
+                options.debug = false,
                         options.urlParams = {
                     surveyId: currentSiteConf.id
                 };
