@@ -18,7 +18,7 @@ var chart = (function() {
             },
             series: {
                 color: '#397ab3',
-                shadowSize: 0,
+                shadowSize: 0
             }
         };
         if (monthNames) {
@@ -45,12 +45,12 @@ var chart = (function() {
                 }
             },
             grid: {
-                hoverable: true,
+                hoverable: true
             },
             legend: {
                 show: false
             }
-        }
+        };
         return $.extend({}, defaultSettings, settings);
     }
 
@@ -95,7 +95,7 @@ var chart = (function() {
             } else {
                 $("#tooltip").hide();
             }
-        }
+        };
     }
 
     return {
