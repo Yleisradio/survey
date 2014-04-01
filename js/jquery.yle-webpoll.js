@@ -111,39 +111,57 @@ function loadYleWebPollResources() {
                     return viewLayer;
                 };
                 base.viewLayer = function(url) {
-                    base.$el.append('<h1 style="display: block;font-size: 2em;font-weight: bold; margin: 0.67em 0;border:none;">' + base.options.title + '</h1><p style="color:#000;">' + base.options.text + '</p><a href="#" id="yleWebPoll-yes">' + base.options.linkYes + '</a><a href="#" id="yleWebPoll-no">' + base.options.linkNo + '</a>');
-                    var cssObj = {
-                        'background-color': '#fff',
-                        'position': 'absolute',
-                        'font-family': 'arial',
-                        'font-size': '12px',
+                    base.$el.append('<div id="yleWebPoll-modal"><h1 style="display: block;font-size: 2em;font-weight: bold; margin: 0.67em 0;border:none;">' + base.options.title + '</h1><p>' + base.options.text + '</p><a href="#" id="yleWebPoll-yes">' + base.options.linkYes + '</a><a href="#" id="yleWebPoll-no">' + base.options.linkNo + '</a><div style="clear: both;"></div></div><div id="yleWebPoll-mask"></div>');
+                    var modalWrapperCSS = {
+                        'width': '100%'
+                    };
+                    base.$el.css(modalWrapperCSS);
+                    var maskCSS = {
+                        'position': 'fixed',
+                        'left': '0',
+                        'top': '0',
+                        'z-index': '9',
+                        'background-color': 'black',
+                        'display': 'block',
+                        'width': '100%',
+                        'height': '100%',
+                        'opacity': '0.4'
+                    };
+                    base.$el.find('#yleWebPoll-mask').css(maskCSS);
+                    //var leftMargin = ($(window).width() / 2) - (base.$el.width() / 2);
+                    //base.$el.css('left', leftMargin + 'px');
+                    var linkCSS = {
+                        'background-color': '#00b5c8',
+                        'color': 'white',
+                        'display': 'block',
+                        'text-align': 'center',
+                        'vertical-align': 'middle',
+                        'border-radius': '4px',
+                        'font-family': '"Helvetica", Helvetica, Arial, sans-serif',
+                        'font-size': '12pt',
+                        'font-weight': 'normal',
+                        'padding': '8px 0 8px 0',
+                        'margin': '0 10px 10px 0',
+                        'text-decoration': 'none',
+                        'width': '100px',
+                        'float': 'left'
+                    };
+                    base.$el.find('a').css(linkCSS);
+                    var modalCSS = {
+                        'position': 'relative',
+                        'background-color': 'white',
+                        'font-family': '"Helvetica Neue",Helvetica,Arial,sans-serif',
+                        'font-size': '14px',
+                        'line-height': '20px',
                         'color': '#000',
                         'top': '20%',
                         'max-width': '500px',
-                        'width': '80%',
-                        'z-index': '9999',
+                        'width': '100%',
+                        'z-index': '99999',
                         'padding': '20px',
-                        'border': 'solid 1px #000',
-                        '-moz-box-shadow': '5px 5px 7px #888',
-                        '-webkit-box-shadow': '5px 5px 7px #888',
-                        'box-shadow': '5px 5px 7px #888'
+                        'margin': '20px auto 0 auto'
                     };
-                    base.$el.css(cssObj);
-                    var leftMargin = ($(window).width() / 2) - (base.$el.width() / 2);
-                    base.$el.css('left', leftMargin + 'px');
-                    var linkCSS = {
-                        '-moz-border-radius': '5px',
-                        '-webkit-border-radius': '5px',
-                        'border-radius': '5px',
-                        'background-color': '#3993D1',
-                        'color': '#FFFFFF',
-                        'font-size': '12px',
-                        'font-weight': 'bold',
-                        'margin-right': '10px',
-                        'padding': '3px 10px',
-                        'text-decoration': 'none'
-                    };
-                    base.$el.find('a').css(linkCSS);
+                    base.$el.find('#yleWebPoll-modal').css(modalCSS);
                     base.$el.fadeIn();
                     base.$el.find('#yleWebPoll-yes')
                             .click(function(e) {

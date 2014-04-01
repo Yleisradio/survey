@@ -19,7 +19,7 @@
  */
 return array(
     'title' => 'Tervetuloa',
-    'text' => 'Mielipiteesi on meille tärkeä: ottaisitko osaa lyhyeen kävijäkyselyyn käyntisi jälkeen?<br/><br/>Osallistuminen on helppoa, ja kysymme vain muutaman nopean kysymyksen. Paina "Kyllä!" -nappia, ja jatka käyntiäsi normaalisti. Avaamme kyselyn toiseen ikkunaan, jonka löydät työpöydältäsi tämän ikkunan alta käynnin jälkeen.<br/><br/>Kiitos osallistumisestasi!',
+    'text' => 'Mielipiteesi on meille tärkeä.<br/><br/>Ottaisitko osaa lyhyeen kävijäkyselyyn käyntisi jälkeen?<br/><br/>Osallistuminen on helppoa, ja kysymme vain muutaman nopean kysymyksen.<br/><br/>Avaamme kyselyn uuteen välilehteen. Voit suorittaa vierailusi loppuun ja vastata kyselyyn sen jälkeen.<br/><br/>Kiitos osallistumisestasi!',
     'yes' => 'Kyllä',
     'no' => 'Ei',
 );
