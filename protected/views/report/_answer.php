@@ -1,44 +1,65 @@
-<div class="answer col-sm-4">\
-    <div class="well <%= group %>">\
-        <div class="row">\
-            <div class="col-md-9">\
-                <% if(gender) {%>\
-                <%= localizedGender %>\
-                <%}%>\
-                <% if(age) {%>\
-                <%= age %>\
-                <?php echo Yii::t('report', 'answer.age'); ?>\
-                <%}%>\
-            </div>\
-            <% if(gender) {%>\
-            <img class="col-md-3" src="images/icon-<%= gender %>.png">\
-            <%}%>\
-        </div>\
-        <div class="">\
-            <%= timeago %>\
-        </div>\
-        <div class="">\
-            <%= survey %>\
-        </div>\
-        <div class="">\
-            <%= motive %>\
-        </div>\
-        <div class="row">\
-            <div class="col-md-4">\
-                <%= localizedNPSGroup %>\
-            </div>\
-        </div>\
-        <% if(failure_text) {%>\
-        <?php echo Yii::t('report', 'answer.failure_text'); ?>\
-        <div class="failure-text">\
-            <span class=""><%= failure_text %></span>\
-        </div>\
-        <%}%>\
-        <% if(feedback) {%>\
-        <?php echo Yii::t('report', 'answer.feedback'); ?>\
-        <div class="feedback">\
-            <span class=""><%= feedback %></span>\
-        </div>\
-        <%}%>\
-    </div>\
-</div>\
+<div class="answer col-sm-4">
+    <div class="answer-inner">
+        <div class="group bar heading <%= gender %>">
+            <div class="gender">
+                <% if(gender == "male") {%>
+                <i class="fa fa-male"></i>
+                <%}%>
+                <% if(gender == "female") {%>
+                <i class="fa fa-female"></i>
+                <%}%>
+            </div>
+            <div class="time">
+                <%= timeago %>
+            </div>
+            <div class="age <%= ageClass %>">
+                <% if(age) {%>
+                <%= age %>
+                <%}%>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="survey bar group box">
+            <%= survey %>
+        </div>
+        <div class="group box">
+            <p class="motive">
+                <%= motive %>
+            </p>
+        </div>
+        <% if(failure_text) {%>
+        <div class="group box">
+            <p class="failure-text">
+                <%= failure_text %>
+            </p>
+        </div>
+        <%}%>
+        <% if(feedback) {%>
+        <div class="group box <%= sentimentClass %>">
+            <p class="feedback">
+                <%= feedback %>
+            </p>
+        </div>
+        <%}%>
+        <% if(recommend) {%>
+        <div class="group box">
+            <div class="recommend">
+                <div>
+                    <?php echo Yii::t('report', 'NPS'); ?>
+                </div>
+                <%= recommend %>
+            </div>
+        </div>
+        <%}%>
+        <% if(interest) {%>
+        <div class="group box">
+            <div class="interest">
+                <div>
+                    <?php echo Yii::t('report', 'interest'); ?>
+                </div>
+                <%= interest %>
+            </div>
+        </div>
+        <%}%>
+    </div>
+</div>

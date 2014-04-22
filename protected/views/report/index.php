@@ -262,8 +262,25 @@
                 }
             });
 
+            moment.lang('fi', {
+                relativeTime: {
+                    future: "%s päästä",
+                    past: "%s sitten",
+                    s: "sekuntia",
+                    m: "minuutti",
+                    mm: "%d minuuttia",
+                    h: "tunti",
+                    hh: "%d tuntia",
+                    d: " päivä",
+                    dd: "%d päivää",
+                    M: "kuukausi",
+                    MM: "%d kk",
+                    y: "vuosi",
+                    yy: "%d vuotta"
+                }
+            });
             function renderAnswers(data) {
-                var answerTemplate = _.template('<?php $this->renderPartial('_answer'); ?>');
+                var answerTemplate = _.template('<?php echo preg_replace("/\r|\n/", "", $this->renderPartial('_answer', null, true)); ?>');
                 var genderStrings = {
                     male: '<?php echo Yii::t('report', 'male'); ?>',
                     female: '<?php echo Yii::t('report', 'female'); ?>'
@@ -273,15 +290,48 @@
                     passive: '<?php echo Yii::t('report', 'passive'); ?>',
                     detractor: '<?php echo Yii::t('report', 'detractor'); ?>'
                 };
+
                 var answers = [];
                 $.each(data, function(index, element) {
                     element.localizedGender = genderStrings[element.gender];
                     element.timeago = moment(element.timestamp).fromNow();
                     element.localizedNPSGroup = NPSStrings[element.group];
+                    element.sentimentClass = getSentimentClass(element.sentiment);
+                    element.ageClass = getAgeClass(element.age);
                     answers.push(answerTemplate(element));
                 });
                 lastAnswerId = data.pop().id;
                 return answers;
+
+                function getSentimentClass(sentiment) {
+                    if (sentiment < 0) {
+                        return 'negative';
+                    }
+                    else if (sentiment > 0) {
+                        return 'positive';
+                    }
+                }
+
+                function getAgeClass(age) {
+                    if (age < 15) {
+                        return 'age1';
+                    }
+                    else if (age < 30) {
+                        return 'age2';
+                    }
+                    else if (age < 45) {
+                        return 'age3';
+                    }
+                    else if (age < 60) {
+                        return 'age4';
+                    }
+                    else if (age < 75) {
+                        return 'age5';
+                    }
+                    else {
+                        return 'age6';
+                    }
+                }
             }
 
             function renderTimePeriod() {

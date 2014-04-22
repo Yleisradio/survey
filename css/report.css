@@ -79,20 +79,6 @@
     padding: 5px;
 }
 
-.answer .well {
-
-}
-
-.detractor {
-    border-color: red;
-    border-width: 3px;
-}
-
-.promoter {
-    border-color: green;
-    border-width: 3px;
-}
-
 #filter-form .row div.button {
     background-color: #bbb;
     color: white;
@@ -158,4 +144,108 @@
         format('embedded-opentype'),
         url('/umk/fonts/yle-regular-fd.woff') format('woff'),
         url('/umk/fonts/yle-regular-fd.ttf') format('truetype');
+}
+
+.answer {
+    margin: 10px 0;
+}
+
+.answer p {
+    margin: 0;
+}
+
+.answer .box {
+    padding: 10px;
+}
+
+.answer-inner {
+    background-color: #f3f3f3;
+}
+
+.answer .heading {
+    color: white;
+    background-color: #999;
+    width: 100%;
+}
+
+.answer .heading.male {
+    background-color: #3199cc;
+}
+
+.answer .heading.female {
+    background-color: #ad4bae;
+}
+
+.answer .heading div {
+    position: relative;
+    text-align: center; 
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.answer .gender, .answer .age {
+    width: 40px;
+}
+
+.answer .gender .fa {
+    position: relative;
+    font-size: 22px;
+    top: 2px;
+}
+
+.answer .age {
+    float: right;
+    font-size: 22px;
+}
+
+.answer .time {
+    width: 173px;
+}
+
+.answer .male .gender {
+    background-color: #257397;
+}
+
+.answer .female .gender {
+    background-color: #803780;
+}
+
+.answer .age.age1 {
+    background-color: #43601c;
+}
+.answer .age.age2 {
+    background-color: #6d8616;
+}
+.answer .age.age3 {
+    background-color: #92960f;
+}
+.answer .age.age4 {
+    background-color: #b1a12f;
+}
+.answer .age.age5 {
+    background-color: #868153;
+}
+.answer .age.age6 {
+    background-color: #717059;
+}
+
+.answer .bar {
+    line-height: 40px;
+}
+
+.answer .survey {
+    background-color: #e1e1e1;
+    font-weight: bold;
+}
+
+.fanswer .positive {
+    background-color: #d4e3d0;
+}
+
+.answer .negative {
+    background-color: #f0dbda;
+}
+
+.answer .group {
+    border-bottom: 3px solid white;
 }
