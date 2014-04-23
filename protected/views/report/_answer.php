@@ -19,7 +19,7 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        <div class="survey bar group box">
+        <div class="survey group box">
             <%= survey %>
         </div>
         <div class="group box">
@@ -48,7 +48,9 @@
                     <?php echo Yii::t('report', 'NPS'); ?>
                 </div>
                 <div class="simple-bar-chart">
-                    <div class="number"><%= recommend %></div>
+                    <div class="number-wrapper">
+                        <div class="number"><%= recommend %></div>
+                    </div>
                     <div class="filled-bar <%= recommendColor %>" style="width: <%= recommend / 10 * 100 %>%"></div>
                     <div class="clearfix"></div>
                 </div>
@@ -62,7 +64,9 @@
                     <?php echo Yii::t('report', 'interest'); ?>
                 </div>
                 <div class="simple-bar-chart">
-                    <div class="number"><%= interest %></div>
+                    <div class="number-wrapper">
+                        <div class="number"><%= interest %></div>
+                    </div>
                     <div class="filled-bar <%= interestColor %>" style="width: <%= interest / 6 * 100 %>%"></div>
                     <div class="clearfix"></div>
                 </div>
