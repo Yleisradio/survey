@@ -282,13 +282,13 @@
 }
 
 .simple-bar-chart .low {
-    background-color: red;
+    background-color: #cc1f1f;
 }
 
 .simple-bar-chart .medium {
-    background-color: orange;
+    background-color: #e6a122;
 }
 
 .simple-bar-chart .high {
-    background-color: green;
+    background-color: #1f991f;
 }
