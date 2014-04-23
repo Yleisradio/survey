@@ -9,8 +9,8 @@ var dataLoader = (function() {
         var requestParameters = {
             interval: getInterval($('#filter-form #mode').val()),
             sites: filter.surveys(),
-            from: filter.current().from,
-            to: filter.current().to
+            from: moment(filter.current().from).toISOString(),
+            to: moment(filter.current().to).toISOString()
         };
         return requestParameters;
     }
