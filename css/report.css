@@ -164,7 +164,7 @@
 
 .answer .heading {
     color: white;
-    background-color: #999;
+    background-color: #888;
     width: 100%;
 }
 
@@ -291,4 +291,15 @@
 
 .simple-bar-chart .high {
     background-color: #1f991f;
+}
+
+.failure-sign {
+    float: left; 
+    font-size: 22px; 
+    padding-right: 10px; 
+    color: #cc1f1f
+}
+
+box.last {
+    margin-bottom: 20px;
 }

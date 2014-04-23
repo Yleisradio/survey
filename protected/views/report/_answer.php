@@ -29,6 +29,7 @@
         </div>
         <% if(failure_text) {%>
         <div class="group box">
+            <i class="fa fa-exclamation failure-sign"></i>
             <p class="failure-text">
                 <%= failure_text %>
             </p>
@@ -41,9 +42,10 @@
             </p>
         </div>
         <%}%>
-        <% if(recommend) {%>
-        <div class="group box">
-            <div class="recommend">
+
+        <div class="group box last row">
+            <% if(recommend) {%>
+            <div class="recommend col-xs-6">
                 <div>
                     <?php echo Yii::t('report', 'NPS'); ?>
                 </div>
@@ -55,11 +57,9 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
-        </div>
-        <%}%>
-        <% if(interest) {%>
-        <div class="group box">
-            <div class="interest">
+            <%}%>
+            <% if(interest) {%>
+            <div class="interest col-xs-6">
                 <div>
                     <?php echo Yii::t('report', 'interest'); ?>
                 </div>
@@ -71,7 +71,10 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
+            <%}%>
+            <div class="clearfix"></div>
         </div>
-        <%}%>
+
+
     </div>
 </div>
