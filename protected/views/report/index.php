@@ -298,6 +298,8 @@
                     element.localizedNPSGroup = NPSStrings[element.group];
                     element.sentimentClass = getSentimentClass(element.sentiment);
                     element.ageClass = getAgeClass(element.age);
+                    element.recommendColor = getRecommendColor(element.group);
+                    element.interestColor = getInterestColor(element.interest);
                     answers.push(answerTemplate(element));
                 });
                 lastAnswerId = data.pop().id;
@@ -330,6 +332,30 @@
                     }
                     else {
                         return 'age6';
+                    }
+                }
+
+                function getRecommendColor(group) {
+                    if (group === 'detractor') {
+                        return 'low';
+                    }
+                    else if (group === 'neutral') {
+                        return 'medium';
+                    }
+                    else if (group === 'promoter') {
+                        return 'high';
+                    }
+                }
+
+                function getInterestColor(interest) {
+                    if (interest <= 2) {
+                        return 'low';
+                    }
+                    else if (interest <= 4) {
+                        return 'medium';
+                    }
+                    else {
+                        return 'high';
                     }
                 }
             }

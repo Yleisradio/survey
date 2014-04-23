@@ -47,7 +47,11 @@
                 <div>
                     <?php echo Yii::t('report', 'NPS'); ?>
                 </div>
-                <%= recommend %>
+                <div class="simple-bar-chart">
+                    <div class="number"><%= recommend %></div>
+                    <div class="filled-bar <%= recommendColor %>" style="width: <%= recommend / 10 * 100 %>%"></div>
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </div>
         <%}%>
@@ -57,7 +61,11 @@
                 <div>
                     <?php echo Yii::t('report', 'interest'); ?>
                 </div>
-                <%= interest %>
+                <div class="simple-bar-chart">
+                    <div class="number"><%= interest %></div>
+                    <div class="filled-bar <%= interestColor %>" style="width: <%= interest / 6 * 100 %>%"></div>
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </div>
         <%}%>

@@ -249,3 +249,41 @@
 .answer .group {
     border-bottom: 3px solid white;
 }
+
+.simple-bar-chart {
+    width: 190px;
+    background-color: #999;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    line-height: 30px;
+    margin: 0 auto;
+    z-index: 10
+}
+
+.simple-bar-chart .filled-bar {
+    position: relative;
+    height: 30px;
+    float: left;
+    z-index: 10
+}
+
+.simple-bar-chart .number {
+    position: absolute;
+    float: left;
+    z-index: 100;
+    text-align: center;
+    width: 190px;
+}
+
+.simple-bar-chart .low {
+    background-color: red;
+}
+
+.simple-bar-chart .medium {
+    background-color: orange;
+}
+
+.simple-bar-chart .high {
+    background-color: green;
+}
