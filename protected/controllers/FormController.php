@@ -13,7 +13,11 @@ class FormController extends Controller
             'continousPollList' => array(),
             'continousPollConf' => array(
                 'title' => Yii::t('popup', 'title'),
-                'text' => Yii::t('popup', 'text'), 
+                'row1' => Yii::t('popup', 'row1'), 
+                'row2' => Yii::t('popup', 'row2'), 
+                'row3' => Yii::t('popup', 'row3'), 
+                'row4' => Yii::t('popup', 'row4'), 
+                'row5' => Yii::t('popup', 'row5'), 
                 'linkYes' => Yii::t('popup', 'yes'),
                 'linkNo' => Yii::t('popup', 'no'),
                 'formURL' => Yii::app()->createAbsoluteUrl('/form/form'),

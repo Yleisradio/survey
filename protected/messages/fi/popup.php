@@ -19,7 +19,11 @@
  */
 return array(
     'title' => 'Tervetuloa',
-    'text' => 'Mielipiteesi on meille tärkeä.<br/><br/>Ottaisitko osaa lyhyeen kävijäkyselyyn käyntisi jälkeen?<br/><br/>Osallistuminen on helppoa, ja kysymme vain muutaman nopean kysymyksen.<br/><br/>Avaamme kyselyn uuteen välilehteen. Voit suorittaa vierailusi loppuun ja vastata kyselyyn sen jälkeen.<br/><br/>Kiitos osallistumisestasi!',
+    'row1' => 'Mielipiteesi on meille tärkeä.',
+    'row2' => 'Ottaisitko osaa lyhyeen kävijäkyselyyn käyntisi jälkeen?',
+    'row3' => 'Osallistuminen on helppoa, ja kysymme vain muutaman nopean kysymyksen.',
+    'row4' => 'Avaamme kyselyn uuteen välilehteen. Voit suorittaa vierailusi loppuun ja vastata kyselyyn sen jälkeen.',
+    'row5' => 'Kiitos osallistumisestasi!',
     'yes' => 'Kyllä',
     'no' => 'Ei',
 );

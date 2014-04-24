@@ -111,7 +111,7 @@ function loadYleWebPollResources() {
                     return viewLayer;
                 };
                 base.viewLayer = function(url) {
-                    base.$el.append('<div id="yleWebPoll-modal"><h1 style="display: block;font-size: 2em;font-weight: bold; margin: 0.67em 0;border:none;">' + base.options.title + '</h1><p>' + base.options.text + '</p><a href="#" id="yleWebPoll-yes">' + base.options.linkYes + '</a><a href="#" id="yleWebPoll-no">' + base.options.linkNo + '</a><div style="clear: both;"></div></div><div id="yleWebPoll-mask"></div>');
+                    base.$el.append('<div id="yleWebPoll-modal"><h1 style="display: block;font-size: 2em;font-weight: bold; margin: 0.67em 0;border:none;">' + base.options.title + '</h1><p>' + base.options.row1 + '</p><p>' + base.options.row2 + '</p><p>' + base.options.row3 + '</p><p>' + base.options.row4 + '</p><p>' + base.options.row5 + '</p><a href="#" id="yleWebPoll-yes">' + base.options.linkYes + '</a><a href="#" id="yleWebPoll-no">' + base.options.linkNo + '</a><div style="clear: both;"></div></div><div id="yleWebPoll-mask"></div>');
                     var modalWrapperCSS = {
                         'width': '100%',
                         'position': 'absolute',
