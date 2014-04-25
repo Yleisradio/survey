@@ -10,13 +10,6 @@
         <div class="col-sm-2 control-label">
             <?php echo Yii::t('admin', 'survey.active'); ?>
         </div>
-        <div class="col-sm-10">
-            <?php
-            echo $this->widget('ActivateButton', array(
-                'survey' => $model->attributes,
-            ))->content;
-            ?>
-        </div>
     </div>
 </div>
 <?php
