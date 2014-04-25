@@ -17,17 +17,14 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'filter.select all' => 'Valitse kaikki',
   'NPS' => 'NPS',
   'age' => 'Ikäjakauma',
-  'answer.age' => 'vuotta',
-  'answer.failure_text' => 'Käynnin epäonnistumisen syy:',
-  'answer.feedback' => 'Muu palaute:',
   'compare.no' => 'Ei vertailujaksoa',
   'compare.period' => 'Edellinen jakso',
   'compare.year' => 'Edellinen vuosi',
   'detractor' => 'Arvostelija',
   'female' => 'Nainen',
+  'filter.select all' => 'Valitse kaikki',
   'gender' => 'Sukupuolijakauma',
   'interest' => 'Kiinnostus',
   'male' => 'Mies',
