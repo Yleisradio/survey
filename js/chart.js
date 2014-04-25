@@ -9,7 +9,7 @@ var chart = (function() {
                 min: moment(filter.current().from).valueOf(),
                 max: moment(filter.current().to).valueOf(),
                 tickFormatter: function(value) {
-                    return moment(value).format("D.M");
+                    return moment(value).format("D.M.");
                 }
             },
             grid: {

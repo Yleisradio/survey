@@ -17,6 +17,12 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'failure reason' => 'Käynnin epäonnistumisen syy',
+  'open feedback' => 'Avoin palaute',
+  'recommend' => 'Suosittelu',
+  'site' => 'Palvelu',
+  'visit motive' => 'Käynnin motiivi',
+  'years' => 'vuotta',
   'NPS' => 'NPS',
   'age' => 'Ikäjakauma',
   'compare.no' => 'Ei vertailujaksoa',
