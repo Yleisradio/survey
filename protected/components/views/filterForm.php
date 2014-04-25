@@ -17,16 +17,16 @@ $form = $this->beginWidget('CActiveForm', array(
 </div>
 <div class="row border-bottom">
     <div class="col-xs-6">
-        <div class="button">
+        <a href="#" id="previous-button"  class="button">
+            <?php echo Yii::t('report', 'previous'); ?>
             <i class="fa fa-chevron-left button-chevron-left"></i>
-            <a href="" id="previous-button" ><?php echo Yii::t('report', 'previous'); ?></a>
-        </div>
+        </a>
     </div>
     <div class="col-xs-6">
-        <div class="button">
-            <a href="" id="next-button" ><?php echo Yii::t('report', 'next'); ?></a>
+        <a href="#" id="next-button"  class="button">
+            <?php echo Yii::t('report', 'next'); ?>
             <i class="fa fa-chevron-right button-chevron-right"></i>
-        </div>
+        </a>
     </div>
 </div>
 <?php echo $form->checkBoxList($filter, 'surveys', array('surveys_all' => Yii::t('report', 'filter.select all')) + CHtml::listData(Survey::model()->findAllByAttributes(array('active' => 1)), 'category', 'name'), array('name' => 'surveys')); ?>

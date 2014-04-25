@@ -79,15 +79,16 @@
     padding: 5px;
 }
 
-#filter-form .row div.button {
+#filter-form .row .button {
     background-color: #bbb;
     color: white;
     display: block;
     text-align: center;
     padding: 0;
+    line-height: 30px;
 }
 
-.button a:hover, .time-button:hover {
+.button:hover, .time-button:hover {
     color: white;
     text-decoration: none;
 }
