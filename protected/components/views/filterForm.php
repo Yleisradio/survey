@@ -29,7 +29,7 @@ $form = $this->beginWidget('CActiveForm', array(
         </a>
     </div>
 </div>
-<?php echo $form->checkBoxList($filter, 'surveys', array('surveys_all' => Yii::t('report', 'filter.select all')) + CHtml::listData(Survey::model()->findAllByAttributes(array('active' => 1)), 'category', 'name'), array('name' => 'surveys')); ?>
+<?php echo $form->checkBoxList($filter, 'surveys', array('surveys_all' => Yii::t('report', 'filter.select all')) + CHtml::listData(Survey::model()->findAll(), 'category', 'name'), array('name' => 'surveys')); ?>
 <?php
 echo $form->hiddenField($filter, 'from', array('name' => 'from'));
 echo $form->hiddenField($filter, 'to', array('name' => 'to'));

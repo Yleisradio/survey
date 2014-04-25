@@ -27,7 +27,7 @@ class Filter extends CFormModel
         date_default_timezone_set("UTC");
         $this->from = date('c', strtotime('last week 00:00'));
         $this->to = date('c', strtotime('last week 00:00 + 6 days'));
-        $this->surveys = CHtml::listData(Survey::model()->findAllByAttributes(array('active' => 1)), 'category', 'name');
+        $this->surveys = array_values(CHtml::listData(Survey::model()->findAll(), 'category', 'category'));
         $this->mode = 'week';
         $this->setAttributes(Yii::app()->user->getState('Filter'), false);
     }
