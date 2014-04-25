@@ -302,7 +302,9 @@
                     element.interestColor = getInterestColor(element.interest);
                     answers.push(answerTemplate(element));
                 });
-                lastAnswerId = data.pop().id;
+                if (data.length) {
+                    lastAnswerId = data.pop().id;
+                }
                 return answers;
 
                 function getSentimentClass(sentiment) {
