@@ -17,7 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'thanks' => 'Tack',
+  'submitting' => '',
+  'survey.success.later' => '',
   'answer.interest.0' => 'Mycket intressant',
   'answer.interest.1' => 'Intressant',
   'answer.interest.2' => 'Ganska intressant',
@@ -44,5 +45,6 @@ return array (
   'survey.success.question' => 'Var ditt besök på Svenska.yle.fi lyckat?',
   'survey.users.question' => 'Hur många personer i ditt hushåll använder apparaten som du använder för att besvara enkäten?',
   'survey.year_of_birth.question' => 'Födelseår',
+  'thanks' => 'Tack',
   'yes' => 'Ja',
 );

@@ -1,3 +1,10 @@
+<script type="text/javascript">
+$(document).on('submit', '#survey-form', function() {
+    $('#form-submit-button').attr('disabled', 'disabled');
+    $('#form-submit-button').attr('value', '<?php echo Yii::t('form', 'submitting') ?>');
+    return true;
+});
+</script>
 <div class="container">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -16,11 +23,11 @@
             echo $form->radioButtonList($answer, 'motive_id', CHtml::listData($survey->motives, 'id', 'motive'));
             ?>
             <div class="row form-horizontal form-group">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <input id="Answer_success_other" value="" type="radio" name="Answer[motive_id]"> 
                     <label for="Answer_success_other">Jokin muu, mikä?</label>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <?php echo $form->textField($answer, 'motive_text', array('class' => 'form-control')); ?>
                 </div>
             </div>
@@ -29,6 +36,7 @@
     <div class="row">
         <div class="col-md-12 question-box">
             <h2><?php echo Yii::t('form', 'survey.success.question', array('{site}' => $survey->name)); ?></h2>
+            <h5><?php echo Yii::t('form', 'survey.success.later'); ?></h5>
             <?php
             echo $form->radioButtonList($answer, 'success', array(
                 1 => Yii::t('form', 'yes'),
@@ -108,7 +116,7 @@
                         '' => Yii::t('form', 'choose'),
                         'female' => Yii::t('form', 'survey.gender.female'),
                         'male' => Yii::t('form', 'survey.gender.male'),
-                    ), array('class' => 'form-control'));
+                            ), array('class' => 'form-control'));
                     ?>
                 </div>
                 <div class="col-md-6">
@@ -122,7 +130,7 @@
     </div>
     <div class="row">
         <div class="col-md-12 submit-box">
-            <?php echo CHtml::submitButton(Yii::t('form', 'survey.submit'), array('class' => 'btn btn-primary')); ?>
+            <?php echo CHtml::submitButton(Yii::t('form', 'survey.submit'), array('id' => 'form-submit-button', 'class' => 'btn btn-primary')); ?>
         </div>
     </div>
     <?php $this->endWidget(); ?>

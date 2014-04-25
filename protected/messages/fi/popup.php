@@ -21,7 +21,7 @@ return array(
     'title' => 'Tervetuloa',
     'row1' => 'Mielipiteesi on meille tärkeä.',
     'row2' => 'Ottaisitko osaa lyhyeen kävijäkyselyyn käyntisi jälkeen?',
-    'row3' => 'Osallistuminen on helppoa, ja kysymme vain muutaman nopean kysymyksen.',
+    'row3' => 'Osallistuminen on helppoa, ja kysymme vain muutaman nopean kysymyksen. Käytämme tietoja Ylen verkkopalveluiden parantamiseen. Tallennetut tiedot ovat täysin anonyymejä.',
     'row4' => 'Avaamme kyselyn uuteen välilehteen. Voit suorittaa vierailusi loppuun ja vastata kyselyyn sen jälkeen.',
     'row5' => 'Kiitos osallistumisestasi!',
     'yes' => 'Kyllä',

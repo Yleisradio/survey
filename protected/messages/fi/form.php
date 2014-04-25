@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'thanks' => 'Kiitos',
+  'submitting' => 'Lähetetään',
   'answer.interest.0' => 'Erittäin kiinnostava',
   'answer.interest.1' => 'Kiinnostava',
   'answer.interest.2' => 'Melko kiinnostava',
@@ -41,8 +41,10 @@ return array (
   'survey.notice.user-information' => 'Kerro vielä pari asiaa itsestäsi. Antamasi tiedot ovat anonyymeja eli niitä ei voida yhdistää sinuun, mutta ne auttavat meitä parantamaan palveluamme.',
   'survey.recommend.question' => 'Suosittelisitko {site} -sivustoamme ystävällesi tai kollegallesi?',
   'survey.submit' => 'Lähetä vastaus',
+  'survey.success.later' => 'Huom! Voit suorittaa ensin vierailusi loppuun ja vastata tähän kyselyyn sen jälkeen.',
   'survey.success.question' => 'Oliko käyntisi {site} -sivulla onnistunut?',
   'survey.users.question' => 'Kuinka moni henkilö taloudessanne käyttää laitetta, jolla vastaat kyselyyn?',
   'survey.year_of_birth.question' => 'Syntymävuotesi',
+  'thanks' => 'Kiitos',
   'yes' => 'Kyllä',
 );
