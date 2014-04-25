@@ -17,16 +17,16 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Apr' => '',
-  'Aug' => '',
-  'Dec' => '',
-  'Feb' => '',
-  'Jan' => '',
-  'Jul' => '',
-  'Jun' => '',
-  'Mar' => '',
-  'May' => '',
-  'Nov' => '',
-  'Oct' => '',
-  'Sep' => '',
+  'Apr' => 'Huhti',
+  'Aug' => 'Elo',
+  'Dec' => 'Joulu',
+  'Feb' => 'Helmi',
+  'Jan' => 'Tammi',
+  'Jul' => 'Heinä',
+  'Jun' => 'Kesä',
+  'Mar' => 'Maalis',
+  'May' => 'Toukokuu',
+  'Nov' => 'Marras',
+  'Oct' => 'Loka',
+  'Sep' => 'Syys',
 );
