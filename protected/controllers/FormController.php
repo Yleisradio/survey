@@ -39,7 +39,8 @@ class FormController extends Controller
             foreach ($surveys as $survey) {
                 $yleWebPollsConfig['continousPollList'][] = $survey->toYleWebPollsConfigFormat();
             }
-            Yii::app()->cache->set('surveyConfig', $yleWebPollsConfig, 60);
+            $dependency = new CDbCacheDependency('SELECT MAX(`updated`) FROM survey');
+            Yii::app()->cache->set('surveyConfig', $yleWebPollsConfig, 60 * 60, $dependency);
         }
         header('Content-Type: application/javascript');
         include('js/jquery.yle-webpoll.js');
