@@ -8,7 +8,7 @@ class FormController extends Controller
         return array(
             array(
                 'CHttpCacheFilter + surveys',
-                'lastModified' => time() - 3600
+                'lastModified' => Yii::app()->db->createCommand("SELECT MAX(`updated`) FROM survey")->queryScalar(),
             ),
         );
     }

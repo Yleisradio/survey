@@ -37,7 +37,7 @@ class Survey extends CActiveRecord
         // will receive user inputs.
         return array(
             array('name, frequency, comscore', 'required'),
-            array('frequency, active', 'numerical', 'integerOnly' => true),
+            array('frequency, active, updated', 'numerical', 'integerOnly' => true),
             array('name, category, comscore', 'length', 'max' => 32),
             array('url', 'length', 'max' => 128),
             // The following rule is used by search().
@@ -147,6 +147,12 @@ class Survey extends CActiveRecord
         $this->deleted = 1;
         $this->save();
         return false;
+    }
+
+    protected function beforeSave()
+    {
+        $this->updated = time();
+        return true;
     }
 
     /**
