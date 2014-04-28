@@ -8,26 +8,31 @@ class FormController extends Controller
      */
     public function actionSurveys()
     {
-        $surveys = Survey::model()->findAllByAttributes(array('active' => 1));
-        $yleWebPollsConfig = array(
-            'continousPollList' => array(),
-            'continousPollConf' => array(
-                'title' => Yii::t('popup', 'title'),
-                'row1' => Yii::t('popup', 'row1'), 
-                'row2' => Yii::t('popup', 'row2'), 
-                'row3' => Yii::t('popup', 'row3'), 
-                'row4' => Yii::t('popup', 'row4'), 
-                'row5' => Yii::t('popup', 'row5'), 
-                'linkYes' => Yii::t('popup', 'yes'),
-                'linkNo' => Yii::t('popup', 'no'),
-                'formURL' => Yii::app()->createAbsoluteUrl('/form/form'),
-                'categoryAttribute' => Yii::app()->params['categoryAttribute'],
-            ),
-        );
-        foreach ($surveys as $survey) {
-            $yleWebPollsConfig['continousPollList'][] = $survey->toYleWebPollsConfigFormat();
+        $surveyConfig = Yii::app()->cache->get('surveyConfig');
+        if (!$surveyConfig) {
+            $surveys = Survey::model()->findAllByAttributes(array('active' => 1));
+            $yleWebPollsConfig = array(
+                'continousPollList' => array(),
+                'continousPollConf' => array(
+                    'title' => Yii::t('popup', 'title'),
+                    'row1' => Yii::t('popup', 'row1'),
+                    'row2' => Yii::t('popup', 'row2'),
+                    'row3' => Yii::t('popup', 'row3'),
+                    'row4' => Yii::t('popup', 'row4'),
+                    'row5' => Yii::t('popup', 'row5'),
+                    'linkYes' => Yii::t('popup', 'yes'),
+                    'linkNo' => Yii::t('popup', 'no'),
+                    'formURL' => Yii::app()->createAbsoluteUrl('/form/form'),
+                    'categoryAttribute' => Yii::app()->params['categoryAttribute'],
+                ),
+            );
+            foreach ($surveys as $survey) {
+                $yleWebPollsConfig['continousPollList'][] = $survey->toYleWebPollsConfigFormat();
+            }
+            Yii::app()->cache->set('surveyConfig', $yleWebPollsConfig, 60);
         }
-        header('content-type: application/javascript');
+        header('Content-Type: application/javascript');
+        header('Cache-Control: public, max-age=3600, must-revalidate');
         include('js/jquery.yle-webpoll.js');
         ?>var YLESurveyConfig=<?php
         echo json_encode($yleWebPollsConfig);
