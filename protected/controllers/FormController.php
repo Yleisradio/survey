@@ -3,6 +3,16 @@
 class FormController extends Controller
 {
 
+    public function filters()
+    {
+        return array(
+            array(
+                'CHttpCacheFilter + surveys',
+                'lastModified' => time() - 3600
+            ),
+        );
+    }
+
     /**
      * Returns YleWebPoll jQuery plugin and the survey configs for the plugin
      */
@@ -32,7 +42,6 @@ class FormController extends Controller
             Yii::app()->cache->set('surveyConfig', $yleWebPollsConfig, 60);
         }
         header('Content-Type: application/javascript');
-        header('Cache-Control: public, max-age=3600, must-revalidate');
         include('js/jquery.yle-webpoll.js');
         ?>var YLESurveyConfig=<?php
         echo json_encode($yleWebPollsConfig);
