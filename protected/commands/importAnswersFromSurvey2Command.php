@@ -5,15 +5,12 @@ class importAnswersFromSurvey2Command extends CConsoleCommand
 
     public function run($args)
     {
-        $data = file_get_contents('data/vastaukset.json');
-        $start = strpos($data, '[');
-        $data = substr($data, $start);
-        $answers = CJSON::decode($data, true);
-
+        $command = Yii::app()->db_old->createCommand('SELECT * FROM vastaukset');
+        $dataReader = $command->query();
         $transaction = Yii::app()->db->beginTransaction();
         try {
-            foreach ($answers as $answer) {
-                $answerObject = new Answer();
+            foreach ($dataReader as $answer) {                
+                $answerObject = new Answer();   
                 $survey = Survey::model()->findByAttributes(array('name' => html_entity_decode($answer['sivusto'])));
                 if (!$survey) {
                     var_dump('Survey not found: ' . html_entity_decode($answer['sivusto']));
@@ -28,9 +25,9 @@ class importAnswersFromSurvey2Command extends CConsoleCommand
                     $answerObject->interest = $answer['kiinnostavuus'];
                     $answerObject->feedback = html_entity_decode($answer['muutapalautetta']);
                     $answerObject->users = $answer['kuinkamonikoneella'];
-                    if ($answer['sukupuoli'] === 1) {
+                    if ($answer['sukupuoli'] === '1') {
                         $answerObject->gender = 'male';
-                    } else if ($answer['sukupuoli'] === 0) {
+                    } else if ($answer['sukupuoli'] === '0') {
                         $answerObject->gender = 'female';
                     }
                     $answerObject->year_of_birth = $answer['syntymavuosi'];
