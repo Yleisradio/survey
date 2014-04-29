@@ -20,7 +20,7 @@ class FormController extends Controller
     {
         $yleWebPollsConfig = Yii::app()->cache->get('surveyConfig');
         if (!$yleWebPollsConfig) {
-            $surveys = Survey::model()->findAllByAttributes(array('active' => 1));
+            $surveys = Survey::model()->findAllByAttributes(array('active' => 1, 'deleted' => 0));
             $yleWebPollsConfig = array(
                 'continousPollList' => array(),
                 'continousPollConf' => array(
