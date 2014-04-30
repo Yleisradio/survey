@@ -54,6 +54,30 @@ var filter = (function() {
             filter.nextRange();
             return false;
         });
+        $('#gender').change(function() {
+            refresh();
+        });
+        $('#age').change(function() {
+            refresh();
+        });
+        $('#recommend-min').change(function() {
+            refresh();
+        });
+        $('#recommend-max').change(function() {
+            refresh();
+        });
+        $('#interest-min').change(function() {
+            refresh();
+        });
+        $('#interest-max').change(function() {
+            refresh();
+        });
+        $('#text-only').change(function() {
+            refresh();
+        });
+        $('#failed-only').change(function() {
+            refresh();
+        });
     });
 
     var filterChanged = null;
@@ -228,6 +252,15 @@ var filter = (function() {
         return selected;
     }
 
+    function getFilter(id) {
+        var filter = $('#' + id).val();
+        if (filter.indexOf('_all') === -1) {
+            return filter;
+        } else {
+            return '';
+        }
+    }
+
     return {
         /**
          * Returns current time period
@@ -240,6 +273,38 @@ var filter = (function() {
          */
         previous: function() {
             return filters.previous;
+        },
+        age: function() {
+            return getFilter('age');
+        },
+        gender: function() {
+            return getFilter('gender');
+        },
+        recommendMin: function() {
+            return getFilter('recommend-min');
+        },
+        recommendMax: function() {
+            return getFilter('recommend-max');
+        },
+        interestMin: function() {
+            return getFilter('interest-min');
+        },
+        interestMax: function() {
+            return getFilter('interest-max');
+        },
+        failedOnly: function() {
+            if ($('#failed-only').attr('checked')) {
+                return 1;
+            } else {
+                return 0;
+            }
+        },
+        textOnly: function() {
+            if ($('#text-only').attr('checked')) {
+                return 1;
+            } else {
+                return 0;
+            }
         },
         /**
          * Changes to previous time period

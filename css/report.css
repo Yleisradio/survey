@@ -304,3 +304,9 @@
 box.last {
     margin-bottom: 20px;
 }
+
+.min-max-separator {
+    text-align: center;
+    line-height: 34px;
+    font-size: 22px;
+}

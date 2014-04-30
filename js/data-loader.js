@@ -10,7 +10,15 @@ var dataLoader = (function() {
             interval: getInterval($('#filter-form #mode').val()),
             sites: filter.surveys(),
             from: moment(filter.current().from).toISOString(),
-            to: moment(filter.current().to).toISOString()
+            to: moment(filter.current().to).toISOString(),
+            age: filter.age(),
+            gender: filter.gender(),
+            'interest-max': filter.interestMax(),
+            'interest-min': filter.interestMin(),
+            'recommend-max': filter.recommendMax(),
+            'recommend-min': filter.recommendMin(),
+            'failed-only': filter.failedOnly(),
+            'text-only': filter.textOnly(),
         };
         return requestParameters;
     }

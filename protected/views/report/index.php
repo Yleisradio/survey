@@ -38,12 +38,12 @@
             </div>
             <div class="row border-bottom">
                 <div class="col-md-3" id="age">
-                    <div class="metric-label"><?php echo Yii::t('report', 'age') ?></div>
+                    <div class="metric-label"><?php echo Yii::t('report', 'chart.age') ?></div>
                     <div class="metric-value"></div>
                     <div class="metric-pie-chart"></div>
                 </div>
                 <div class="col-md-3" id="gender">
-                    <div class="metric-label"><?php echo Yii::t('report', 'gender') ?></div>
+                    <div class="metric-label"><?php echo Yii::t('report', 'chart.gender') ?></div>
                     <div class="metric-value"></div>
                     <div class="metric-pie-chart"></div>
                 </div>
@@ -244,16 +244,15 @@
 
             $(window).scroll(function() {
                 if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
-                    $.ajax({
+                    dataLoader.loadData({
                         url: '<?php echo $this->createUrl('api/answers') ?>',
-                        data: {
-                            from: filter.current().from,
-                            to: filter.current().to,
+                        compareMode: $('#compare').val(),
+                        serieOptions: {},
+                        requestParameters: {
                             fromId: lastAnswerId,
-                            sites: filter.surveys()
                         },
-                        success: function(data) {
-                            renderAnswers(data);
+                        currentComplete: function(data, options) {
+                            var answers = renderAnswers(data);
                             var answers = renderAnswers(data);
                             $('.answers').masonry().append(answers).masonry('reloadItems');
                             $('.answers').masonry().masonry('reloadItems');
