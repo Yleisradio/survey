@@ -6,8 +6,8 @@ var chart = (function() {
         var defaultSettings = {
             xaxis: {
                 mode: "time",
-                min: moment(filter.current().from).valueOf(),
-                max: moment(filter.current().to).valueOf(),
+                min: moment.utc(filter.current().from).valueOf(),
+                max: moment.utc(filter.current().to).valueOf(),
                 tickFormatter: function(value) {
                     return moment(value).format("D.M.");
                 }

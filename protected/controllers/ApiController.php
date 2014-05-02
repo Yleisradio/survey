@@ -143,10 +143,14 @@ class ApiController extends Controller
                 if ($values[$i]['timestamp'] >= $start && $values[$i]['timestamp'] < $start + $tickInterval) {
                     $valuesCell = array('count' => $values[$i]['value']);
 //                    $valuesCell['timestamp'] = $start + (2 * 60 * 60);
-                    $valuesCell['time'] = date('c', $start);
-//                    if (date('I', $start)) {
-//                        $valuesCell['timestamp'] += 60 * 60;
-//                    }
+                    if (!isset($valuesCell['time'])) {
+                        //Summertime starts adjust
+                        if (!date('I', $start) && date('I', $start + $tickInterval)) {
+                            $start -= 60 * 60;
+                        }
+                        $valuesCell['time'] = date('c', $start + 12 * 60 * 60);
+                    }
+
                     $valuesArray[] = $valuesCell;
 
                     //Add data for calculating average and total
