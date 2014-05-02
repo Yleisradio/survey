@@ -368,12 +368,11 @@
                 if (mode === 'week') {
                     timePeriod += 'Viikko ' + getWeekNumber(filter.current().from) + ' ';
                 }
-
-                timePeriod += moment(filter.current().from).format('DD.MM.YYYY') + ' - ' + moment(filter.current().to).format('DD.MM.YYYY') + ' (' + getPeriodLength(filter.current().from, filter.current().to) + ' päivää)';
+                timePeriod += moment.utc(filter.current().from).format('DD.MM.YYYY') + ' - ' + moment.utc(filter.current().to).format('DD.MM.YYYY') + ' (' + getPeriodLength(filter.current().from, filter.current().to) + ' päivää)';
 
                 var comparePeriod = '';
                 if (filter.previous().from) {
-                    comparePeriod = ' Vertailujakso ' + moment(filter.current().from).format('DD.MM.YYYY') + ' - ' + moment(filter.current().to).format('DD.MM.YYYY') + ' (' + getPeriodLength(filter.current().from, filter.current().to) + ' päivää)';
+                    comparePeriod = ' Vertailujakso ' + moment.utc(filter.current().from).format('DD.MM.YYYY') + ' - ' + moment.utc(filter.current().to).format('DD.MM.YYYY') + ' (' + getPeriodLength(filter.current().from, filter.current().to) + ' päivää)';
                 }
                 $('#time-period').html(timePeriod);
                 $('#compare-period').html(comparePeriod);
