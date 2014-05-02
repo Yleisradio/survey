@@ -61,8 +61,8 @@ class QueryModel extends CActiveRecord
     protected static function getWhereParams($surveyIds, $from, $to, $sitesTogether)
     {
         $params = array();
-        $params[':from'] = $from;
-        $params[':to'] = $to + 60 * 60;
+        $params[':from'] = $from - date('Z', $from);
+        $params[':to'] = $to - date('Z', $from);
         if (Yii::app()->request->getQuery('gender')) {
             $params[':gender_filter'] = Yii::app()->request->getQuery('gender');
         }

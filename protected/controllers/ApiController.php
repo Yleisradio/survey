@@ -137,12 +137,10 @@ class ApiController extends Controller
         $start = $from - date('Z');
         $i = 0;
         $tickInterval = $this->getTickInterval($interval);
-
         while ($start <= $to + 24 * 60 * 60) {
             if (isset($values[$i])) {
                 if ($values[$i]['timestamp'] >= $start && $values[$i]['timestamp'] < $start + $tickInterval) {
                     $valuesCell = array('count' => $values[$i]['value']);
-//                    $valuesCell['timestamp'] = $start + (2 * 60 * 60);
                     if (!isset($valuesCell['time'])) {
                         //Summertime starts adjust
                         if (!date('I', $start) && date('I', $start + $tickInterval)) {

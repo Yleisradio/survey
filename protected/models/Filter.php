@@ -76,7 +76,6 @@ class Filter extends CFormModel
     public function getFilterData()
     {
         $this->setAttributes($_GET, false);
-        var_dump($this->attributes);
     }
 
 }
