@@ -106,7 +106,7 @@ class QueryModel extends CActiveRecord
         } else if ($interval == 'day') {
             return 'YEAR(FROM_UNIXTIME(timestamp)), DAYOFYEAR(FROM_UNIXTIME(timestamp)) ';
         } else if ($interval == 'week') {
-            return 'YEAR(FROM_UNIXTIME(timestamp)), WEEK(FROM_UNIXTIME(timestamp), 1) ';
+            return 'YEARWEEK(FROM_UNIXTIME(timestamp), 1)';
         } else {
             throw new CHttpException(400, 'Incorrect Interval');
         }
