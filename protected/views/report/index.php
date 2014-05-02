@@ -65,6 +65,20 @@
 
 
         filter.setFilterChanged(function() {
+            dataLoader.abort();
+            $('#nps .metric-value').html('');
+            $('#interest .metric-value').html('');
+            $('#success .metric-value').html('');
+            $('#sentiment .metric-value').html('');
+            $('#n-number').html('');
+            $('#nps .metric-chart').html('');
+            $('#interest .metric-chart').html('');
+            $('#success .metric-chart').html('');
+            $('#sentiment .metric-chart').html('');
+            $('#answers').html('');
+            $('#age .metric-pie-chart').html('');
+            $('#gender .metric-pie-chart').html('');
+            $('#topic .metric-bar-chart').html('');
             var loadData = function loadData() {
                 dataLoader.loadData(
                         {
