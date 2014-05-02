@@ -61,7 +61,7 @@ class Filter extends CFormModel
     public function initFilter()
     {
         date_default_timezone_set("UTC");
-        $this->from = date('c', strtotime('last week 00:00'));
+        $this->from = date('c', strtotime('this week 00:00'));
         $this->to = date('c', strtotime('last week 00:00 + 6 days'));
         $this->surveys = array_values(CHtml::listData(Survey::model()->findAll(), 'category', 'category'));
         $this->mode = 'week';

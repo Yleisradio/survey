@@ -379,7 +379,7 @@ var filter = (function() {
                 from.setUTCMonth(from.getUTCMonth() - 1);
             }
             if (mode === 'week') {
-                from.setUTCDate(from.getUTCDate() - 7);
+
             }
             if (mode === 'day') {
                 from.setUTCDate(from.getUTCDate() - 1);
