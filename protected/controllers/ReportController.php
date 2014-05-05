@@ -2,7 +2,7 @@
 
 class ReportController extends Controller
 {
-
+    
     public function filters()
     {
         return array(
