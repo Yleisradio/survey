@@ -161,7 +161,7 @@ class ApiController extends Controller
             }
             $start += $tickInterval;
         }
-
+        
         $results = array(
             'history' => $valuesArray
         );

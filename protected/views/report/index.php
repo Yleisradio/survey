@@ -247,7 +247,7 @@
                                 ticks: ticks
                             }
                         }, function(item) {
-                            return localizedSentimentStrings[item.seriesIndex] + " : " + item.datapoint[1];
+                            return localizedSentimentStrings[item.seriesIndex] + " : " + item.datapoint[item.seriesIndex];
                         });
                     }
                 });
