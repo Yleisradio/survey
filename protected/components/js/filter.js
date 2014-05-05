@@ -141,7 +141,7 @@ var filter = (function() {
         }
         saveRequest = $.ajax({
             dataType: "json",
-            url: 'filter/save',
+            url: '/filter/save',
             data: $('#filter-form').serialize(),
             success: function(response) {
 
