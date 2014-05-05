@@ -2,7 +2,12 @@
 
 class ReportController extends Controller
 {
-    
+
+    /**
+     * @var string the default layout for the views. 
+     */
+    public $layout = 'report';
+
     public function filters()
     {
         return array(
