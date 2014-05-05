@@ -38,10 +38,10 @@ class Controller extends CController
     {
         $yleAnalyticsHeader = Yii::app()->cache->get('yle-analytics-header');
         if (!$yleAnalyticsHeader) {
-            $yleAnalyticsHeader = Curl::get('http://data.yle.fi/verkkoanalytiikka/site/header');
+            $yleAnalyticsHeader = Curl::get('http://localhost/verkkoanalytiikka/site/header', array(), array('httpProxy' => null));
             Yii::app()->cache->set('yle-analytics-header', $yleAnalyticsHeader, 30 * 60);
         }
-        Yii::app()->clientScript->registerCssFile('http://data.yle.fi/verkkoanalytiikka/css/header.css');
+        Yii::app()->clientScript->registerCssFile('http://localhost/verkkoanalytiikka/css/header.css');
         return $yleAnalyticsHeader;
     }
 }
