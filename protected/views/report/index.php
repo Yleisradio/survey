@@ -62,7 +62,8 @@
         moment.lang('<?php echo Yii::app()->language; ?>');
         chart.setMonthNames(['<?php echo Yii::t('calendar', 'Jan'); ?>', '<?php echo Yii::t('calendar', 'Feb'); ?>', '<?php echo Yii::t('calendar', 'Mar'); ?>', '<?php echo Yii::t('calendar', 'Apr'); ?>', '<?php echo Yii::t('calendar', 'May'); ?>', '<?php echo Yii::t('calendar', 'Jun'); ?>', '<?php echo Yii::t('calendar', 'Jul'); ?>', '<?php echo Yii::t('calendar', 'Aug'); ?>', '<?php echo Yii::t('calendar', 'Sep'); ?>', '<?php echo Yii::t('calendar', 'Oct'); ?>', '<?php echo Yii::t('calendar', 'Nov'); ?>', '<?php echo Yii::t('calendar', 'Dec'); ?>']);
         var lastAnswerId = null;
-
+        //Update every 5 minutes
+        setInterval(filter.refresh,  5 * 60 * 1000);
 
         filter.setFilterChanged(function() {
             dataLoader.abort();

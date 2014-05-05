@@ -9,17 +9,17 @@ var filter = (function() {
         setCurrent(new Date(moment($('#from').val())));
 
         $('#compare').change(function() {
-            refresh();
+            filter.refresh();
         });
         $('#surveys').change(function(ev) {
             if ($(ev.target).attr('id') !== 'surveys_0') {
-                refresh();
+                filter.refresh();
             }
         });
 
         jQuery('#surveys_0').click(function() {
             jQuery("input[name='surveys\[\]']").prop('checked', this.checked);
-            refresh();
+            filter.refresh();
         });
         jQuery("input[name='surveys\[\]']").click(function() {
             jQuery('#surveys_0').prop('checked', !jQuery("input[name='surveys\[\]']:not(:checked)").length);
@@ -55,28 +55,28 @@ var filter = (function() {
             return false;
         });
         $('#gender').change(function() {
-            refresh();
+            filter.refresh();
         });
         $('#age').change(function() {
-            refresh();
+            filter.refresh();
         });
         $('#recommend-min').change(function() {
-            refresh();
+            filter.refresh();
         });
         $('#recommend-max').change(function() {
-            refresh();
+            filter.refresh();
         });
         $('#interest-min').change(function() {
-            refresh();
+            filter.refresh();
         });
         $('#interest-max').change(function() {
-            refresh();
+            filter.refresh();
         });
         $('#text-only').change(function() {
-            refresh();
+            filter.refresh();
         });
         $('#failed-only').change(function() {
-            refresh();
+            filter.refresh();
         });
     });
 
@@ -120,16 +120,7 @@ var filter = (function() {
         filters.current.to = new Date(getTo(from));
         $('#filter-form #from').val(filters.current.from);
         $('#filter-form #to').val(filters.current.to);
-        refresh();
-    }
-
-    function refresh() {
-        setPreviousDates();
-        saveFilter();
-        if (typeof(filterChanged) === 'function') {
-            filterChanged();
-        }
-
+        filter.refresh();
     }
 
     function getSelected(type) {
@@ -401,6 +392,13 @@ var filter = (function() {
         },
         surveys: function() {
             return getSelected('#filter-form #surveys');
+        },
+        refresh: function() {
+            setPreviousDates();
+            saveFilter();
+            if (typeof(filterChanged) === 'function') {
+                filterChanged();
+            }
         }
     };
 })();
