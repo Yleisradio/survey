@@ -51,11 +51,11 @@ class QueryModel extends CActiveRecord
         if (Yii::app()->request->getQuery('sentiment')) {
             $sentiment = Yii::app()->request->getQuery('sentiment');
             if ($sentiment == 'negative') {
-                $whereCondition .= ' AND sentiment < 0';
+                $whereCondition .= ' AND answer.sentiment < 0';
             } else if ($sentiment == 'neutral') {
-                $whereCondition .= ' AND sentiment == 0';
+                $whereCondition .= ' AND answer.sentiment = 0';
             } else if ($sentiment == 'positive') {
-                $whereCondition .= ' AND sentiment > 0';
+                $whereCondition .= ' AND answer.sentiment > 0';
             }
         }
         return $whereCondition;
