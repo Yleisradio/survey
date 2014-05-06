@@ -19,6 +19,7 @@ var dataLoader = (function() {
             'recommend-min': filter.recommendMin(),
             'failed-only': filter.failedOnly(),
             'text-only': filter.textOnly(),
+            sentiment: filter.sentiment()
         };
         return requestParameters;
     }

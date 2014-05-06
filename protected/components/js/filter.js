@@ -78,6 +78,9 @@ var filter = (function() {
         $('#failed-only').change(function() {
             filter.refresh();
         });
+        $('#sentiment').change(function() {
+            filter.refresh();
+        });
     });
 
     var filterChanged = null;
@@ -296,6 +299,9 @@ var filter = (function() {
             } else {
                 return 0;
             }
+        },
+        sentiment: function() {
+            return getFilter('sentiment');
         },
         /**
          * Changes to previous time period

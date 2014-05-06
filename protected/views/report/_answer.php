@@ -28,7 +28,7 @@
             </p>
         </div>
         <% if(failure_text) {%>
-        <div class="group box" data-placement="top" title="<?php echo Yii::t('report', 'failure reason'); ?>">
+        <div class="group box <%= sentimentClass %>" data-placement="top" title="<?php echo Yii::t('report', 'failure reason'); ?>">
             <i class="fa fa-exclamation failure-sign"></i>
             <p class="failure-text">
                 <%= failure_text %>

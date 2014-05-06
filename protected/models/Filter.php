@@ -14,6 +14,9 @@ class Filter extends CFormModel
     const AGE_45_59 = '45-59';
     const AGE_60_74 = '60-74';
     const AGE_75 = '75+';
+    const SENTIMENT_NEGATIVE = 'negative';
+    const SENTIMENT_NEUTRAL = 'neutral';
+    const SENTIMENT_POSITIVE = 'positive';
 
     public $surveys;
     public $from;
@@ -28,6 +31,7 @@ class Filter extends CFormModel
     public $interest_max;
     public $text_only;
     public $failed_only;
+    public $sentiment;
 
     public static function getCompares()
     {
@@ -43,6 +47,15 @@ class Filter extends CFormModel
         return array(
             self::GENDER_MALE => Yii::t('report', 'male'),
             self::GENDER_FEMALE => Yii::t('report', 'female'),
+        );
+    }
+
+    public static function getSentiments()
+    {
+        return array(
+            self::SENTIMENT_NEGATIVE => Yii::t('report', 'negative'),
+            self::SENTIMENT_NEUTRAL => Yii::t('report', 'neutral'),
+            self::SENTIMENT_POSITIVE => Yii::t('report', 'positive'),
         );
     }
 

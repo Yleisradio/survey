@@ -74,6 +74,14 @@ $form = $this->beginWidget('CActiveForm', array(
             <?php echo $form->dropDownList($filter, 'interest_max', array('interest_all' => Yii::t('report', 'max')) + array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6), array('id' => 'interest-max', 'name' => 'interest_max', 'class' => 'form-control')); ?>
         </div>
     </div>
+        <div class="form-group">
+        <div class="col-xs-12">
+            <label for="interest-min"><?php echo Yii::t('report', 'sentiment') ?></label>
+        </div>
+        <div class="col-xs-12">
+            <?php echo $form->dropDownList($filter, 'sentiment', array('sentiment_all' => Yii::t('report', 'sentiment')) + Filter::getSentiments(), array('id' => 'sentiment', 'name' => 'sentiment', 'class' => 'form-control')); ?>
+        </div>
+    </div>
     <div class="form-group">
         <div class="col-xs-12">
             <label for="text-only">
