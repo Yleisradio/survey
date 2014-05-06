@@ -39,7 +39,15 @@ class Controller extends CController
         $yleAnalyticsHeader = Yii::app()->cache->get('yle-analytics-header');
         if (!$yleAnalyticsHeader) {
             $yleAnalyticsHeader = Curl::get('http://localhost/verkkoanalytiikka/site/header', array(), array('httpProxy' => null));
-            Yii::app()->cache->set('yle-analytics-header', $yleAnalyticsHeader, 30 * 60);
+            if (strstr($yleAnalyticsHeader, 'Error 404') === false) {
+                Yii::app()->cache->set('yle-analytics-header', $yleAnalyticsHeader, 30 * 60);
+                Yii::app()->cache->set('yle-analytics-header-backup', $yleAnalyticsHeader, 24 * 60 * 60);
+            } else {
+                $yleAnalyticsHeader = Yii::app()->cache->get('yle-analytics-header-backup');
+                if (!$yleAnalyticsHeader) {
+                    $yleAnalyticsHeader = '';
+                }
+            }
         }
         Yii::app()->clientScript->registerCssFile('http://localhost/verkkoanalytiikka/css/header.css');
         return $yleAnalyticsHeader;
