@@ -5,45 +5,48 @@ class ApiController extends Controller
 
     public function actionMetricsBySites($sites, $from, $to, $interval = 'hour')
     {
-        //@TODO Specify which metrics are returned
-        $metrics = array(
-            'gender',
-            'age',
-            'success',
-            'interest',
-            'nps',
-            'sentiment',
-        );
+        $metrics = $this->getMetricsList();
 
         $from = strtotime($from);
         $to = strtotime($to);
 
-        $sites = explode(',', $sites);
+        $sites = $this->getSurveysOfSite($sites);
         $sitesValues = array();
-        foreach ($sites as $site) {
-            $survey = Survey::model()->findByAttributes(array('category' => $site));
-            $values = $this->getMetrics($survey->id, $from, $to, $interval, $metrics, false);
+        foreach ($sites as $site => $surveys) {
+            $surveys = $this->getSurveys($surveys);
+            $values = $this->getMetrics($surveys, $from, $to, $interval, $metrics, true);
             $sitesValues[$site] = $values;
         }
         $this->outputJSON($sitesValues);
     }
 
+    protected function getSurveysOfSite($site)
+    {
+        $surveys = array(
+            'uutiset-ja-ajankohtaisohjelmat' => 'uutiset',
+            'uutiset-ja-alueet' => 'uutiset,urheilu',
+            'urheilu' => 'urheilu',
+            'areena-ja-ohjelmat' => 'areena,Yle Puhe,Yle Radio 1,Yle Radio Suomi',
+            'areena' => 'areena',
+            'desktop' => 'areena',
+            'oppiminen' => 'oppiminen',
+            'elava-arkisto' => 'Elävä arkisto',
+        );
+        if ($site == 'all') {
+            return $surveys;
+        } else {
+            return $surveys[$site];
+        }
+    }
+
     public function actionMetrics($sites, $from, $to, $interval = 'hour')
     {
-        //@TODO Specify which metrics are returned
-        $metrics = array(
-            'gender',
-            'age',
-            'success',
-            'interest',
-            'nps',
-            'sentiment',
-        );
+        $metrics = $this->getMetricsList();
 
         $from = strtotime($from);
         $to = strtotime($to);
-        $surveyIds = $this->getSurveyIds($sites);
-        $values = $this->getMetrics($surveyIds, $from, $to, $interval, $metrics, true);
+        $surveys = $this->getSurveys($sites);
+        $values = $this->getMetrics($surveys, $from, $to, $interval, $metrics, true);
         $this->outputJSON($values);
     }
 
@@ -66,21 +69,25 @@ class ApiController extends Controller
         $this->outputJSON($topics);
     }
 
-    protected function getSurveyIds($sites)
+    protected function getSurveys($sites)
     {
-        $sites = explode(',', $sites);
-        $surveys = Survey::model()->findAllByAttributes(array(
-            'category' => $sites,
-        ));
+        if ($sites == 'all') {
+            $surveys = Survey::model()->findAll();
+        } else {
+            $sites = explode(',', $sites);
+            $surveys = Survey::model()->findAllByAttributes(array(
+                'category' => $sites,
+            ));
+        }
+        return $surveys;
+    }
+
+    protected function getMetrics($surveys, $from, $to, $interval, $metrics, $sitesTogether)
+    {
         $surveyIds = array();
         foreach ($surveys as $survey) {
             $surveyIds[] = $survey->id;
         }
-        return $surveyIds;
-    }
-
-    protected function getMetrics($surveyIds, $from, $to, $interval, $metrics, $sitesTogether)
-    {
         $values = array();
         if (in_array('gender', $metrics)) {
             $values['gender'] = array(
@@ -146,7 +153,7 @@ class ApiController extends Controller
                         if (!date('I', $start) && date('I', $start + $tickInterval)) {
                             $start -= 60 * 60;
                         }
-                        $valuesCell['time'] = date('c', $start + 12 * 60 * 60);
+                        $valuesCell['time'] = date('c', $start);
                     }
 
                     $valuesArray[] = $valuesCell;
@@ -161,7 +168,7 @@ class ApiController extends Controller
             }
             $start += $tickInterval;
         }
-        
+
         $results = array(
             'history' => $valuesArray
         );
@@ -210,6 +217,23 @@ class ApiController extends Controller
                 $value = (double) $value;
             }
         }
+    }
+
+    protected function getMetricsList()
+    {
+        if (Yii::app()->request->getQuery('metrics')) {
+            $metrics = array(Yii::app()->request->getQuery('metrics'));
+        } else {
+            $metrics = array(
+                'gender',
+                'age',
+                'success',
+                'interest',
+                'nps',
+                'sentiment',
+            );
+        }
+        return $metrics;
     }
 
 }
