@@ -49,7 +49,7 @@ class Controller extends CController
                 }
             }
         }
-        Yii::app()->clientScript->registerCssFile('http://localhost/verkkoanalytiikka/css/header.css');
+        Yii::app()->clientScript->registerCssFile('http://data.yle.fi/verkkoanalytiikka/css/header.css');
         return $yleAnalyticsHeader;
     }
 }
