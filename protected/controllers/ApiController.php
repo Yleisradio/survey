@@ -54,7 +54,11 @@ class ApiController extends Controller
     {
         $from = strtotime($from);
         $to = strtotime($to);
-        $surveyIds = $this->getSurveyIds($sites);
+        $surveys = $this->getSurveys($sites);
+        $surveyIds = array();
+        foreach ($surveys as $survey) {
+            $surveyIds[] = $survey->id;
+        }
 
         $answers = Answer::getAnswers($surveyIds, $from, $to, $limit, true, $fromId);
         $this->outputJSON($answers);
@@ -64,7 +68,11 @@ class ApiController extends Controller
     {
         $from = strtotime($from);
         $to = strtotime($to);
-        $surveyIds = $this->getSurveyIds($sites);
+        $surveys = $this->getSurveys($sites);
+        $surveyIds = array();
+        foreach ($surveys as $survey) {
+            $surveyIds[] = $survey->id;
+        }
         $topics = Topic::getTopics($surveyIds, $from, $to, $limit, true);
         $this->outputJSON($topics);
     }
