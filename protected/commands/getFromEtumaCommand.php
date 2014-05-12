@@ -14,6 +14,7 @@ class getFromEtumaCommand extends CConsoleCommand
         foreach ($answers as $answer) {
             $data = array(
                 'receipt' => $answer['receipt'],
+                'lang' => 'fi',
             );
 
             $signal = Etuma::get('GetSignalAdvanced', $data);
