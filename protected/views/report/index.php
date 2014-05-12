@@ -268,7 +268,6 @@
                         },
                         currentComplete: function(data, options) {
                             var answers = renderAnswers(data);
-                            var answers = renderAnswers(data);
                             $('.answers').masonry().append(answers).masonry('reloadItems');
                             $('.answers').masonry().masonry('reloadItems');
                         }
