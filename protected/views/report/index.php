@@ -81,6 +81,7 @@
             $('#gender .metric-pie-chart').html('');
             $('#topic .metric-bar-chart').html('');
             var loadData = function loadData() {
+                lastAnswerId = null;
                 dataLoader.loadData(
                         {
                             url: '<?php echo $this->createUrl('api/metrics') ?>',
