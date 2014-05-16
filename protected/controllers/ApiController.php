@@ -244,4 +244,19 @@ class ApiController extends Controller
         return $metrics;
     }
 
+    public function actionTopicSearch($term)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->compare('topic', $term, true);
+        $topics = Topic::model()->findAll($criteria);
+        $topicsArray = array();
+        foreach ($topics as $topic) {
+            $topicsArray[] = array(
+                'label' => $topic->topic,
+                'value' => $topic->id,
+            );
+        }
+        $this->outputJSON($topicsArray);
+    }
+
 }

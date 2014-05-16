@@ -74,7 +74,7 @@ $form = $this->beginWidget('CActiveForm', array(
             <?php echo $form->dropDownList($filter, 'interest_max', array('interest_all' => Yii::t('report', 'max')) + array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6), array('id' => 'interest-max', 'name' => 'interest_max', 'class' => 'form-control')); ?>
         </div>
     </div>
-        <div class="form-group">
+    <div class="form-group">
         <div class="col-xs-12">
             <label for="interest-min"><?php echo Yii::t('report', 'sentiment') ?></label>
         </div>
@@ -94,6 +94,34 @@ $form = $this->beginWidget('CActiveForm', array(
                 <?php echo $form->checkBox($filter, 'failed_only', array('id' => 'failed-only', 'name' => 'failed_only')); ?>
                 <?php echo Yii::t('report', 'failed only') ?>
             </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-12">
+            <label for="topic">
+                <?php echo Yii::t('report', 'topics') ?> 
+            </label>
+            <?php
+            $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+                'name' => 'topic',
+                'sourceUrl' => array('api/topicSearch'),
+                // additional javascript options for the autocomplete plugin
+                'options' => array(
+                    'select' => new CJavaScriptExpression('function(event, ui) {
+                        filter.addTopic(ui.item);
+                        return false;
+                    }'),
+                ),
+                'htmlOptions' => array(
+                    'class' => 'form-control'
+                ),
+            ));
+            ?>
+            <ul id="topics"></ul>
+            <div id="topics-hidden"></div>
+            <script type="text/javascript">
+            filter.setTopics(<?php echo json_encode($filter->topics); ?>);
+            </script>
         </div>
     </div>
 </div>

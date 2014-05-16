@@ -93,7 +93,8 @@ var filter = (function() {
         previous: {
             from: null,
             to: null
-        }
+        },
+        topics: []
     };
 
     function getTo(from) {
@@ -255,6 +256,23 @@ var filter = (function() {
         }
     }
 
+    function updateTopicList() {
+        var list = '';
+        var hidden = '';
+        for (var i in filters.topics) {
+            hidden += '<input name="topics[' + filters.topics[i].value + ']" type="hidden" value="' + filters.topics[i].label + '" >'
+            list += '<li class="label label-default">' + filters.topics[i].label + '<button data-topic="' + filters.topics[i].value + '" type="button" class="close">&times;</button></li>';
+        }
+        $('#topics').html(list);
+        $('#topics-hidden').html(hidden);
+        console.log(filters.topics);
+        filter.refresh();
+        $('#topics .close').click(function(event) {
+            var topicId = $(event.target).attr('data-topic');
+            filter.removeTopic(topicId);
+        });
+    }
+
     return {
         /**
          * Returns current time period
@@ -405,6 +423,32 @@ var filter = (function() {
             if (typeof(filterChanged) === 'function') {
                 filterChanged();
             }
+        },
+        topics: function() {
+            return filters.topics;
+        },
+        addTopic: function(topic) {
+            filters.topics.push(topic);
+            updateTopicList();
+        },
+        removeTopic: function(id) {
+            console.log(id);
+            for (var i in filters.topics) {
+                console.log(filters.topics[i].value);
+                if (filters.topics[i].value == id) {
+                    delete filters.topics[i];
+                }
+            }
+            updateTopicList();
+        },
+        setTopics: function(topics) {
+            for (var id in topics) {
+                filters.topics.push({
+                    label: topics[id],
+                    value: id
+                });
+            }
+            updateTopicList();
         }
     };
 })();

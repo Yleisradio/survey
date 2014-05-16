@@ -157,11 +157,11 @@ class Answer extends QueryModel
     {
         $sql = '
         SELECT ROUND(SUM(success) / SUM(total), 2) * 100 AS value, SUM(total) AS count, timestamp FROM (
-            SELECT COUNT(id) AS success, COUNT(id) AS total, timestamp FROM answer WHERE success = 1 AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . '
+            SELECT DISTINCT id, COUNT(id) AS success, COUNT(id) AS total, answer.timestamp FROM answer LEFT JOIN answer_topic ON answer_id = answer.id WHERE success = 1 AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . '
             UNION
-            SELECT 0 AS success, COUNT(id) AS total, timestamp FROM answer WHERE success = 0 AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . '
+            SELECT DISTINCT id, 0 AS success, COUNT(id) AS total, answer.timestamp FROM answer LEFT JOIN answer_topic ON answer_id = answer.id WHERE success = 0 AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . '
         ) AS success 
-        GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC
+        GROUP BY ' . self::getGroupBy($interval, 'timestamp') . ' ORDER BY timestamp ASC
         ';
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
@@ -178,7 +178,11 @@ class Answer extends QueryModel
      */
     public static function getInterest($surveyId, $from, $to, $interval, $sitesTogether)
     {
-        $sql = 'SELECT ROUND(AVG(interest), 2) AS value, COUNT(id) AS count, timestamp FROM answer WHERE interest IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC';
+        $sql = 'SELECT ROUND(AVG(interest), 2) AS value, COUNT(id) AS count, timestamp FROM (
+                    SELECT DISTINCT ID, answer.interest, answer.timestamp FROM answer 
+                    LEFT JOIN answer_topic ON answer_id = answer.id
+                    WHERE interest IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' ORDER BY answer.timestamp ASC) raw
+                    GROUP BY ' . self::getGroupBy($interval, 'timestamp');
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
@@ -196,12 +200,12 @@ class Answer extends QueryModel
     {
         $sql = '
         SELECT ROUND(SUM(promoter) / SUM(count) - SUM(detractor) / SUM(count), 2) * 100 AS value, count, timestamp FROM (
-            SELECT COUNT(id) AS promoter, 0 AS detractor, timestamp, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend > 8 GROUP BY ' . self::getGroupBy($interval) . ' 
+            SELECT DISTINCT id, answer.timestamp, 1 AS promoter, 0 AS detractor, 0 AS count FROM answer LEFT JOIN answer_topic ON answer_id = answer.id WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend > 8 
             UNION
-            SELECT 0 AS promoter, COUNT(id) AS detractor, timestamp, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend < 7 GROUP BY ' . self::getGroupBy($interval) . ' 
+            SELECT DISTINCT id, answer.timestamp, 0 AS promoter, 1 AS detractor, 0 AS count FROM answer LEFT JOIN answer_topic ON answer_id = answer.id WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend < 7 
             UNION
-            SELECT 0 AS promoter, 0 AS detractor, timestamp, COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend IS NOT null GROUP BY ' . self::getGroupBy($interval) . ' 
-        ) AS nps GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC
+            SELECT DISTINCT id, answer.timestamp, 0 AS promoter, 0 AS detractor, 1 AS count FROM answer LEFT JOIN answer_topic ON answer_id = answer.id WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend IS NOT null 
+        ) AS nps GROUP BY ' . self::getGroupBy($interval, 'timestamp') . ' ORDER BY timestamp ASC
         ';
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
@@ -220,11 +224,11 @@ class Answer extends QueryModel
     {
         $sql = '
         SELECT ROUND(SUM(promoter) / SUM(count) - SUM(detractor) / SUM(count), 2) * 100 AS count FROM (
-            SELECT COUNT(id) AS promoter, 0 AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend > 8
+            SELECT DISTINCT id, 1 AS promoter, 0 AS detractor, 0 AS count FROM answer LEFT JOIN answer_topic ON answer_id = answer.id WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend > 8
             UNION
-            SELECT 0 AS promoter, COUNT(id) AS detractor, 0 AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend < 7
+            SELECT DISTINCT id, 0 AS promoter, 1 AS detractor, 0 AS count FROM answer LEFT JOIN answer_topic ON answer_id = answer.id WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend < 7
             UNION
-            SELECT 0 AS promoter, 0 AS detractor, COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend IS NOT null
+            SELECT DISTINCT id, 0 AS promoter, 0 AS detractor, 1 AS count FROM answer LEFT JOIN answer_topic ON answer_id = answer.id WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND recommend IS NOT null
         ) AS nps
         ';
         $command = Yii::app()->db->createCommand($sql);
@@ -242,7 +246,11 @@ class Answer extends QueryModel
      */
     public static function getSentiment($surveyId, $from, $to, $interval, $sitesTogether)
     {
-        $sql = 'SELECT ROUND(AVG(sentiment), 2) AS value, timestamp, COUNT(id) AS count FROM answer WHERE sentiment IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC';
+        
+        $sql = 'SELECT ROUND(AVG(sentiment), 2) AS value, timestamp, COUNT(id) AS count FROM (
+                SELECT DISTINCT ID, answer.sentiment, answer.timestamp FROM answer 
+                LEFT JOIN answer_topic ON answer_id = answer.id
+                WHERE answer.sentiment IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC) AS raw';
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
@@ -258,7 +266,9 @@ class Answer extends QueryModel
      */
     public static function getTotalN($surveyId, $from, $to, $sitesTogether)
     {
-        $sql = 'SELECT COUNT(id) AS count FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether);
+        $sql = 'SELECT COUNT(DISTINCT id) AS count FROM answer 
+                LEFT JOIN answer_topic ON answer_id = answer.id
+                WHERE ' . self::getWhereCondition($surveyId, $sitesTogether);
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
@@ -275,7 +285,9 @@ class Answer extends QueryModel
      */
     public static function getGender($surveyId, $from, $to, $interval, $gender, $sitesTogether)
     {
-        $sql = 'SELECT 1 AS count, COUNT(id) AS value, timestamp FROM answer WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND gender = :gender GROUP BY ' . self::getGroupBy($interval) . ' 
+        $sql = 'SELECT 1 AS count, COUNT(DISTINCT id) AS value, answer.timestamp FROM answer
+                LEFT JOIN answer_topic ON answer_id = answer.id
+                WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND gender = :gender GROUP BY ' . self::getGroupBy($interval) . ' 
         ';
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether) + array(':gender' => $gender));
@@ -295,7 +307,8 @@ class Answer extends QueryModel
     public static function getAge($surveyId, $from, $to, $interval, $startAge, $endAge, $sitesTogether)
     {
         $year = date('Y');
-        $sql = 'SELECT 1 AS count, COUNT(id) AS value, timestamp FROM answer 
+        $sql = 'SELECT 1 AS count, COUNT(DISTINCT id) AS value, answer.timestamp FROM answer
+                LEFT JOIN answer_topic ON answer_id = answer.id
             WHERE ' . self::getWhereCondition($surveyId, $sitesTogether) . ' AND year_of_birth <= :startAge AND year_of_birth > :endAge GROUP BY ' . self::getGroupBy($interval);
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether) + array(
@@ -309,7 +322,9 @@ class Answer extends QueryModel
     {
         if (intval($limit)) {
             $limit = intval($limit);
-            $sql = 'SELECT answer.*, motive.motive, survey.name AS survey FROM answer 
+            
+            $sql = 'SELECT DISTINCT answer.*, motive.motive, survey.name AS survey FROM answer 
+                LEFT JOIN answer_topic ON answer_id = answer.id
                 LEFT JOIN motive ON motive_id = motive.id 
                 LEFT JOIN survey ON survey_id = survey.id
                 WHERE' . self::getWhereCondition($surveyIds, $sitesTogether);

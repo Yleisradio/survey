@@ -32,6 +32,7 @@ class Filter extends CFormModel
     public $text_only;
     public $failed_only;
     public $sentiment;
+    public $topics;
 
     public static function getCompares()
     {

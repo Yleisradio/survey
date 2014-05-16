@@ -310,3 +310,20 @@ box.last {
     line-height: 34px;
     font-size: 22px;
 }
+#topics {
+    list-style-type: none;  
+    padding: 0;
+    margin: 10px 0;
+}
+#topics li {
+    margin: 10px 0;
+}
+#topics .label, #topics .close {
+    padding: 0;
+    display: block;
+    font-size: 14px;
+    line-height: 30px;
+}
+#topics .close {
+    padding: 0 10px;
+}

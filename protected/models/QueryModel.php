@@ -58,6 +58,9 @@ class QueryModel extends CActiveRecord
                 $whereCondition .= ' AND answer.sentiment > 0';
             }
         }
+        if (Yii::app()->request->getQuery('topics')) {
+            $whereCondition .= ' AND topic_id IN (:topics)';
+        }
         return $whereCondition;
     }
 
@@ -101,6 +104,15 @@ class QueryModel extends CActiveRecord
         if (Yii::app()->request->getQuery('interest-max')) {
             $params['interest_max'] = Yii::app()->request->getQuery('interest-max');
         }
+        if (Yii::app()->request->getQuery('topics')) {
+            $topicIds = array();
+            foreach (Yii::app()->request->getQuery('topics') as $topic) {
+                if (is_array($topic)) {
+                    $topicIds[] = $topic['value'];
+                }
+            }
+            $params['topics'] = implode(',', $topicIds);
+        }
         return $params;
     }
 
@@ -109,14 +121,14 @@ class QueryModel extends CActiveRecord
      * @param type $interval
      * @return string
      */
-    protected static function getGroupBy($interval)
+    protected static function getGroupBy($interval, $timestampColumnName = 'answer.timestamp')
     {
         if ($interval == 'hour') {
-            return 'YEAR(FROM_UNIXTIME(timestamp)), DAYOFYEAR(FROM_UNIXTIME(timestamp)), HOUR(FROM_UNIXTIME(timestamp)) ';
+            return 'YEAR(FROM_UNIXTIME(' . $timestampColumnName . ')), DAYOFYEAR(FROM_UNIXTIME(' . $timestampColumnName . ')), HOUR(FROM_UNIXTIME(' . $timestampColumnName . ')) ';
         } else if ($interval == 'day') {
-            return 'YEAR(FROM_UNIXTIME(timestamp)), DAYOFYEAR(FROM_UNIXTIME(timestamp)) ';
+            return 'YEAR(FROM_UNIXTIME(' . $timestampColumnName . ')), DAYOFYEAR(FROM_UNIXTIME(' . $timestampColumnName . ')) ';
         } else if ($interval == 'week') {
-            return 'YEARWEEK(FROM_UNIXTIME(timestamp), 1)';
+            return 'YEARWEEK(FROM_UNIXTIME(' . $timestampColumnName . '), 1)';
         } else {
             throw new CHttpException(400, 'Incorrect Interval');
         }
