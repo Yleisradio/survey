@@ -76,7 +76,7 @@
 }
 
 #filter-form .row div {
-    padding: 5px;
+    padding: 2px;
 }
 
 #filter-form .row .button {
@@ -326,4 +326,7 @@ box.last {
 }
 #topics .close {
     padding: 0 10px;
+}
+.form-group {
+    margin-bottom: 0px;
 }
