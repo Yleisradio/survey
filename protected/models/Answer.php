@@ -181,8 +181,8 @@ class Answer extends QueryModel
         $sql = 'SELECT ROUND(AVG(interest), 2) AS value, COUNT(id) AS count, timestamp FROM (
                     SELECT DISTINCT ID, answer.interest, answer.timestamp FROM answer 
                     LEFT JOIN answer_topic ON answer_id = answer.id
-                    WHERE interest IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' ORDER BY answer.timestamp ASC) raw
-                    GROUP BY ' . self::getGroupBy($interval, 'timestamp');
+                    WHERE interest IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ') raw
+                    GROUP BY ' . self::getGroupBy($interval, 'timestamp') . ' ORDER BY timestamp ASC';
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
@@ -250,7 +250,7 @@ class Answer extends QueryModel
         $sql = 'SELECT ROUND(AVG(sentiment), 2) AS value, timestamp, COUNT(id) AS count FROM (
                 SELECT DISTINCT ID, answer.sentiment, answer.timestamp FROM answer 
                 LEFT JOIN answer_topic ON answer_id = answer.id
-                WHERE answer.sentiment IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ' GROUP BY ' . self::getGroupBy($interval) . ' ORDER BY timestamp ASC) AS raw';
+                WHERE answer.sentiment IS NOT null AND ' . self::getWhereCondition($surveyId, $sitesTogether) . ') AS raw GROUP BY ' . self::getGroupBy($interval, 'timestamp') . 'ORDER BY timestamp ASC';
         $command = Yii::app()->db->createCommand($sql);
         $metrics = $command->queryAll(true, self::getWhereParams($surveyId, $from, $to, $sitesTogether));
         return $metrics;
