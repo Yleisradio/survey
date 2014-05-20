@@ -22,8 +22,21 @@ class FormController extends Controller
         if (!$yleWebPollsConfig) {
             $surveys = Survey::model()->findAllByAttributes(array('active' => 1, 'deleted' => 0));
             $yleWebPollsConfig = array(
-                'continousPollList' => array(),
-                'continousPollConf' => array(
+                'surveyList' => array(),
+                'popupLocalization' => array(
+                ),
+                'surveyConfig' => array(
+                    'formURL' => Yii::app()->createAbsoluteUrl('/form/form'),
+                    'categoryAttribute' => Yii::app()->params['categoryAttribute'],
+                ),
+            );
+            $languages = array(
+                'fi',
+                'sv',
+            );
+            foreach ($languages as $language) {
+                Yii::app()->setLanguage($language);
+                $yleWebPollsConfig['popupLocalization'][$language] = array(
                     'title' => Yii::t('popup', 'title'),
                     'row1' => Yii::t('popup', 'row1'),
                     'row2' => Yii::t('popup', 'row2'),
@@ -32,12 +45,10 @@ class FormController extends Controller
                     'row5' => Yii::t('popup', 'row5'),
                     'linkYes' => Yii::t('popup', 'yes'),
                     'linkNo' => Yii::t('popup', 'no'),
-                    'formURL' => Yii::app()->createAbsoluteUrl('/form/form'),
-                    'categoryAttribute' => Yii::app()->params['categoryAttribute'],
-                ),
-            );
+                );
+            }
             foreach ($surveys as $survey) {
-                $yleWebPollsConfig['continousPollList'][] = $survey->toYleWebPollsConfigFormat();
+                $yleWebPollsConfig['surveyList'][] = $survey->toYleWebPollsConfigFormat();
             }
             $dependency = new CDbCacheDependency('SELECT MAX(`updated`) FROM survey');
             Yii::app()->cache->set('surveyConfig', $yleWebPollsConfig, 60 * 60, $dependency);
@@ -54,6 +65,10 @@ class FormController extends Controller
      */
     public function actionForm($surveyId)
     {
+        $survey = Survey::model()->findByPk($surveyId);
+        if ($survey->language) {
+            Yii::app()->setLanguage($survey->language);
+        }
         Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/form.css'));
 
         //Generate possible birth years to the dropdown menu
@@ -82,7 +97,6 @@ class FormController extends Controller
         } else {
             
         }
-        $survey = Survey::model()->findByPk($surveyId);
 
         $this->render('form', array(
             'survey' => $survey,
@@ -94,6 +108,9 @@ class FormController extends Controller
     public function actionThanks($id)
     {
         $answer = Answer::model()->findByPk($id);
+        if ($answer->survey->language) {
+            Yii::app()->setLanguage($answer->survey->language);
+        }
         Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('webroot.css') . '/form.css'));
         $this->render('thanks', array(
             'answer' => $answer,

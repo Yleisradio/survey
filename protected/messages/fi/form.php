@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'submitting' => 'Lähetetään',
+  'survey.success.other' => 'Jokin muu, mikä?',
   'answer.interest.0' => 'Erittäin kiinnostava',
   'answer.interest.1' => 'Kiinnostava',
   'answer.interest.2' => 'Melko kiinnostava',
@@ -30,6 +30,7 @@ return array (
   'answer.users.4' => 'tai useampi',
   'choose' => 'Valitse',
   'no' => 'Ei',
+  'submitting' => 'Lähetetään',
   'survey.failure_text.question' => 'Jos ei, miksi ei?',
   'survey.feedback.question' => 'Onko mielessäsi muuta palautetta liittyen {site} -sivustoon?',
   'survey.gender.female' => 'Nainen',

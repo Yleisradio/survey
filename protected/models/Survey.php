@@ -39,6 +39,7 @@ class Survey extends CActiveRecord
             array('name, frequency, comscore', 'required'),
             array('frequency, active, updated', 'numerical', 'integerOnly' => true),
             array('name, category, comscore', 'length', 'max' => 32),
+            array('language', 'length', 'max' => 2),
             array('url', 'length', 'max' => 128),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -73,6 +74,7 @@ class Survey extends CActiveRecord
             'comscore' => Yii::t('admin', 'survey.comscore'),
             'active' => Yii::t('admin', 'survey.active'),
             'motives' => Yii::t('admin', 'survey.motives'),
+            'language' => Yii::t('admin', 'survey.language'),
         );
     }
 
@@ -134,6 +136,7 @@ class Survey extends CActiveRecord
         $yleWebPollConfigFormat['category'] = $this->category;
         $yleWebPollConfigFormat['freq'] = $this->frequency;
         $yleWebPollConfigFormat['comScoreAccount'] = $this->comscore;
+        $yleWebPollConfigFormat['language'] = $this->language;
         return $yleWebPollConfigFormat;
     }
 
@@ -181,6 +184,14 @@ class Survey extends CActiveRecord
                 $this->motiveIds[] = $motive->id;
         }
         parent::afterFind();
+    }
+
+    public static function getLanguages()
+    {
+        return array(
+            'fi' => 'Finnish',
+            'sv' => 'Swedish',
+        );
     }
 
 }

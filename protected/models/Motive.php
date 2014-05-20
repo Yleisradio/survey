@@ -30,8 +30,7 @@ class Motive extends CActiveRecord
         // will receive user inputs.
         return array(
             array('motive', 'required'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
+            array('language', 'length', 'max' => 2),
             array('id, motive', 'safe', 'on' => 'search'),
         );
     }
@@ -56,6 +55,7 @@ class Motive extends CActiveRecord
         return array(
             'id' => 'ID',
             'motive' => Yii::t('admin', 'motive.motive'),
+            'language' => Yii::t('admin', 'motive.language'),
         );
     }
 
@@ -81,6 +81,9 @@ class Motive extends CActiveRecord
         $criteria->compare('motive', $this->motive, true);
 
         return new CActiveDataProvider($this, array(
+            'pagination' => array(
+                'pageSize' => 100,
+            ),
             'criteria' => $criteria,
         ));
     }
@@ -102,6 +105,20 @@ class Motive extends CActiveRecord
             'motive_id' => $this->id,
         ));
         return parent::beforeDelete();
+    }
+
+    public static function getLanguages()
+    {
+        return array(
+            'fi' => 'Finnish',
+            'sv' => 'Swedish',
+        );
+    }
+    
+    public static function getMotives($language) {
+        return Motive::model()->findAllByAttributes(array(
+            'language' => $language,
+        ));
     }
 
 }

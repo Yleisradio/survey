@@ -25,7 +25,7 @@ $(document).on('submit', '#survey-form', function() {
             <div class="row form-horizontal form-group">
                 <div class="col-md-12">
                     <input id="Answer_success_other" value="" type="radio" name="Answer[motive_id]"> 
-                    <label for="Answer_success_other">Jokin muu, mikä?</label>
+                    <label for="Answer_success_other"><?php echo Yii::t('form', 'survey.success.other'); ?></label>
                 </div>
                 <div class="col-md-12">
                     <?php echo $form->textField($answer, 'motive_text', array('class' => 'form-control')); ?>

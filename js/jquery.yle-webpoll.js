@@ -83,7 +83,7 @@ function loadYleWebPollResources() {
                                 urlParamsArray.push(key + '=' + urlParams[key]);
                             }
                         }
-                        if (url.match(/\?/)) {
+                        if (url && url.match(/\?/)) {
                             return url + '&' + urlParamsArray.join('&');
                         } else {
                             return url + '?' + urlParamsArray.join('&');
@@ -111,7 +111,7 @@ function loadYleWebPollResources() {
                     return viewLayer;
                 };
                 base.viewLayer = function(url) {
-                    base.$el.append('<div id="yleWebPoll-modal"><h1 style="display: block;font-size: 2em;font-weight: bold; margin: 0.67em 0;border:none;">' + base.options.title + '</h1><p>' + base.options.row1 + '</p><p>' + base.options.row2 + '</p><p>' + base.options.row3 + '</p><p>' + base.options.row4 + '</p><p>' + base.options.row5 + '</p><a href="#" id="yleWebPoll-yes">' + base.options.linkYes + '</a><a href="#" id="yleWebPoll-no">' + base.options.linkNo + '</a><div style="clear: both;"></div></div><div id="yleWebPoll-mask"></div>');
+                    base.$el.append('<div id="yleWebPoll-modal"><h1 style="display: block;font-size: 2em;font-weight: bold; margin: 0.67em 0;border:none;">' + base.options.texts.title + '</h1><p>' + base.options.texts.row1 + '</p><p>' + base.options.texts.row2 + '</p><p>' + base.options.texts.row3 + '</p><p>' + base.options.texts.row4 + '</p><p>' + base.options.texts.row5 + '</p><a href="#" id="yleWebPoll-yes">' + base.options.texts.linkYes + '</a><a href="#" id="yleWebPoll-no">' + base.options.texts.linkNo + '</a><div style="clear: both;"></div></div><div id="yleWebPoll-mask"></div>');
                     var modalWrapperCSS = {
                         'width': '100%',
                         'position': 'absolute',
@@ -224,29 +224,31 @@ function loadYleWebPollResources() {
                 var currentPath = getSiteRoot()
                         , currentHostname = window.location.hostname
                         , currentUrl = currentHostname + currentPath
-                        , currentCategory = $('body').attr(siteConfs.continousPollConf.categoryAttribute)
-                        , currentSiteConf = getCurrentSiteConf(siteConfs.continousPollList, currentUrl, currentCategory);
+                        , currentCategory = $('body').attr(siteConfs.surveyConfig.categoryAttribute)
+                        , currentSiteConf = getCurrentSiteConf(siteConfs.surveyList, currentUrl, currentCategory)
+                        , localization = siteConfs.popupLocalization;
                 if (currentSiteConf) {
-                    launchPlugin(currentSiteConf, siteConfs.continousPollConf);
+                    launchPlugin(currentSiteConf, siteConfs.surveyConfig, localization);
                 } else {
                     return false;
                 }
             }
 
-            function launchPlugin(currentSiteConf, formSettings) {
-                var pluginOptions = mapOptions(currentSiteConf, formSettings);
+            function launchPlugin(currentSiteConf, formSettings, localization) {
+                var pluginOptions = mapOptions(currentSiteConf, formSettings, localization);
                 $('<div id="yleWebPoll" style="display:none;"></div>')
                         .appendTo('body')
                         .yleWebPoll(pluginOptions);
             }
-            function mapOptions(currentSiteConf, formSettings) {
+            function mapOptions(currentSiteConf, formSettings, localization) {
                 var options = formSettings;
                 options.path = currentSiteConf.currentPath;
-                options.siteURL = currentSiteConf.siteURL;
+                options.siteURL = formSettings.siteURL;
                 options.debug = false,
                         options.urlParams = {
                     surveyId: currentSiteConf.id
                 };
+                options.texts = localization[currentSiteConf.language]  ;
                 options.displayFrequency = currentSiteConf.freq;
                 return options;
             }
