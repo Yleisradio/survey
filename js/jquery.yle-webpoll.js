@@ -163,7 +163,11 @@ function loadYleWebPollResources() {
                         'padding': '20px',
                         'margin': '20px auto 0 auto'
                     };
+                    var pCSS = {
+                        'margin': '10px 0'
+                    };
                     base.$el.find('#yleWebPoll-modal').css(modalCSS);
+                    base.$el.find('p').css(pCSS);
                     base.$el.fadeIn();
                     base.$el.find('#yleWebPoll-yes')
                             .click(function(e) {
