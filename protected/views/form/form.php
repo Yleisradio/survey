@@ -54,7 +54,8 @@ $(document).on('submit', '#survey-form', function() {
             <h2><?php echo Yii::t('form', 'survey.recommend.question', array('{site}' => $survey->name)); ?></h2>
             <?php
             echo $form->radioButtonList($answer, 'recommend', array(
-                1 => 1 . ' - ' . Yii::t('form', 'answer.recommend.1'),
+                0 => 0 . ' - ' . Yii::t('form', 'answer.recommend.1'),
+                1 => 1,
                 2 => 2,
                 3 => 3,
                 4 => 4,
