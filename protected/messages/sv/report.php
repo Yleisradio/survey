@@ -17,6 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  '7 days' => '',
   'chart.age' => '',
   'chart.gender' => '',
   'failed only' => '',

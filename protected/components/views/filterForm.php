@@ -5,14 +5,17 @@ $form = $this->beginWidget('CActiveForm', array(
         ));
 ?>
 <div class="row">
-    <div class="col-xs-4">
+    <div class="col-xs-3">
         <a href="" id="year-button" class="time-button"><?php echo Yii::t('report', 'year'); ?></a>
     </div>
-    <div class="col-xs-4">
+    <div class="col-xs-3">
         <a href="" id="month-button" class="time-button"><?php echo Yii::t('report', 'month'); ?></a>
     </div>
-    <div class="col-xs-4">
+    <div class="col-xs-3">
         <a href="" id="week-button" class="time-button"><?php echo Yii::t('report', 'week'); ?></a>
+    </div>
+    <div class="col-xs-3">
+        <a href="" id="7-days-button" class="time-button"><?php echo Yii::t('report', '7 days'); ?></a>
     </div>
 </div>
 <div class="row border-bottom">
@@ -120,7 +123,7 @@ $form = $this->beginWidget('CActiveForm', array(
             <ul id="topics"></ul>
             <div id="topics-hidden"></div>
             <script type="text/javascript">
-            filter.setTopics(<?php echo json_encode($filter->topics); ?>);
+                filter.setTopics(<?php echo json_encode($filter->topics); ?>);
             </script>
         </div>
     </div>

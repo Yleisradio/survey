@@ -7,6 +7,7 @@ var filter = (function() {
 
     $(document).ready(function() {
         setCurrent(new Date(moment($('#from').val())));
+        filter.changeMode(this, '7-days');
 
         $('#compare').change(function() {
             filter.refresh();
@@ -36,6 +37,10 @@ var filter = (function() {
         });
         $('#month-button').click(function() {
             filter.changeMode(this, 'month');
+            return false;
+        });
+        $('#7-days-button').click(function() {
+            filter.changeMode(this, '7-days');
             return false;
         });
         $('#week-button').click(function() {
@@ -112,7 +117,10 @@ var filter = (function() {
         if (mode === 'day') {
             to.setUTCDate(to.getUTCDate() + 1);
         }
-        if (mode !== 'day' && mode !== 'week') {
+        if (mode === '7-days') {
+            to.setUTCDate(to.getUTCDate() + 7);
+        }
+        if (mode !== 'day' && mode !== 'week' && mode !== '7-days') {
             to = getSunday(to);
         }
         to.setUTCSeconds((to.getUTCSeconds() - 1));
@@ -335,7 +343,7 @@ var filter = (function() {
                 from.setUTCMonth(from.getUTCMonth() - 1);
                 from.setUTCDate(from.getUTCDate() + 7);
             }
-            if (mode === 'week') {
+            if (mode === 'week' || mode === '7-days') {
                 from.setUTCDate(from.getUTCDate() - 7);
             }
             if (mode === 'day') {
@@ -359,7 +367,7 @@ var filter = (function() {
             if (mode === 'month') {
                 from.setUTCMonth(from.getUTCMonth() + 1);
             }
-            if (mode === 'week') {
+            if (mode === 'week' || mode === '7-days') {
                 from.setUTCDate(from.getUTCDate() + 7);
             }
             if (mode === 'day') {
@@ -399,7 +407,10 @@ var filter = (function() {
             if (mode === 'day') {
                 from.setUTCDate(from.getUTCDate() - 1);
             }
-            if (mode !== 'day') {
+            if (mode === '7-days') {
+                from.setUTCDate(from.getUTCDate() - 6);
+            }
+            if (mode !== 'day' && mode !== '7-days') {
                 from = getMonday(from);
             }
             setCurrent(from);

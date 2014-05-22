@@ -17,6 +17,8 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
+  'motive.language' => '',
+  'motive.language.tooltip' => '',
   'survey.category.tooltip' => '',
   'survey.comscore.tooltip' => '',
   'survey.frequency.tooltip' => '',
