@@ -18,8 +18,8 @@
  */
 return array (
   'submitting' => '',
-  'survey.success.later' => '',
-  'survey.success.other' => '',
+  'survey.success.later' => 'Obs! Du kan göra ditt besök först och besvara enkäten efteråt. ',
+  'survey.success.other' => 'Något annat, vad?',
   'answer.interest.0' => 'Mycket intressant',
   'answer.interest.1' => 'Intressant',
   'answer.interest.2' => 'Ganska intressant',
