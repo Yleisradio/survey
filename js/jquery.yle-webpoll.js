@@ -299,7 +299,7 @@ function loadYleWebPollResources() {
                         urlSplit = url.split('/'),
                         siteConfLocation = {
                     'domain': urlSplit.shift(),
-                    'path': '/' + urlSplit.join('/'),
+                    'path': '/' + urlSplit.join('/')
                 };
                 return siteConfLocation;
             }
