@@ -100,7 +100,7 @@ return array(
             'subsignalformid' => '',
         ),
         'apiLogLevel' => 'all',
-        'categoryAttribute' => '',
+        'categoryAttribute' => '', //The html attribute used to match the surveys
         'comScore' => array(
             'baseUrl' => '',
         )
