@@ -47,7 +47,7 @@ cd survey/protected
 ./deploy.sh
 ```
 
-Usage
+## Usage
 - Install the application to a publicly accessible web server
 - Add <script type="text/javascript" src="http://address-to-survey-server.com/form/surveys"></script> before the ending body tag to all of the pages you want the survey to appear in. Replace the address with the correct address.
 - Configure visit motives in http://data.yle.fi/kysely/motive
