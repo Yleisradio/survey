@@ -23,8 +23,8 @@ class ApiController extends Controller
     protected function getSurveysOfSite($site)
     {
         $surveys = array(
-            'uutiset-ja-ajankohtaisohjelmat' => 'uutiset',
-            'uutiset-ja-alueet' => 'uutiset,urheilu',
+            'uutiset-ja-ajankohtaisohjelmat' => 'uutiset,urheilu',
+            'uutiset-ja-alueet' => 'uutiset',
             'urheilu' => 'urheilu',
             'areena-ja-ohjelmat' => 'areena,Yle Puhe,Yle Radio 1,Yle Radio Suomi',
             'areena' => 'areena',
