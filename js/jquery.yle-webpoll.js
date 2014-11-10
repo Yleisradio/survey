@@ -275,7 +275,7 @@ function loadYleWebPollResources() {
                     }
                     //Match by URL
                     else if (typeof(currentUrl) !== 'undefined' && siteUrl) {
-                        if (currentUrl.match(siteUrl)) {
+                        if (currentUrl.match('^' + siteUrl)) {
                             currentSiteConf = siteConf[i];
                             currentSiteConf.currentPath = siteUrlObj.path;
                             break;
