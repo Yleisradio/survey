@@ -158,7 +158,7 @@ function loadYleWebPollResources() {
                         'color': '#000',
                         'top': '20%',
                         'max-width': '500px',
-                        'width': '100%',
+                        'width': '80%',
                         'z-index': '99999',
                         'padding': '20px',
                         'margin': '20px auto 0 auto'
